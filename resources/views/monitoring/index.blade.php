@@ -6,8 +6,8 @@
 <div class="p-6">
     <div class="bg-gray-100 p-4 rounded-lg shadow-sm w-full mb-8">
         <div class="flex flex-col items-end text-right">
-            <h1 class="text-3xl font-semibold text-gray-800">Monitoreo sincronización</h1>
-            <span class="text-xl text-gray-600">con Academusoft y BrightSpace</span>
+            <h1 class="text-3xl font-semibold text-gray-800">Academusoft y BrightSpace</h1>
+            <span class="text-xl text-gray-600">Monitoreo de sincronización</span>
             <div class="h-1 bg-blue-700 w-16 rounded mt-2"></div>
         </div>
     </div>
