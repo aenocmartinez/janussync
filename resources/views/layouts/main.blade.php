@@ -6,6 +6,7 @@
     <title>@yield('title', 'Página')</title>
     @vite('resources/css/app.css')
     @vite('resources/css/main.css')
+    @vite('resources/css/profile.css')
 </head>
 <body class="flex flex-col h-screen">
     <header class="flex items-center justify-between p-4 bg-blue-800 text-white">

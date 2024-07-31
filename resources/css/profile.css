@@ -1,0 +1,59 @@
+/* Estilos específicos para el módulo de perfil */
+
+.container {
+    max-width: 40rem;
+    margin: 2rem auto;
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 1.875rem;
+    color: #1e3a8a;
+    text-align: right;
+    margin-bottom: 0.5rem;
+}
+
+nav[aria-label="Breadcrumb"] {
+    font-size: 0.875rem !important; /* Tamaño de fuente intermedio */
+    margin-bottom: 1.5rem;
+    text-align: right !important; /* Alineación a la derecha */
+}
+
+nav[aria-label="Breadcrumb"] a {
+    color: #3182ce !important;
+    text-decoration: none !important;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    background-color: transparent !important; /* Fondo transparente */
+}
+
+nav[aria-label="Breadcrumb"] a:hover {
+    text-decoration: underline !important;
+    background-color: transparent !important; /* Asegurar fondo transparente en hover */
+}
+
+nav[aria-label="Breadcrumb"] ol {
+    list-style: none;
+    padding: 0;
+    display: inline-flex; /* Alineación a la derecha */
+    align-items: center;
+}
+
+nav[aria-label="Breadcrumb"] li {
+    display: flex;
+    align-items: center;
+    background-color: transparent !important; /* Fondo transparente para el contenedor */
+}
+
+nav[aria-label="Breadcrumb"] li:not(:last-child)::after {
+    content: '>';
+    margin: 0 0.5rem;
+    color: #cbd5e0 !important; /* Color gris claro para el separador */
+}
+
+nav[aria-label="Breadcrumb"] .text-gray-500 {
+    color: #6b7280 !important; /* Texto gris para el ítem actual */
+}

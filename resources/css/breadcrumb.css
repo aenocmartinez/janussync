@@ -1,0 +1,42 @@
+/* Estilos específicos para la miga de pan */
+
+.breadcrumb {
+    font-size: 0.875rem !important; /* Tamaño de fuente intermedio */
+    text-align: right !important; /* Alineación a la derecha */
+}
+
+.breadcrumb a {
+    color: #3182ce !important;
+    text-decoration: none !important;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    background-color: transparent !important; /* Fondo transparente */
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline !important;
+    background-color: transparent !important; /* Asegurar fondo transparente en hover */
+}
+
+.breadcrumb ol {
+    list-style: none;
+    padding: 0;
+    display: inline-flex; /* Alineación a la derecha */
+    align-items: center;
+}
+
+.breadcrumb li {
+    display: flex;
+    align-items: center;
+    background-color: transparent !important; /* Fondo transparente para el contenedor */
+}
+
+.breadcrumb li:not(:last-child)::after {
+    content: '>';
+    margin: 0 0.5rem;
+    color: #cbd5e0 !important; /* Color gris claro para el separador */
+}
+
+.breadcrumb .text-gray-500 {
+    color: #6b7280 !important; /* Texto gris para el ítem actual */
+}
