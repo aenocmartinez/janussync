@@ -1,0 +1,70 @@
+/* Ajustes de estilo para el módulo de monitoreo */
+
+.text-sm {
+    font-size: 0.875rem; /* Tamaño de letra más pequeño */
+}
+
+h1, h2 {
+    color: #1e3a8a;
+}
+
+h2 {
+    font-size: 1.125rem; /* Tamaño de letra para subtítulos */
+    margin-bottom: 1rem;
+}
+
+.overflow-auto {
+    overflow: auto;
+}
+
+.bg-gray-100 {
+    background-color: #f7fafc; /* Color de fondo suave para encabezados de tabla */
+}
+
+.border-b {
+    border-bottom: 1px solid #e2e8f0; /* Bordes inferiores ligeros para filas de tabla */
+}
+
+.text-green-500 {
+    color: #38a169; /* Color verde para tareas completadas */
+}
+
+.text-yellow-500 {
+    color: #d69e2e; /* Color amarillo para tareas en progreso */
+}
+
+.text-red-500 {
+    color: #e53e3e; /* Color rojo para tareas pendientes */
+}
+
+.relative {
+    position: relative;
+}
+
+.w-24, .h-24 {
+    width: 6rem;
+    height: 6rem;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.inset-0 {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.flex {
+    display: flex;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}

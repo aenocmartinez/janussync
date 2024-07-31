@@ -6,7 +6,7 @@
     <title>@yield('title', 'Página')</title>
     @vite('resources/css/app.css')
     @vite('resources/css/main.css')
-    @vite('resources/css/profile.css')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js" integrity="sha384-eHbm2Y/ZyQj0x9M8xTLM3J8dABFAs8fQlraQ2bsZ2S9wKr39KZHLdUpahtBC8oRt" crossorigin="anonymous"></script>
 </head>
 <body class="flex flex-col h-screen">
     <header class="flex items-center justify-between p-4 bg-blue-800 text-white">
@@ -34,8 +34,21 @@
     <div class="flex flex-1">
         <nav class="w-64 bg-gray-100 p-4 flex-shrink-0">
             <ul class="space-y-2">
-                <li><a href="{{ url('/dashboard') }}" class="block text-gray-700 hover:bg-gray-300 p-2 rounded">Dashboard</a></li>
-                <li><a href="{{ url('/profile') }}" class="block text-gray-700 hover:bg-gray-300 p-2 rounded">Perfil</a></li>
+                <li>
+                    <a href="{{ url('/dashboard') }}" class="block p-2 rounded {{ request()->is('dashboard*') ? 'bg-gray-300 text-black' : 'text-gray-700 hover:bg-gray-300' }}">
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url('/profile') }}" class="block p-2 rounded {{ request()->is('profile*') ? 'bg-gray-300 text-black' : 'text-gray-700 hover:bg-gray-300' }}">
+                        Perfil
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url('/monitoring') }}" class="block p-2 rounded {{ request()->is('monitoring*') ? 'bg-gray-300 text-black' : 'text-gray-700 hover:bg-gray-300' }}">
+                        Monitoreo de Tareas
+                    </a>
+                </li>                
                 <!-- Más enlaces de navegación aquí -->
             </ul>
         </nav>

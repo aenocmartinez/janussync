@@ -86,3 +86,17 @@ select {
 #dropdown-menu a:hover, #dropdown-menu a:focus {
     background-color: #f1f5f9; /* Color de fondo al pasar el ratón */
 }
+
+/* Estilos para los elementos activos del navBar */
+nav a.bg-gray-300 {
+    background-color: #d1d5db; /* Gris claro para el elemento activo */
+    color: #000000; /* Color de texto negro para el elemento activo */
+}
+
+nav a:hover {
+    background-color: #e2e8f0; /* Color de fondo en hover para elementos no activos */
+}
+
+nav a.text-gray-700 {
+    color: #4a5568; /* Color de texto para elementos no activos */
+}
