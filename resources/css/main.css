@@ -1,0 +1,88 @@
+/* Especifica aquí los estilos adicionales o sobrescritos */
+
+/* Ejemplo de estilos adicionales */
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif; /* Sobrescribe la fuente si es necesario */
+}
+
+header {
+    background-color: #1e3a8a; /* Azul más profundo */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para profundidad */
+}
+
+body footer {
+    background-color: transparent !important; /* Asegura que el fondo sea transparente */
+    text-align: center;
+    padding: 1rem;
+}
+
+nav {
+    background-color: #f5f5f5;
+}
+
+nav ul {
+    /* No es necesario si ya está en app.css */
+}
+
+nav ul li {
+    /* No es necesario si ya está en app.css */
+}
+
+nav ul li a {
+    /* No es necesario si ya está en app.css */
+}
+
+main {
+    /* No es necesario si ya está en app.css */
+}
+
+img {
+    /* No es necesario si ya está en app.css */
+}
+
+select {
+    /* No es necesario si ya está en app.css */
+}
+
+.logo {
+    height: auto;
+    max-height: 3rem; /* Limita la altura del logo */
+    width: auto; /* Mantiene las proporciones */
+    max-width: 100%;
+}
+
+/* Otros estilos personalizados */
+
+.avatar-inicial {
+    background-color: #4a90e2; /* Azul claro para un mejor contraste */
+    color: #ffffff; /* Color del texto */
+    border-radius: 50%; /* Hacerlo circular */
+    width: 2rem; /* Tamaño del avatar */
+    height: 2rem; /* Tamaño del avatar */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem; /* Tamaño de la letra */
+    margin-right: 0.5rem;
+    border: 2px solid #ffffff; /* Borde blanco para separar del fondo */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra para destacar */
+}
+
+/* Estilo para el dropdown */
+#dropdown-menu {
+    min-width: 150px; /* Ancho mínimo para evitar problemas de tamaño */
+    position: absolute; /* Asegura que el dropdown se posicione relativo al contenedor */
+    top: 100%; /* Muestra el dropdown debajo del botón de usuario */
+    right: 0; /* Alinea el dropdown al lado derecho */
+    margin-top: 0.5rem; /* Espacio entre el botón y el dropdown */
+    background-color: white; /* Fondo blanco */
+    border: 1px solid #e2e8f0; /* Bordes sutiles */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para profundidad */
+    border-radius: 0.375rem; /* Bordes redondeados */
+    z-index: 20; /* Asegura que el dropdown esté por encima de otros elementos */
+}
+
+/* Ajuste adicional de estilos para hover y focus */
+#dropdown-menu a:hover, #dropdown-menu a:focus {
+    background-color: #f1f5f9; /* Color de fondo al pasar el ratón */
+}
