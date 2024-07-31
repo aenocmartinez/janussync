@@ -1,0 +1,83 @@
+/* Basic styles */
+body {
+    @apply flex items-center h-screen m-0;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.login-container {
+    @apply flex w-full h-full;
+}
+
+.left-section {
+    @apply flex flex-col items-center justify-center w-1/2 p-8;
+    background-color: #00349a;
+    color: white;
+}
+
+.university-logo {
+    @apply w-24 mb-2;
+}
+
+.university-name {
+    @apply text-2xl font-semibold;
+}
+
+.university-department {
+    @apply mt-2 text-lg;
+}
+
+.right-section {
+    @apply flex flex-col justify-center items-center w-1/2 p-8;
+}
+
+.form-logo {
+    @apply w-16 mb-4;
+}
+
+.login-title {
+    @apply text-3xl mb-8 font-bold;
+    color: #00349a;
+}
+
+.login-form {
+    @apply w-full max-w-sm;
+}
+
+.input-group {
+    @apply mb-6;
+}
+
+label {
+    @apply block mb-2 text-base font-medium text-gray-800;
+}
+
+input[type="text"],
+input[type="password"] {
+    @apply w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+}
+
+input[type="text"]::placeholder,
+input[type="password"]::placeholder {
+    @apply text-gray-400;
+}
+
+#captcha-container {
+    @apply mb-4;
+}
+
+.login-button {
+    @apply w-full py-2 bg-blue-600 text-white rounded-md font-semibold text-lg;
+    transition: background-color 0.3s;
+}
+
+.login-button:hover {
+    background-color: #002878;
+}
+
+.forgot-password {
+    @apply mt-4 block text-center text-sm text-blue-600 hover:text-blue-700;
+}
+
+.footer {
+    @apply mt-8 text-gray-600 text-sm;
+}
