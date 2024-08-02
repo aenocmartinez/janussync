@@ -16,7 +16,7 @@
         }
 
         .left-section {
-            display: none !important; /* Ocultar por defecto */
+            display: none; /* Ocultar por defecto */
         }
 
         .right-section {
@@ -99,8 +99,8 @@
             }
 
             .left-section {
-                display: flex !important; /* Mostrar en pantallas grandes, reforzado */
-                width: 55%;
+                display: flex !important; /* Mostrar en pantallas grandes */
+                width: 50%; /* Ocupa el 50% del ancho */
                 background-color: #00349a;
                 color: white;
                 flex-direction: column;
@@ -110,9 +110,13 @@
             }
 
             .right-section {
-                width: 45%;
+                width: 50%; /* Ocupa el 50% del ancho */
                 max-width: 100%; /* Asegura que no haya desbordamiento */
                 padding: 2rem; /* Restaurar padding en pantallas grandes */
+            }
+
+            .md\:hidden {
+                display: none !important; /* Ocultar logo en pantallas grandes */
             }
 
             label, input, .login-button, .forgot-password, .footer {
@@ -131,14 +135,14 @@
 </head>
 <body>
     <div class="login-container">
-        <!-- Sección izquierda (55%) - Oculta en móviles -->
+        <!-- Sección izquierda (50%) - Oculta en móviles -->
         <div class="left-section">
             <img src="{{ asset('logo_principal.png') }}" alt="Universidad Colegio Mayor de Cundinamarca" class="university-logo w-36">
             <div class="university-name text-3xl font-semibold text-center">Universidad Colegio Mayor de Cundinamarca</div>
             <div class="university-department mt-2 text-xl text-center">Subdirección de educación virtual</div>
         </div>
 
-        <!-- Sección derecha (45%) -->
+        <!-- Sección derecha (50%) -->
         <div class="right-section">
             <!-- Logo en móvil -->
             <div class="md:hidden flex justify-center mb-4">
