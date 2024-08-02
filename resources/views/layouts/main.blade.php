@@ -6,11 +6,7 @@
     <title>@yield('title', 'Página')</title>
     @vite('resources/css/app.css')
     @vite('resources/css/main.css')
-    
-    <link rel="stylesheet" href="{{ mix('node_modules/@fortawesome/fontawesome-free/css/all.min.css') }}">
-
-    <script src="{{ mix('node_modules/@fortawesome/fontawesome-free/js/all.min.js') }}"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js" crossorigin="anonymous"></script>
 </head>
 <body class="flex flex-col min-h-screen">
     <header class="flex items-center justify-between p-4 bg-blue-800 text-white">
