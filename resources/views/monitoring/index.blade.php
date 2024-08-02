@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.template_monitoring')
 
 @section('title', 'Monitoreo sincronización con Academusoft y BrightSpace')
 
@@ -17,7 +17,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6 box-border">
         <div class="bg-white p-4 rounded-lg shadow-md flex flex-col justify-between box-border">
             <div class="flex items-center box-border">
-                <i class="fas fa-server text-gray-600 text-2xl md:text-4xl mr-3"></i>
+                <!-- <i class="fas fa-server text-gray-600 text-2xl md:text-4xl mr-3"></i> -->
                 <div>
                     <h2 class="text-md md:text-lg font-semibold text-gray-700">Conexión con Academusoft</h2>
                     <p class="text-xs md:text-sm text-gray-500">Estado actual del servicio</p>
@@ -29,7 +29,7 @@
         </div>
         <div class="bg-white p-4 rounded-lg shadow-md flex flex-col justify-between box-border">
             <div class="flex items-center box-border">
-                <i class="fas fa-server text-gray-600 text-2xl md:text-4xl mr-3"></i>
+                <!-- <i class="fas fa-server text-gray-600 text-2xl md:text-4xl mr-3"></i> -->
                 <div>
                     <h2 class="text-md md:text-lg font-semibold text-gray-700">Conexión con BrightSpace</h2>
                     <p class="text-xs md:text-sm text-gray-500">Estado actual del servicio</p>
@@ -41,7 +41,7 @@
         </div>
     </div>
 
-    <!-- Resumen General -->
+    <!-- Resumen General y Tabla -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6 box-border">
         <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 box-border">
             <h2 class="text-base font-semibold text-gray-700 mb-1"><i class="fas fa-check-circle text-green-500"></i> <span class="text-gray-800">Tareas Completadas</span></h2>
@@ -147,7 +147,7 @@
     </div>
 </div>
 
-<!-- Incluyendo FontAwesome para iconos -->
+<!-- Scripts -->
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -176,7 +176,7 @@
         });
     };
 
-    // Datos de ejemplo
+    // Datos de ejemplo para gráficos
     renderProgressChart('completedTasksCanvas', 60, '#38a169'); // 3/5 completado
     renderProgressChart('failedTasksCanvas', 40, '#e53e3e'); // 2/5 fallido
 
