@@ -15,11 +15,11 @@
                 <img src="{{ asset('logo_principal.png') }}" alt="Logo Universidad" class="h-8">
             </a>
         </div>
-        <div class="flex items-center relative cursor-pointer" id="user-menu-button">
+        <div class="flex items-center relative cursor-pointer hidden lg:flex" id="user-menu-button">
             <div class="avatar-inicial">
                 {{ strtoupper(mb_substr(Auth::user()->name, 0, 1)) }}
             </div>
-            <span id="user-name" class="ml-2 mr-2 hidden lg:block">{{ Auth::user()->name }}</span>
+            <span id="user-name" class="ml-2 mr-2">{{ Auth::user()->name }}</span>
             <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             <div id="dropdown-menu" class="absolute right-0 mt-12 bg-white rounded-md shadow-lg z-20 hidden">
                 <a href="{{ url('/profile') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Perfil</a>
@@ -52,7 +52,14 @@
                         Monitoreo de Tareas
                     </a>
                 </li>
-                <!-- Más enlaces de navegación aquí -->
+                <li>
+                    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form-mobile').submit();" class="block p-2 rounded hover:bg-blue-700">
+                        Cerrar sesión
+                    </a>
+                </li>
+                <form id="logout-form-mobile" action="{{ route('logout') }}" method="POST" class="hidden">
+                    @csrf
+                </form>
             </ul>
         </div>
     </nav>
