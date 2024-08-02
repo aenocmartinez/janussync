@@ -1,4 +1,4 @@
-@extends('layouts.template_monitoring')
+@extends('layouts.main')
 
 @section('title', 'Monitoreo sincronización con Academusoft y BrightSpace')
 
