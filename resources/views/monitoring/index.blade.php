@@ -3,7 +3,7 @@
 @section('title', 'Monitoreo sincronización con Academusoft y BrightSpace')
 
 @section('content')
-<div class="p-4 md:p-6">
+<div class="container mx-auto p-4 md:p-6">
     <div class="bg-gray-100 p-4 rounded-lg shadow-sm w-full mb-6">
         <div class="flex flex-col items-start md:items-end text-left md:text-right">
             <h1 class="text-2xl md:text-3xl font-semibold text-gray-800">Academusoft y BrightSpace</h1>
