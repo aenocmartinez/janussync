@@ -1,5 +1,16 @@
+/* resources/css/app.css */
+
+/* Importaciones primero */
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 
+/* Reglas globales */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Tailwind CSS */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
