@@ -17,7 +17,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6 box-border">
         <div class="bg-white p-4 rounded-lg shadow-md flex flex-col justify-between box-border">
             <div class="flex items-center box-border">
-                <!-- <i class="fas fa-server text-gray-600 text-2xl md:text-4xl mr-3"></i> -->
+                <i class="fas fa-server text-gray-600 text-2xl md:text-4xl mr-3"></i>
                 <div>
                     <h2 class="text-md md:text-lg font-semibold text-gray-700">Conexión con Academusoft</h2>
                     <p class="text-xs md:text-sm text-gray-500">Estado actual del servicio</p>
@@ -29,7 +29,7 @@
         </div>
         <div class="bg-white p-4 rounded-lg shadow-md flex flex-col justify-between box-border">
             <div class="flex items-center box-border">
-                <!-- <i class="fas fa-server text-gray-600 text-2xl md:text-4xl mr-3"></i> -->
+                <i class="fas fa-server text-gray-600 text-2xl md:text-4xl mr-3"></i>
                 <div>
                     <h2 class="text-md md:text-lg font-semibold text-gray-700">Conexión con BrightSpace</h2>
                     <p class="text-xs md:text-sm text-gray-500">Estado actual del servicio</p>
