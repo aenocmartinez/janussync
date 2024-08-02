@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Universidad Colegio Mayor de Cundinamarca</title>
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
@@ -12,7 +13,6 @@
             height: 100vh;
             flex-direction: column; /* Columna por defecto */
             align-items: center; /* Centrar contenido horizontalmente */
-            overflow: hidden; /* Prevenir desbordamiento */
         }
 
         .left-section {
@@ -24,10 +24,10 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            flex: 1;
-            padding: 1rem;
+            flex: 1; /* Ocupa todo el espacio disponible */
+            padding: 2rem;
             background-color: white;
-            width: 100%; /* Ocupa todo el ancho */
+            width: 100vw; /* Ocupa todo el ancho de la ventana */
             box-sizing: border-box; /* Incluye el padding en el ancho total */
         }
 
@@ -74,9 +74,9 @@
             width: 100%;
             padding: 1rem;
             font-size: 1.125rem; /* Tamaño de fuente mayor */
-            text-align: center;
+            text-align: center; /* Centrar texto */
             display: flex;
-            justify-content: center;
+            justify-content: center; /* Centrar contenido dentro del botón */
         }
 
         .forgot-password {
@@ -87,7 +87,7 @@
         }
 
         .footer {
-            font-size: 0.875rem;
+            font-size: 0.875rem; /* Tamaño de fuente */
             margin-top: 2rem;
             text-align: center;
         }
@@ -95,12 +95,12 @@
         @media (min-width: 768px) {
             .login-container {
                 flex-direction: row;
-                align-items: stretch;
+                align-items: stretch; /* Estirar en pantallas grandes */
             }
 
             .left-section {
-                display: flex !important;
-                width: 50%;
+                display: flex !important; /* Mostrar en pantallas grandes */
+                width: 50%; /* Ocupa el 50% del ancho */
                 background-color: #00349a;
                 color: white;
                 flex-direction: column;
@@ -110,27 +110,29 @@
             }
 
             .right-section {
-                width: 50%;
-                max-width: 100%;
-                padding: 2rem;
+                width: 50%; /* Ocupa el 50% del ancho */
+                max-width: 100%; /* Asegura que no haya desbordamiento */
+                padding: 2rem; /* Restaurar padding en pantallas grandes */
             }
 
             .md\:hidden {
-                display: none !important;
+                display: none !important; /* Ocultar logo en pantallas grandes */
             }
 
             label, input, .login-button, .forgot-password, .footer {
-                text-align: left;
+                text-align: left; /* Ajuste de alineación para pantallas grandes */
+            }
+
+            input, .login-button {
+                width: 100%; /* Restaurar ancho en pantallas grandes */
             }
 
             .login-form {
-                margin: 0 auto;
-                max-width: 400px;
-                padding: 0;
+                margin: 0 auto; /* Centrar el formulario */
             }
 
             .g-recaptcha {
-                transform: scale(1);
+                transform: scale(1); /* Tamaño normal en pantallas grandes */
             }
         }
     </style>
@@ -155,14 +157,14 @@
                 @csrf
                 <div class="input-group">
                     <label for="email">Correo Electrónico</label>
-                    <input type="email" id="email" name="email" value="{{ old('email') }}" autofocus autocomplete="email" required placeholder="Ingresa tu correo electrónico" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent {{ $errors->has('email') ? 'border-red-500' : '' }}">
+                    <input type="email" id="email" name="email" value="{{ old('email') }}" autofocus autocomplete="email" required placeholder="Ingresa tu correo electrónico" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent {{ $errors->has('email') ? 'border-red-500' : '' }}">
                     @if ($errors->has('email'))
                         <p class="text-red-500 text-sm mt-1">{{ $errors->first('email') }}</p>
                     @endif
                 </div>
                 <div class="input-group">
                     <label for="password">Contraseña</label>
-                    <input type="password" id="password" name="password" required autocomplete="current-password" placeholder="Ingresa tu contraseña" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent {{ $errors->has('password') ? 'border-red-500' : '' }}">
+                    <input type="password" id="password" name="password" required autocomplete="current-password" placeholder="Ingresa tu contraseña" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent {{ $errors->has('password') ? 'border-red-500' : '' }}">
                     @if ($errors->has('password'))
                         <p class="text-red-500 text-sm mt-1">{{ $errors->first('password') }}</p>
                     @endif
