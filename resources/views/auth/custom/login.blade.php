@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Universidad Colegio Mayor de Cundinamarca</title>
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
@@ -39,6 +38,7 @@
         .login-form {
             width: 100%;
             max-width: none; /* Elimina la restricción de ancho máximo */
+            padding: 0 1rem; /* Añadir margen interno para evitar desbordamiento */
         }
 
         .input-group {
@@ -55,7 +55,7 @@
         }
 
         input {
-            width: 100vw; /* Ocupa todo el ancho de la ventana */
+            width: 100%;
             padding: 1rem;
             font-size: 1.125rem; /* Tamaño de fuente mayor */
             border: 1px solid #ccc;
@@ -71,7 +71,7 @@
         }
 
         .login-button {
-            width: 100vw; /* Ocupa todo el ancho de la ventana */
+            width: 100%; /* Asegura que el botón ocupa todo el ancho del contenedor */
             padding: 1rem;
             font-size: 1.125rem; /* Tamaño de fuente mayor */
             text-align: center; /* Centrar texto */
@@ -125,6 +125,12 @@
 
             input, .login-button {
                 width: 100%; /* Restaurar ancho en pantallas grandes */
+            }
+
+            .login-form {
+                margin: 0 auto; /* Centrar el formulario */
+                padding: 0; /* Eliminar padding en pantallas grandes */
+                max-width: 400px; /* Limitar el ancho máximo en escritorio */
             }
 
             .g-recaptcha {
