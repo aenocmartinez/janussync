@@ -53,6 +53,11 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ url('/users') }}" class="block p-2 rounded {{ request()->is('users*') ? 'bg-blue-700' : 'hover:bg-blue-700' }}">
+                        Usuarios
+                    </a>
+                </li>                  
+                <li>
                     <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form-mobile').submit();" class="block p-2 rounded hover:bg-blue-700">
                         Cerrar sesión
                     </a>
@@ -82,6 +87,11 @@
                         Monitoreo de Tareas
                     </a>
                 </li>
+                <li>
+                    <a href="{{ url('/users') }}" class="block p-2 rounded {{ request()->is('users*') ? 'bg-gray-300 text-black' : 'text-gray-700 hover:bg-gray-300' }}">
+                        Usuarios
+                    </a>
+                </li>                
                 <!-- Más enlaces de navegación aquí -->
             </ul>
         </nav>
@@ -130,5 +140,6 @@
             }
         });
     </script>
+    <script src="{{ asset('js/confirm-delete.js') }}"></script>
 </body>
 </html>
