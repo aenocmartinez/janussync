@@ -20,7 +20,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/monitoring', [MonitoringController::class, 'index'])->name('monitoring.index');
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::delete('/users', [UserController::class, 'index'])->name('users.destroy');    
+    Route::get('/users/create', [UserController::class, 'index'])->name('users.create');
+    Route::delete('/users', [UserController::class, 'index'])->name('users.destroy');        
 });
 
 require __DIR__.'/auth.php';
