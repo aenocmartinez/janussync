@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Título de la Página')
+@section('title', 'Dashboard | JanusSync')
 
 @section('page-title', 'Título Específico de la Página')
 

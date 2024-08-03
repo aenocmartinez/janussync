@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Editar Perfil')
+@section('title', 'Editar Perfil | JanusSync')
 
 @section('content')
 <div class="container mx-auto p-4 bg-white shadow-md rounded-lg max-w-lg">

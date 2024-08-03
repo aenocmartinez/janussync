@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Monitoreo sincronización con Academusoft y BrightSpace')
+@section('title', 'Monitoreo | JanusSync')
 
 @section('content')
 <div class="w-full max-w-full p-4 md:p-6 overflow-hidden box-border">
