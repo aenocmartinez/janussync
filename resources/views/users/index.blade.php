@@ -32,146 +32,61 @@
                 </tr>
             </thead>
             <tbody id="userTableBody" class="bg-white divide-y divide-gray-200">
-                <tr class="hover:bg-gray-100 transition-colors duration-150">
-                    <td class="py-4 px-6 text-sm text-gray-700">Juan Carlos Pérez García</td>
-                    <td class="py-4 px-6 text-sm">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Administrador</span>
-                    </td>
-                    <td class="py-4 px-6 text-sm text-right">
-                        <div class="inline-flex items-center space-x-3">
-                            <button class="text-gray-500 hover:text-blue-600 focus:outline-none transition duration-150" aria-label="Editar" onclick="editUser()">
-                                <i class="fas fa-pencil-alt"></i>
-                            </button>
-                            <button class="text-gray-500 hover:text-red-600 focus:outline-none transition duration-150" aria-label="Eliminar" onclick="openConfirmDeleteModal('deleteUserModal1')">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <tr class="hover:bg-gray-100 transition-colors duration-150">
-                    <td class="py-4 px-6 text-sm text-gray-700">María Fernanda García López</td>
-                    <td class="py-4 px-6 text-sm">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Monitoreo</span>
-                    </td>
-                    <td class="py-4 px-6 text-sm text-right">
-                        <div class="inline-flex items-center space-x-3">
-                            <button class="text-gray-500 hover:text-blue-600 focus:outline-none transition duration-150" aria-label="Editar" onclick="editUser()">
-                                <i class="fas fa-pencil-alt"></i>
-                            </button>
-                            <button class="text-gray-500 hover:text-red-600 focus:outline-none transition duration-150" aria-label="Eliminar" onclick="openConfirmDeleteModal('deleteUserModal2')">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <tr class="hover:bg-gray-100 transition-colors duration-150">
-                    <td class="py-4 px-6 text-sm text-gray-700">Carlos Andrés Fernández Ortiz</td>
-                    <td class="py-4 px-6 text-sm">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Monitoreo</span>
-                    </td>
-                    <td class="py-4 px-6 text-sm text-right">
-                        <div class="inline-flex items-center space-x-3">
-                            <button class="text-gray-500 hover:text-blue-600 focus:outline-none transition duration-150" aria-label="Editar" onclick="editUser()">
-                                <i class="fas fa-pencil-alt"></i>
-                            </button>
-                            <button class="text-gray-500 hover:text-red-600 focus:outline-none transition duration-150" aria-label="Eliminar" onclick="openConfirmDeleteModal('deleteUserModal3')">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <tr class="hover:bg-gray-100 transition-colors duration-150">
-                    <td class="py-4 px-6 text-sm text-gray-700">Lucía María López Martínez</td>
-                    <td class="py-4 px-6 text-sm">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Administrador</span>
-                    </td>
-                    <td class="py-4 px-6 text-sm text-right">
-                        <div class="inline-flex items-center space-x-3">
-                            <button class="text-gray-500 hover:text-blue-600 focus:outline-none transition duration-150" aria-label="Editar" onclick="editUser()">
-                                <i class="fas fa-pencil-alt"></i>
-                            </button>
-                            <button class="text-gray-500 hover:text-red-600 focus:outline-none transition duration-150" aria-label="Eliminar" onclick="openConfirmDeleteModal('deleteUserModal4')">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <tr class="hover:bg-gray-100 transition-colors duration-150">
-                    <td class="py-4 px-6 text-sm text-gray-700">José Antonio Martínez Sánchez</td>
-                    <td class="py-4 px-6 text-sm">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Monitoreo</span>
-                    </td>
-                    <td class="py-4 px-6 text-sm text-right">
-                        <div class="inline-flex items-center space-x-3">
-                            <button class="text-gray-500 hover:text-blue-600 focus:outline-none transition duration-150" aria-label="Editar" onclick="editUser()">
-                                <i class="fas fa-pencil-alt"></i>
-                            </button>
-                            <button class="text-gray-500 hover:text-red-600 focus:outline-none transition duration-150" aria-label="Eliminar" onclick="openConfirmDeleteModal('deleteUserModal5')">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
+                @if(empty($users))
+                    <tr>
+                        <td colspan="3" class="py-4 px-6 text-center text-sm text-gray-500">
+                            No se encontraron usuarios.
+                        </td>
+                    </tr>
+                @else
+                    @foreach($users as $index => $user)
+                        <tr class="hover:bg-gray-100 transition-colors duration-150">
+                            <td class="py-4 px-6 text-sm text-gray-700">{{ $user['name'] }}</td>
+                            <td class="py-4 px-6 text-sm">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $user['role'] == 'Administrador' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800' }}">{{ $user['role'] }}</span>
+                            </td>
+                            <td class="py-4 px-6 text-sm text-right">
+                                <div class="inline-flex items-center space-x-3">
+                                    <button class="text-gray-500 hover:text-blue-600 focus:outline-none transition duration-150" aria-label="Editar" onclick="editUser()">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </button>
+                                    <button class="text-gray-500 hover:text-red-600 focus:outline-none transition duration-150" aria-label="Eliminar" onclick="openConfirmDeleteModal('deleteUserModal{{ $index + 1 }}')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                @endif
             </tbody>
         </table>
     </div>
 
-    <!-- Paginador -->
-    <div class="mt-6 flex flex-col items-center">
-        <div class="text-xs text-gray-600 mb-2">
-            Mostrando <span id="startRecord">1</span> a <span id="endRecord">10</span> de <span id="totalRecords">50</span> registros
-        </div>
-        <div class="flex items-center space-x-2">
-            <button class="px-3 py-1 border border-transparent bg-blue-600 text-white text-xs font-medium rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150" onclick="previousPage()" aria-label="Previous">
-                <i class="fas fa-chevron-left"></i>
-            </button>
-            <select id="pageSelect" class="border border-gray-300 bg-white text-gray-700 text-xs rounded-full focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition ease-in-out duration-150" onchange="gotoPage(this.value)">
-                <option value="1" selected>1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-            </select>
-            <button class="px-3 py-1 border border-transparent bg-blue-600 text-white text-xs font-medium rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150" onclick="nextPage()" aria-label="Next">
-                <i class="fas fa-chevron-right"></i>
-            </button>
-        </div>
-    </div>
+    <!-- Componente de Paginador -->
+    @if(!empty($users))
+        <x-paginator 
+            :currentPage="1" 
+            :totalPages="10" 
+            :recordsPerPage="10" 
+            :totalRecords="50" 
+            :startRecord="1" 
+            :endRecord="10" 
+        />
+    @endif
 </div>
 
 <!-- Componentes Modal para Confirmar Eliminación para cada usuario -->
-<x-modal-delete modalId="deleteUserModal1" formId="deleteUserForm1" />
-<x-modal-delete modalId="deleteUserModal2" formId="deleteUserForm2" />
-<x-modal-delete modalId="deleteUserModal3" formId="deleteUserForm3" />
-<x-modal-delete modalId="deleteUserModal4" formId="deleteUserModal4" />
-<x-modal-delete modalId="deleteUserModal5" formId="deleteUserForm5" />
+@foreach($users as $index => $user)
+    <x-modal-delete modalId="deleteUserModal{{ $index + 1 }}" formId="deleteUserForm{{ $index + 1 }}" />
+@endforeach
 
 <!-- Formularios de eliminación para cada usuario -->
-<form id="deleteUserForm1" action="{{ route('users.destroy', ['user' => 1]) }}" method="POST" class="hidden">
-    @csrf
-    @method('DELETE')
-</form>
-<form id="deleteUserForm2" action="{{ route('users.destroy', ['user' => 2]) }}" method="POST" class="hidden">
-    @csrf
-    @method('DELETE')
-</form>
-<form id="deleteUserForm3" action="{{ route('users.destroy', ['user' => 3]) }}" method="POST" class="hidden">
-    @csrf
-    @method('DELETE')
-</form>
-<form id="deleteUserForm4" action="{{ route('users.destroy', ['user' => 4]) }}" method="POST" class="hidden">
-    @csrf
-    @method('DELETE')
-</form>
-<form id="deleteUserForm5" action="{{ route('users.destroy', ['user' => 5]) }}" method="POST" class="hidden">
-    @csrf
-    @method('DELETE')
-</form>
+@foreach($users as $index => $user)
+    <form id="deleteUserForm{{ $index + 1 }}" action="{{ route('users.destroy', ['user' => $user['id']]) }}" method="POST" class="hidden">
+        @csrf
+        @method('DELETE')
+    </form>
+@endforeach
 
 <script src="{{ asset('js/confirm-delete.js') }}"></script>
 
@@ -180,27 +95,24 @@ function editUser() {
     // Lógica para editar un usuario
 }
 
+// Paginación de ejemplo
 let currentPage = 1;
-const totalPages = 10; // Número total de páginas de ejemplo
+const totalPages = 10; 
 const recordsPerPage = 10;
-const totalRecords = 50; // Número total de registros de ejemplo
+const totalRecords = 50; 
 
 function updatePagination() {
     const startRecord = (currentPage - 1) * recordsPerPage + 1;
     const endRecord = Math.min(currentPage * recordsPerPage, totalRecords);
-    
+
     document.getElementById('startRecord').textContent = startRecord;
     document.getElementById('endRecord').textContent = endRecord;
-    document.getElementById('totalRecords').textContent = totalRecords;
-
-    document.getElementById('pageSelect').value = currentPage;
 }
 
 function previousPage() {
     if (currentPage > 1) {
         currentPage--;
         updatePagination();
-        // Añadir lógica para obtener y mostrar los datos de la nueva página
     }
 }
 
@@ -208,14 +120,12 @@ function nextPage() {
     if (currentPage < totalPages) {
         currentPage++;
         updatePagination();
-        // Añadir lógica para obtener y mostrar los datos de la nueva página
     }
 }
 
 function gotoPage(page) {
     currentPage = parseInt(page);
     updatePagination();
-    // Añadir lógica para obtener y mostrar los datos de la nueva página
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -226,14 +136,23 @@ document.addEventListener('DOMContentLoaded', function () {
 document.getElementById('userSearch').addEventListener('input', function() {
     let filter = this.value.toLowerCase();
     let rows = document.getElementById('userTableBody').getElementsByTagName('tr');
+    let hasResults = false;
+
     for (let i = 0; i < rows.length; i++) {
         let name = rows[i].getElementsByTagName('td')[0].textContent.toLowerCase();
         let role = rows[i].getElementsByTagName('td')[1].textContent.toLowerCase();
         if (name.indexOf(filter) > -1 || role.indexOf(filter) > -1) {
             rows[i].style.display = '';
+            hasResults = true;
         } else {
             rows[i].style.display = 'none';
         }
+    }
+
+    if (!hasResults) {
+        document.getElementById('noResultsMessage').style.display = '';
+    } else {
+        document.getElementById('noResultsMessage').style.display = 'none';
     }
 });
 </script>
