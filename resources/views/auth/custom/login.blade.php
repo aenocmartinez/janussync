@@ -176,7 +176,7 @@
                     @endif
                 </div>
                 <button type="submit" class="login-button bg-blue-600 text-white rounded-md font-semibold transition duration-300 hover:bg-blue-700">Ingresar</button>
-                <a href="{{ route('password.request') }}" class="forgot-password text-blue-600 hover:text-blue-700">¿Olvidaste tu contraseña?</a>
+                <!-- <a href="{{ route('password.request') }}" class="forgot-password text-blue-600 hover:text-blue-700">¿Olvidaste tu contraseña?</a> -->
             </form>
             <footer class="footer text-gray-600">
                 &copy; {{ date('Y') }} Universidad Colegio Mayor de Cundinamarca. Todos los derechos reservados.
