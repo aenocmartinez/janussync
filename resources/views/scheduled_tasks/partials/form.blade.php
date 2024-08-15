@@ -13,8 +13,6 @@
         <option value="Diaria" {{ old('frequency', $scheduledTask->frequency ?? '') == 'Diaria' ? 'selected' : '' }}>Diaria</option>
         <option value="Semanal" {{ old('frequency', $scheduledTask->frequency ?? '') == 'Semanal' ? 'selected' : '' }}>Semanal</option>
         <option value="Mensual" {{ old('frequency', $scheduledTask->frequency ?? '') == 'Mensual' ? 'selected' : '' }}>Mensual</option>
-        <option value="Semestral" {{ old('frequency', $scheduledTask->frequency ?? '') == 'Semestral' ? 'selected' : '' }}>Semestral</option>
-        <option value="Anual" {{ old('frequency', $scheduledTask->frequency ?? '') == 'Anual' ? 'selected' : '' }}>Anual</option>
         <option value="Personalizada" {{ old('frequency', $scheduledTask->frequency ?? '') == 'Personalizada' ? 'selected' : '' }}>Personalizada</option>
     </select>
     @error('frequency')
@@ -26,6 +24,8 @@
 <div id="custom-fields">
     @include('scheduled_tasks.partials.daily')
     @include('scheduled_tasks.partials.weekly')
+    @include('scheduled_tasks.partials.monthly')
+    @include('scheduled_tasks.partials.custom')
 </div>
 
 @push('scripts')
@@ -41,6 +41,10 @@
                 $('#daily-fields').show(); // Muestra solo el campo para "Diaria"
             } else if (frequency == 'Semanal') {
                 $('#weekly-fields').show(); // Muestra solo el campo para "Semanal"
+            } else if (frequency == 'Mensual') {
+                $('#monthly-fields').show(); // Muestra solo el campo para "Mensual"
+            } else if (frequency == 'Personalizada') {
+                $('#custom-fields-content').show(); // Muestra solo el campo para "Personalizada"
             }
             // Lógica para otras frecuencias...
         });
