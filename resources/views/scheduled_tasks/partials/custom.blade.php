@@ -5,8 +5,11 @@
         <span class="text-red-500 text-sm">{{ $message }}</span>
     @enderror
 
-    <div id="custom-fields-content">
-        <x-time-picker name="execution_time_custom" id="execution_time_custom" />
+    <div id="custom-time-field">
+        <x-time-picker 
+            name="execution_time_custom" 
+            id="execution_time_custom" 
+            value="{{ old('execution_time_custom', $scheduledTask->execution_time ?? '') }}" 
+        />
     </div>
-        
 </div>

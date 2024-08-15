@@ -5,8 +5,11 @@
         <span class="text-red-500 text-sm">{{ $message }}</span>
     @enderror
 
-    <div id="monthly-fields">
-        <x-time-picker name="execution_time_monthly" id="execution_time_monthly" />
+    <div id="monthly-time-field">
+        <x-time-picker 
+            name="execution_time_monthly" 
+            id="execution_time_monthly" 
+            value="{{ old('execution_time_monthly', $scheduledTask->execution_time ?? '') }}" 
+        />
     </div>
-    
 </div>

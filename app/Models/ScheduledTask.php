@@ -9,5 +9,13 @@ class ScheduledTask extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['task_name', 'frequency', 'execution_time', 'day_of_week', 'day_of_month', 'month'];
+    protected $fillable = [
+        'task_name', 
+        'frequency', 
+        'execution_time', 
+        'day_of_week', 
+        'day_of_month', 
+        'month',
+        'custom_date',
+    ];
 }
