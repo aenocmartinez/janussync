@@ -6,13 +6,14 @@ use App\Http\Requests\SaveRole;
 use App\Http\Requests\UpdateRole;
 use App\Models\User;
 use Illuminate\Auth\Events\Validated;
+use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class RoleController extends Controller
 {
-    public function index() {
+    public function index(Request $request) {
 
         // $permission1 = Permission::create(['name' => 'Crear usuario']);
         // $permission2 = Permission::create(['name' => 'Eliminar usuario']);
@@ -54,7 +55,11 @@ class RoleController extends Controller
         //     ['name' => 'Monitoreo', 'id' => '2'],
         // ];
 
-        $roles = Role::paginate(5);
+        $search = $request->input('search');
+
+        $roles = Role::when($search, function ($query, $search) {
+            return $query->where('name', 'like', '%' . $search . '%');
+        })->paginate(5);
         return view('roles.index', [ 'roles' => $roles]);
     }
 

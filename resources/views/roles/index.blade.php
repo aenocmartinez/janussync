@@ -14,13 +14,15 @@
         </button>
     </div>
 
-    <!-- Buscador de Usuarios -->
-    <div class="relative mb-8 mt-6 max-w-md mx-auto sm:max-w-xl lg:max-w-3xl">
-        <input type="text" id="userSearch" placeholder="Buscar por nombre o rol..." class="w-full px-4 py-2 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10 transition ease-in-out duration-150">
-        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-            <i class="fas fa-search text-gray-400"></i>
+    <!-- Buscador de Roles -->
+    <form method="GET" action="{{ route('roles.index') }}">
+        <div class="relative mb-8 mt-6 max-w-md mx-auto sm:max-w-xl lg:max-w-3xl">
+            <input type="text" id="userSearch" name="search" value="{{ request('search') }}" placeholder="Buscar por nombre o rol..." class="w-full px-4 py-2 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10 transition ease-in-out duration-150">
+            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                <i class="fas fa-search text-gray-400"></i>
+            </div>
         </div>
-    </div>
+    </form>
 
     <div class="bg-white shadow-lg rounded-lg overflow-hidden mt-6">
         <table class="min-w-full bg-white divide-y divide-gray-200">
