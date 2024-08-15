@@ -15,26 +15,32 @@
     </div>
 
     <!-- Buscador de Usuarios -->
-    <div class="relative mb-8 mt-6 max-w-md mx-auto sm:max-w-xl lg:max-w-3xl">
-        <input type="text" id="userSearch" placeholder="Buscar por nombre, correo o rol..." class="w-full px-4 py-2 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10 transition ease-in-out duration-150">
-        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-            <i class="fas fa-search text-gray-400"></i>
+    <form method="GET" action="{{ route('users.index') }}">
+        <div class="relative mb-8 mt-6 max-w-md mx-auto sm:max-w-xl lg:max-w-3xl">
+            <input type="text" id="userSearch" name="search" value="{{ request('search') }}" placeholder="Buscar por nombre, email o rol..." class="w-full px-4 py-2 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10 transition ease-in-out duration-150">
+            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                <i class="fas fa-search text-gray-400"></i>
+            </div>
         </div>
-    </div>
+    </form>
 
     <div class="bg-white shadow-lg rounded-lg overflow-x-auto mt-6">
         <div class="block sm:hidden">
-            @foreach($users as $user)
+            @forelse($users as $user)
                 <div class="p-4 border-b border-gray-200">
                     <div class="font-bold text-gray-700">{{ $user['name'] }}</div>
                     <div class="text-gray-500">{{ $user['email'] }}</div>
                     <div class="text-gray-500">{{ $user->getNameRole() }}</div>
                     <div class="mt-2">
                         <a href="{{ route('users.edit', $user['id']) }}" class="text-blue-600 hover:text-blue-800">Editar</a>
-                        <button class="text-red-600 hover:text-red-800" onclick="openConfirmDeleteModal('deleteUserModal{{ $loop->index + 1 }}')">Eliminar</button>
+                        <button class="text-red-600 hover:text-red-800" onclick="openConfirmDeleteModal('deleteUserModal{{ $loop->index + 1 }}')">
+                            Eliminar
+                        </button>
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <div class="p-4 text-center text-gray-500">No se encontraron usuarios.</div>
+            @endforelse
         </div>
 
         <table class="hidden sm:table min-w-full bg-white divide-y divide-gray-200">
@@ -47,46 +53,44 @@
                 </tr>
             </thead>
             <tbody id="userTableBody" class="bg-white divide-y divide-gray-200">
-                @if(empty($users))
+                @forelse($users as $index => $user)
+                    <tr class="hover:bg-gray-100 transition-colors duration-150">
+                        <td class="py-4 px-6 text-sm text-gray-700">{{ $user['name'] }}</td>
+                        <td class="py-4 px-6 text-sm text-gray-700 truncate" style="max-width: 200px;">{{ $user['email'] }}</td>
+                        <td class="py-4 px-6 text-sm">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $user->getNameRole() == 'Administrador' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800' }}">{{ $user->getNameRole() }}</span>
+                        </td>
+                        <td class="py-4 px-6 text-sm text-right">
+                            <div class="inline-flex items-center space-x-3">
+                                <a href="{{ route('users.edit', $user['id']) }}" class="text-gray-500 hover:text-blue-600 focus:outline-none transition duration-150" aria-label="Editar">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+                                <button class="text-gray-500 hover:text-red-600 focus:outline-none transition duration-150" aria-label="Eliminar" onclick="openConfirmDeleteModal('deleteUserModal{{ $index + 1 }}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                @empty
                     <tr>
                         <td colspan="4" class="py-4 px-6 text-center text-sm text-gray-500">
                             No se encontraron usuarios.
                         </td>
                     </tr>
-                @else
-                    @foreach($users as $index => $user)
-                        <tr class="hover:bg-gray-100 transition-colors duration-150">
-                            <td class="py-4 px-6 text-sm text-gray-700">{{ $user['name'] }}</td>
-                            <td class="py-4 px-6 text-sm text-gray-700 truncate" style="max-width: 200px;">{{ $user['email'] }}</td>
-                            <td class="py-4 px-6 text-sm">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $user->getNameRole() == 'Administrador' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800' }}">{{ $user->getNameRole() }}</span>
-                            </td>
-                            <td class="py-4 px-6 text-sm text-right">
-                                <div class="inline-flex items-center space-x-3">
-                                    <a href="{{ route('users.edit', $user['id']) }}" class="text-gray-500 hover:text-blue-600 focus:outline-none transition duration-150" aria-label="Editar">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </a>
-                                    <button class="text-gray-500 hover:text-red-600 focus:outline-none transition duration-150" aria-label="Eliminar" onclick="openConfirmDeleteModal('deleteUserModal{{ $index + 1 }}')">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                @endif
+                @endforelse
             </tbody>
         </table>
     </div>
 
     <!-- Componente de Paginador -->
-    @if(!empty($users))
+    @if($users->hasPages())
         <x-paginator 
-            :currentPage="1" 
-            :totalPages="10" 
-            :recordsPerPage="10" 
-            :totalRecords="50" 
-            :startRecord="1" 
-            :endRecord="10" 
+            :currentPage="$users->currentPage()" 
+            :totalPages="$users->lastPage()" 
+            :recordsPerPage="$users->perPage()" 
+            :totalRecords="$users->total()" 
+            :startRecord="$users->firstItem()" 
+            :endRecord="$users->lastItem()" 
         />
     @endif
 </div>
@@ -162,11 +166,8 @@ document.getElementById('userSearch').addEventListener('input', function() {
         }
     }
 
-    if (!hasResults) {
-        document.getElementById('noResultsMessage').style.display = '';
-    } else {
-        document.getElementById('noResultsMessage').style.display = 'none';
-    }
+    // Muestra el mensaje cuando no hay resultados
+    document.getElementById('noResultsMessage').style.display = hasResults ? 'none' : '';
 });
 </script>
 

@@ -8,12 +8,27 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
-use Illuminate\Database\Eloquent\ModelNotFoundException; 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function index() {
-        $users = User::all();
+    public function index(Request $request) {
+        
+        $search = $request->input('search');
+
+        $users = User::query()
+                    ->when($search, function ($query, $search) {
+                        return $query->where(function($query) use ($search) {
+                            // Buscar en el nombre completo del usuario
+                            $query->where('name', 'like', '%' . $search . '%')
+                                ->orWhereHas('roles', function($query) use ($search) {
+                                    $query->where('name', 'like', '%' . $search . '%');
+                                });
+                        });
+                    })
+                    ->paginate(5);
+
         return view('users.index', [ 'users' => $users]);
     }
 
@@ -87,7 +102,23 @@ class UserController extends Controller
 
         return redirect()->route('users.index')->with('success', 'El usuario ha sido actualizado exitosamente.');        
     }
+
+    public function destroy($id)
+    {
+        try {
+            $user = User::findOrFail($id);
+            if (Auth::id() == $user->id) {
+                return redirect()->route('users.index')
+                                 ->with('error', 'No puedes eliminar tu propio usuario.');
+            }
+            $user->delete();
+        } catch (\Exception $e) {
+            return redirect()->route('users.index')
+                             ->with('error', 'Hubo un problema al eliminar el usuario.');
+        }
     
-    
+        return redirect()->route('users.index')
+                        ->with('success', 'Usuario eliminado con éxito.');
+    }
     
 }
