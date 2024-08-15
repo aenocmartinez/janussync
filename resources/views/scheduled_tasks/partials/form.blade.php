@@ -31,12 +31,12 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
-        function initializeClockPicker() {
-            $('.clockpicker:visible').clockpicker({
-                placement: 'bottom',  // Coloca el popover abajo del input
-                align: 'left',        // Alinea el reloj a la izquierda del input
-                donetext: 'Hecho',
-                autoclose: true
+        function initializeFlatpickr() {
+            $('.flatpickr:visible').flatpickr({
+                enableTime: true,
+                noCalendar: true,
+                dateFormat: "H:i",
+                time_24hr: true
             });
         }
 
@@ -56,7 +56,7 @@
                 $('#custom-fields-content').show(); // Muestra solo el campo para "Personalizada"
             }
 
-            initializeClockPicker(); // Inicializa ClockPicker solo en el campo visible
+            initializeFlatpickr(); // Inicializa Flatpickr solo en el campo visible
         });
 
         // Trigger the change event to populate the fields if a frequency is pre-selected

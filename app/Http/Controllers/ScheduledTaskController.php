@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreScheduledTaskRequest;
 use App\Models\ScheduledTask;
 use Illuminate\Http\Request;
 
@@ -31,13 +32,10 @@ class ScheduledTaskController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreScheduledTaskRequest $request)
     {
-        $validated = $request->validate([
-            'task_name' => 'required|unique:scheduled_tasks',
-            'frequency' => 'required',
-            // Validaciones adicionales según la frecuencia
-        ]);
+        $validated = $request->validated();
+        dd($validated);
 
         ScheduledTask::create($validated);
         return redirect()->route('scheduled-tasks.index')->with('success', 'Tarea programada creada exitosamente.');
