@@ -9,9 +9,9 @@
             <i class="fas fa-user-tag text-blue-800 text-2xl mr-2"></i>
             <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-blue-800">Gestión de Roles</h1>
         </div>
-        <button class="w-full sm:w-auto flex justify-center items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-sm font-medium rounded-lg shadow-md hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition ease-in-out duration-150 transform hover:-translate-y-1" onclick="window.location.href='{{ route('roles.create') }}'">
+        <a href="{{ route('roles.create') }}" class="w-full sm:w-auto flex justify-center items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-sm font-medium rounded-lg shadow-md hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition ease-in-out duration-150 transform hover:-translate-y-1">
             Nuevo Rol
-        </button>
+        </a>
     </div>
 
     <!-- Buscador de Roles -->

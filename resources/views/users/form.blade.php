@@ -70,9 +70,9 @@
 
 <!-- Botones de Crear/Actualizar y Cancelar -->
 <div class="mt-4 flex justify-end space-x-4">
-    <button type="button" onclick="window.location.href='{{ route('users.index') }}'" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition ease-in-out duration-150">
+    <a href="{{ route('users.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition ease-in-out duration-150">
         {{ __('Cancelar') }}
-    </button>
+    </a>
     <button type="submit" class="bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition ease-in-out duration-150">
         {{ isset($user) && $user->id > 0 ? __('Actualizar Usuario') : __('Crear Usuario') }}
     </button>

@@ -96,7 +96,7 @@ class UserController extends Controller
 
             return redirect()->route('users.index')->with('error', 'El usuario que intentas actualizar no existe.');
         } catch (\Exception $e) {
-
+            
             return redirect()->route('users.index')->with('error', 'Ocurrió un error al intentar actualizar el usuario.');
         }
 
