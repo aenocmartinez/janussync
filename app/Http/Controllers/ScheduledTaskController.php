@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Requests\StoreScheduledTaskRequest;
+use Illuminate\Database\QueryException;
 use App\Models\ScheduledTask;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -54,24 +56,30 @@ class ScheduledTaskController extends Controller
     {
         $validated = $request->validated();
     
-        if ($request->frequency == 'Diaria') {
-            $validated['execution_time'] = $this->combineDateAndTime(now()->toDateString(), $validated['execution_time_daily']);
-        } elseif ($request->frequency == 'Semanal') {
-            $validated['execution_time'] = $this->combineDateAndTime(now()->toDateString(), $validated['execution_time_weekly']);
-        } elseif ($request->frequency == 'Mensual') {
-            $validated['execution_time'] = $this->combineDateAndTime(now()->toDateString(), $validated['execution_time_monthly']);
-        } elseif ($request->frequency == 'Personalizada') {
-            // Guardar la fecha específica en `custom_date`
-            $validated['custom_date'] = $validated['custom_date'];
+        try {
+            if ($request->frequency == 'Diaria') {
+                $validated['execution_time'] = $this->combineDateAndTime(now()->toDateString(), $validated['execution_time_daily']);
+            } elseif ($request->frequency == 'Semanal') {
+                $validated['execution_time'] = $this->combineDateAndTime(now()->toDateString(), $validated['execution_time_weekly']);
+            } elseif ($request->frequency == 'Mensual') {
+                $validated['execution_time'] = $this->combineDateAndTime(now()->toDateString(), $validated['execution_time_monthly']);
+            } elseif ($request->frequency == 'Personalizada') {
+                $validated['custom_date'] = $validated['custom_date'];
+                $validated['execution_time'] = $this->combineDateAndTime($validated['custom_date'], $validated['execution_time_custom']);
+            }
     
-            // Combinar la fecha y la hora para `execution_time`
-            $validated['execution_time'] = $this->combineDateAndTime($validated['custom_date'], $validated['execution_time_custom']);
+            ScheduledTask::create($validated);
+    
+            return redirect()->route('scheduled-tasks.index')->with('success', 'Tarea programada creada con éxito');
+    
+        } catch (QueryException $e) {
+            if ($e->getCode() == 23000) { 
+                return redirect()->back()->withErrors(['task_name' => 'El nombre de la tarea ya está en uso.'])->withInput();
+            }
+            return redirect()->back()->with('error', 'Hubo un problema al crear la tarea programada. Por favor, inténtalo de nuevo.');
         }
-    
-        ScheduledTask::create($validated);
-    
-        return redirect()->route('scheduled-tasks.index')->with('success', 'Tarea programada creada con éxito');
     }
+    
     
     
     protected function combineDateAndTime($date, $time)
@@ -81,13 +89,17 @@ class ScheduledTaskController extends Controller
     
     public function edit($id)
     {
-        $scheduledTask = ScheduledTask::findOrFail($id);
+        try {
+            $scheduledTask = ScheduledTask::findOrFail($id);
+            
+            $scheduledTask->execution_time = \Carbon\Carbon::parse($scheduledTask->execution_time)->format('H:i');
+            $scheduledTask->custom_date = \Carbon\Carbon::parse($scheduledTask->custom_date)->format('Y-m-d');
         
-        $scheduledTask->execution_time = \Carbon\Carbon::parse($scheduledTask->execution_time)->format('H:i');
-
-        $scheduledTask->custom_date = \Carbon\Carbon::parse($scheduledTask->custom_date)->format('Y-m-d');
+            return view('scheduled_tasks.edit', compact('scheduledTask'));
     
-        return view('scheduled_tasks.edit', compact('scheduledTask'));
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('scheduled-tasks.index')->with('error', 'La tarea programada no fue encontrada.');
+        }
     }
       
     public function update(StoreScheduledTaskRequest $request, $id)
@@ -119,9 +131,15 @@ class ScheduledTaskController extends Controller
         }
     }
 
-    public function destroy(ScheduledTask $scheduledTask)
+    public function destroy($id)
     {
-        $scheduledTask->delete();
-        return redirect()->route('scheduled-tasks.index')->with('success', 'Tarea programada eliminada exitosamente.');
+        try {
+            $scheduledTask = ScheduledTask::findOrFail($id);
+            $scheduledTask->delete();
+            return redirect()->route('scheduled-tasks.index')->with('success', 'Tarea programada eliminada exitosamente.');
+    
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('scheduled-tasks.index')->with('error', 'La tarea programada no fue encontrada.');
+        }
     }
 }
