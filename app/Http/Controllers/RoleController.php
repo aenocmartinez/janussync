@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveRole;
+use App\Http\Requests\UpdateRole;
 use App\Models\User;
+use Illuminate\Auth\Events\Validated;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class RoleController extends Controller
 {
@@ -95,4 +97,31 @@ class RoleController extends Controller
 
         return redirect()->route('roles.index')->with('success', 'El rol ha sido eliminado exitosamente.');
     }
+
+    public function edit($id)
+    {
+        $role = Role::findOrFail($id);
+        $permissions = Permission::all();
+        $rolePermissions = $role->permissions->pluck('id')->toArray();
+
+        return view('roles.edit', compact('role', 'permissions', 'rolePermissions'));
+    }
+
+    public function update(UpdateRole $requestUpdateRole, $id)
+    {
+        $validatedData = $requestUpdateRole->validated();
+        try {
+            $role = Role::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('roles.index')->with('error', 'El rol no existe.');
+        }
+
+        $role->name = $validatedData['name'];
+        $role->save();
+
+        $role->permissions()->sync($validatedData['permissions'] ?? []);
+
+        return redirect()->route('roles.index')->with('success', 'El rol ha sido actualizado exitosamente.');
+    }
+
 }
