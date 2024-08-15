@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(
             InitialSetupSeeder::class,
+            ScheduledTaskSeeder::class,
         );
     }
 }

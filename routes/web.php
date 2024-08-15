@@ -3,6 +3,7 @@
 use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ScheduledTaskController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');    
     Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');  
 
+    Route::resource('scheduled-tasks', ScheduledTaskController::class);
     
 });
 

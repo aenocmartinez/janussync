@@ -214,6 +214,7 @@
         });
     </script>
     <script src="{{ asset('js/confirm-delete.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
     <!-- Sección para incluir scripts adicionales -->
