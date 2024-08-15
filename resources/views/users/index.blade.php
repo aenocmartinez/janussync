@@ -16,7 +16,7 @@
 
     <!-- Buscador de Usuarios -->
     <div class="relative mb-8 mt-6 max-w-md mx-auto sm:max-w-xl lg:max-w-3xl">
-        <input type="text" id="userSearch" placeholder="Buscar por nombre o rol..." class="w-full px-4 py-2 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10 transition ease-in-out duration-150">
+        <input type="text" id="userSearch" placeholder="Buscar por nombre, correo o rol..." class="w-full px-4 py-2 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10 transition ease-in-out duration-150">
         <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
             <i class="fas fa-search text-gray-400"></i>
         </div>
@@ -27,6 +27,7 @@
             <thead class="bg-gray-50">
                 <tr>
                     <th scope="col" class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+                    <th scope="col" class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Correo Electrónico</th>
                     <th scope="col" class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rol</th>
                     <th scope="col" class="py-3 px-6 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
                 </tr>
@@ -34,7 +35,7 @@
             <tbody id="userTableBody" class="bg-white divide-y divide-gray-200">
                 @if(empty($users))
                     <tr>
-                        <td colspan="3" class="py-4 px-6 text-center text-sm text-gray-500">
+                        <td colspan="4" class="py-4 px-6 text-center text-sm text-gray-500">
                             No se encontraron usuarios.
                         </td>
                     </tr>
@@ -42,6 +43,7 @@
                     @foreach($users as $index => $user)
                         <tr class="hover:bg-gray-100 transition-colors duration-150">
                             <td class="py-4 px-6 text-sm text-gray-700">{{ $user['name'] }}</td>
+                            <td class="py-4 px-6 text-sm text-gray-700">{{ $user['email'] }}</td>
                             <td class="py-4 px-6 text-sm">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $user->getNameRole() == 'Administrador' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800' }}">{{ $user->getNameRole() }}</span>
                             </td>
@@ -140,8 +142,9 @@ document.getElementById('userSearch').addEventListener('input', function() {
 
     for (let i = 0; i < rows.length; i++) {
         let name = rows[i].getElementsByTagName('td')[0].textContent.toLowerCase();
-        let role = rows[i].getElementsByTagName('td')[1].textContent.toLowerCase();
-        if (name.indexOf(filter) > -1 || role.indexOf(filter) > -1) {
+        let email = rows[i].getElementsByTagName('td')[1].textContent.toLowerCase();
+        let role = rows[i].getElementsByTagName('td')[2].textContent.toLowerCase();
+        if (name.indexOf(filter) > -1 || email.indexOf(filter) > -1 || role.indexOf(filter) > -1) {
             rows[i].style.display = '';
             hasResults = true;
         } else {
