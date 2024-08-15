@@ -3,24 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use Illuminate\Database\Eloquent\ModelNotFoundException; 
 
 class UserController extends Controller
 {
     public function index() {
         $users = User::all();
-        
-
-        // $users = [
-        //     ['name' => 'María Fernanda García López', 'role' => 'Monitoreo', 'id' => '1'],
-        //     ['name' => 'Juan Carlos Pérez García', 'role' => 'Administrador', 'id' => '2'],
-        //     ['name' => 'Carlos Andrés Fernández Ortiz', 'role' => 'Monitoreo', 'id' => '3'],
-        //     ['name' => 'Lucía María López Martínez', 'role' => 'Administrador', 'id' => '4'],
-        //     ['name' => 'José Antonio Martínez Sánchez', 'role' => 'Monitoreo', 'id' => '5'],
-        // ];
         return view('users.index', [ 'users' => $users]);
     }
 
@@ -28,7 +21,8 @@ class UserController extends Controller
 
         $roles = Role::all();
         return view('users.create', [
-            'roles' => $roles
+            'roles' => $roles,
+            'user' => new User(),
         ]);
     }
 
@@ -51,4 +45,49 @@ class UserController extends Controller
 
         return redirect()->route('users.index')->with('success', 'El usuario ha sido creado exitosamente.');
     }
+
+    public function edit($id)
+    {
+        try {
+            $user = User::findOrFail($id);
+            $roles = Role::all();
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('users.index')->with('error', 'El usuario que intentas editar no existe.');
+        }
+        return view('users.edit', [
+            'user' => $user, 
+            'roles' => $roles,
+        ]);
+    }
+
+    public function update(UpdateUserRequest $request, $id)
+    {
+        try {
+            $user = User::findOrFail($id);
+            $dataValidated = $request->validated();
+
+            $user->name = $dataValidated['name'];
+            $user->email = $dataValidated['email'];
+
+            if (!empty($dataValidated['password'])) {
+                $user->password = Hash::make($dataValidated['password']);
+            }
+
+            $user->save();
+            
+            $user->roles()->sync([$dataValidated['role']]);
+
+        } catch (ModelNotFoundException $e) {
+
+            return redirect()->route('users.index')->with('error', 'El usuario que intentas actualizar no existe.');
+        } catch (\Exception $e) {
+
+            return redirect()->route('users.index')->with('error', 'Ocurrió un error al intentar actualizar el usuario.');
+        }
+
+        return redirect()->route('users.index')->with('success', 'El usuario ha sido actualizado exitosamente.');        
+    }
+    
+    
+    
 }

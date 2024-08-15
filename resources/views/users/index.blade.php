@@ -49,9 +49,9 @@
                             </td>
                             <td class="py-4 px-6 text-sm text-right">
                                 <div class="inline-flex items-center space-x-3">
-                                    <button class="text-gray-500 hover:text-blue-600 focus:outline-none transition duration-150" aria-label="Editar" onclick="editUser()">
+                                    <a href="{{ route('users.edit', $user['id']) }}" class="text-gray-500 hover:text-blue-600 focus:outline-none transition duration-150" aria-label="Editar">
                                         <i class="fas fa-pencil-alt"></i>
-                                    </button>
+                                    </a>
                                     <button class="text-gray-500 hover:text-red-600 focus:outline-none transition duration-150" aria-label="Eliminar" onclick="openConfirmDeleteModal('deleteUserModal{{ $index + 1 }}')">
                                         <i class="fas fa-trash"></i>
                                     </button>
@@ -93,9 +93,6 @@
 <script src="{{ asset('js/confirm-delete.js') }}"></script>
 
 <script>
-function editUser() {
-    // Lógica para editar un usuario
-}
 
 // Paginación de ejemplo
 let currentPage = 1;

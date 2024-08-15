@@ -1,18 +1,19 @@
 @extends('layouts.main')
 
-@section('title', 'Registro de Usuario | JanusSync')
+@section('title', 'Actualizar Usuario | JanusSync')
 
 @section('content')
 <div class="flex items-center justify-center min-h-screen bg-gray-100">
     <div class="w-full max-w-4xl">
         <div class="bg-white shadow-lg rounded-lg p-8">
-            <h2 class="text-3xl font-semibold text-center text-blue-800 mb-6">{{ __('Registro de Usuario') }}</h2>
+            <h2 class="text-3xl font-semibold text-center text-blue-800 mb-6">{{ __('Actualizar Usuario') }}</h2>
             
-            <form method="POST" action="{{ route('users.store') }}">
+            <form method="POST" action="{{ route('users.update', $user->id) }}">
                 @csrf
+                @method('PUT')
 
-                @include('users.form') <!-- Incluir el formulario reutilizable -->
-                
+                @include('users.form', ['user' => $user]) <!-- Incluir el formulario reutilizable con datos -->
+
             </form>
         </div>
     </div>

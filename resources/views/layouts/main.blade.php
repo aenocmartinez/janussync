@@ -205,6 +205,7 @@
     </script>
     <script src="{{ asset('js/confirm-delete.js') }}"></script>
 
+
     <!-- Sección para incluir scripts adicionales -->
     @stack('scripts')
 </body>
