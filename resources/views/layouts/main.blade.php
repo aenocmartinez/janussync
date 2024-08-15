@@ -53,6 +53,11 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ url('/scheduled-tasks') }}" class="block p-2 rounded {{ request()->is('scheduled-tasks*') ? 'bg-blue-700' : 'hover:bg-blue-700' }}">
+                        Programador
+                    </a>
+                </li>                
+                <li>
                     <a href="{{ url('/users') }}" class="block p-2 rounded {{ request()->is('users*') ? 'bg-blue-700' : 'hover:bg-blue-700' }}">
                         Usuarios
                     </a>
@@ -92,6 +97,11 @@
                         Monitoreo de Tareas
                     </a>
                 </li>
+                <li>
+                    <a href="{{ url('/scheduled-tasks') }}" class="block p-2 rounded {{ request()->is('scheduled-tasks*') ? 'bg-gray-300 text-black' : 'text-gray-700 hover:bg-gray-300' }}">
+                        Programador
+                    </a>
+                </li>                
                 <li>
                     <a href="{{ url('/users') }}" class="block p-2 rounded {{ request()->is('users*') ? 'bg-gray-300 text-black' : 'text-gray-700 hover:bg-gray-300' }}">
                         Usuarios
