@@ -157,7 +157,7 @@
                 @csrf
                 <div class="input-group">
                     <label for="email">Correo Electrónico</label>
-                    <input type="email" id="email" name="email" value="{{ old('email') }}" autofocus autocomplete="email" required placeholder="Ingresa tu correo electrónico" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent {{ $errors->has('email') ? 'border-red-500' : '' }}">
+                    <input type="email" id="email" name="email" value="{{ old('email') }}" autofocus autocomplete="off"  required placeholder="Ingresa tu correo electrónico" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent {{ $errors->has('email') ? 'border-red-500' : '' }}">
                     @if ($errors->has('email'))
                         <p class="text-red-500 text-sm mt-1">{{ $errors->first('email') }}</p>
                     @endif
