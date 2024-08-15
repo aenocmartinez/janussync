@@ -5,5 +5,8 @@
         <span class="text-red-500 text-sm">{{ $message }}</span>
     @enderror
 
-    <x-time-picker name="execution_time" id="execution_time_monthly" />
+    <div id="monthly-fields">
+        <x-time-picker name="execution_time_monthly" id="execution_time_monthly" />
+    </div>
+    
 </div>

@@ -40,27 +40,30 @@
             });
         }
 
-        $('#custom-fields > div').hide(); // Esconde todos los campos adicionales al inicio
-
-        $('#frequency').change(function() {
-            var frequency = $(this).val();
+        function showFieldsForFrequency(frequency) {
             $('#custom-fields > div').hide(); // Esconde todos los campos adicionales
 
             if (frequency == 'Diaria') {
-                $('#daily-fields').show(); // Muestra solo el campo para "Diaria"
+                $('#daily-fields').show();
             } else if (frequency == 'Semanal') {
-                $('#weekly-fields').show(); // Muestra solo el campo para "Semanal"
+                $('#weekly-fields').show();
             } else if (frequency == 'Mensual') {
-                $('#monthly-fields').show(); // Muestra solo el campo para "Mensual"
+                $('#monthly-fields').show();
             } else if (frequency == 'Personalizada') {
-                $('#custom-fields-content').show(); // Muestra solo el campo para "Personalizada"
+                $('#custom-fields-content').show();
             }
 
             initializeFlatpickr(); // Inicializa Flatpickr solo en el campo visible
-        });
+        }
 
-        // Trigger the change event to populate the fields if a frequency is pre-selected
-        $('#frequency').trigger('change');
+        // Mostrar los campos correspondientes al cargar la página
+        showFieldsForFrequency($('#frequency').val());
+
+        // Cambiar los campos visibles cuando se cambia la frecuencia
+        $('#frequency').change(function() {
+            showFieldsForFrequency($(this).val());
+        });
     });
 </script>
 @endpush
+

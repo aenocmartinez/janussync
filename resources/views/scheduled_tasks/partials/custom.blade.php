@@ -5,5 +5,8 @@
         <span class="text-red-500 text-sm">{{ $message }}</span>
     @enderror
 
-    <x-time-picker name="custom_time" id="custom_time_custom" />
+    <div id="custom-fields-content">
+        <x-time-picker name="execution_time_custom" id="execution_time_custom" />
+    </div>
+        
 </div>

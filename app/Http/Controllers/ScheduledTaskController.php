@@ -20,6 +20,23 @@ class ScheduledTaskController extends Controller
                     })
                     ->orderBy('task_name') 
                     ->paginate(5);
+            
+        $tasks->getCollection()->transform(function ($task) {
+            $formattedExecutionTime = \Carbon\Carbon::parse($task->execution_time)->format('H:i');
+    
+            if ($task->frequency == 'Diaria') {
+                $task->execution_info = "Todos los días a las $formattedExecutionTime horas";
+            } elseif ($task->frequency == 'Semanal') {
+                $task->execution_info = "Cada {$task->day_of_week} a las $formattedExecutionTime horas";
+            } elseif ($task->frequency == 'Mensual') {
+                $task->execution_info = "Cada día {$task->day_of_month} del mes a las $formattedExecutionTime horas";
+            } elseif ($task->frequency == 'Personalizada') {
+                $formattedDate = \Carbon\Carbon::parse($task->custom_date)->locale('es')->isoFormat('D [de] MMMM [de] YYYY');
+                $task->execution_info = "El $formattedDate a las $formattedExecutionTime horas";
+            }
+    
+            return $task;
+        });
     
         return view('scheduled_tasks.index', ['tasks' => $tasks]);
     }
@@ -35,11 +52,27 @@ class ScheduledTaskController extends Controller
     public function store(StoreScheduledTaskRequest $request)
     {
         $validated = $request->validated();
-        dd($validated);
 
+        if ($request->frequency == 'Diaria') {
+            $validated['execution_time'] = $this->combineDateAndTime(now()->toDateString(), $validated['execution_time_daily']);
+        } elseif ($request->frequency == 'Semanal') {
+            $validated['execution_time'] = $this->combineDateAndTime(now()->toDateString(), $validated['execution_time_weekly']);
+        } elseif ($request->frequency == 'Mensual') {
+            $validated['execution_time'] = $this->combineDateAndTime(now()->toDateString(), $validated['execution_time_monthly']);
+        } elseif ($request->frequency == 'Personalizada') {
+            $validated['execution_time'] = $this->combineDateAndTime($validated['custom_date'], $validated['execution_time_custom']);
+        }
+    
         ScheduledTask::create($validated);
-        return redirect()->route('scheduled-tasks.index')->with('success', 'Tarea programada creada exitosamente.');
+    
+        return redirect()->route('scheduled-tasks.index')->with('success', 'Tarea programada creada con éxito');
     }
+    
+    protected function combineDateAndTime($date, $time)
+    {
+        return $date . ' ' . $time;
+    }
+    
 
     public function edit(ScheduledTask $scheduledTask)
     {

@@ -30,6 +30,7 @@
                 <div class="p-4 border-b border-gray-200">
                     <div class="font-bold text-gray-700">{{ $task->task_name }}</div>
                     <div class="text-gray-500">{{ $task->frequency }}</div>
+                    <div class="text-gray-500">{{ $task->execution_info }}</div>
                     <div class="mt-2">
                         <a href="{{ route('scheduled-tasks.edit', $task->id) }}" class="text-blue-600 hover:text-blue-800">Editar</a>
                         <button class="text-red-600 hover:text-red-800" onclick="openConfirmDeleteModal('deleteTaskModal{{ $loop->index + 1 }}')">
@@ -47,6 +48,7 @@
                 <tr>
                     <th scope="col" class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
                     <th scope="col" class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Frecuencia</th>
+                    <th scope="col" class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Próxima Ejecución</th>
                     <th scope="col" class="py-3 px-6 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
                 </tr>
             </thead>
@@ -55,6 +57,7 @@
                     <tr class="hover:bg-gray-100 transition-colors duration-150">
                         <td class="py-4 px-6 text-sm text-gray-700">{{ $task->task_name }}</td>
                         <td class="py-4 px-6 text-sm text-gray-700">{{ $task->frequency }}</td>
+                        <td class="py-4 px-6 text-sm text-gray-700">{{ $task->execution_info }}</td>
                         <td class="py-4 px-6 text-sm text-right">
                             <div class="inline-flex items-center space-x-3">
                                 <a href="{{ route('scheduled-tasks.edit', $task->id) }}" class="text-gray-500 hover:text-blue-600 focus:outline-none transition duration-150" aria-label="Editar">
@@ -68,7 +71,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="3" class="py-4 px-6 text-center text-sm text-gray-500">
+                        <td colspan="4" class="py-4 px-6 text-center text-sm text-gray-500">
                             No se encontraron tareas programadas.
                         </td>
                     </tr>

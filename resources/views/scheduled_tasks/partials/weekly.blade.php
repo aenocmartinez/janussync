@@ -14,5 +14,8 @@
         <span class="text-red-500 text-sm">{{ $message }}</span>
     @enderror
 
-    <x-time-picker name="execution_time" id="execution_time_weekly" />
+    <div id="weekly-fields">
+        <x-time-picker name="execution_time_weekly" id="execution_time_weekly" />
+    </div>
+    
 </div>
