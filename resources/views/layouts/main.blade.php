@@ -127,6 +127,40 @@
                     </div>
                 @endif
 
+                @if(session('warning'))
+                    <div class="bg-yellow-50 border border-yellow-200 text-yellow-700 px-4 py-3 rounded-lg shadow-sm mb-6 relative" role="alert">
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 text-yellow-500 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M8.257 3.099c.366-.446 1.077-.446 1.443 0l6.482 7.94A1 1 0 0115.482 12H4.518a1 1 0 01-.76-1.61l6.499-7.947zM10 15a1 1 0 112 0 1 1 0 01-2 0z" clip-rule="evenodd" />
+                            </svg>
+                            <strong class="font-semibold">Advertencia:</strong>
+                        </div>
+                        <span class="block sm:inline mt-1">{{ session('warning') }}</span>
+                        <button type="button" class="absolute top-0 bottom-0 right-0 px-4 py-3 text-yellow-500 focus:outline-none" aria-label="Cerrar" onclick="this.parentElement.classList.add('hidden')">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M10 8.293l3.293-3.293a1 1 0 011.414 1.414L11.414 10l3.293 3.293a1 1 0 01-1.414 1.414L10 11.414l-3.293 3.293a1 1 0 01-1.414-1.414L8.586 10 5.293 6.707a1 1 0 011.414-1.414L10 8.293z" clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg shadow-sm mb-6 relative" role="alert">
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 text-red-500 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v4a1 1 0 002 0V7zm-1 7a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd" />
+                            </svg>
+                            <strong class="font-semibold">Error:</strong>
+                        </div>
+                        <span class="block sm:inline mt-1">{{ session('error') }}</span>
+                        <button type="button" class="absolute top-0 bottom-0 right-0 px-4 py-3 text-red-500 focus:outline-none" aria-label="Cerrar" onclick="this.parentElement.classList.add('hidden')">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M10 8.293l3.293-3.293a1 1 0 011.414 1.414L11.414 10l3.293 3.293a1 1 0 01-1.414 1.414L10 11.414l-3.293 3.293a1 1 0 01-1.414-1.414L8.586 10 5.293 6.707a1 1 0 011.414-1.414L10 8.293z" clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                    </div>
+                @endif
+
                 @yield('content')
             </main>
             <footer class="text-center py-4">

@@ -77,4 +77,22 @@ class RoleController extends Controller
 
         return redirect()->route('roles.index')->with('success', 'El rol se ha creado exitosamente.');
     }
+
+    public function destroy($id)
+    {
+        $role = Role::find($id);
+
+        if (!$role) {
+            dd("Entra aqui");
+            return redirect()->route('roles.index')->with('error', 'El rol no existe.');
+        }
+
+        if ($role->users()->count() > 0) {
+            return redirect()->route('roles.index')->with('warning', 'El rol no se puede eliminar porque tiene usuarios asociados.');
+        }
+
+        $role->delete();
+
+        return redirect()->route('roles.index')->with('success', 'El rol ha sido eliminado exitosamente.');
+    }
 }

@@ -151,6 +151,20 @@ document.getElementById('userSearch').addEventListener('input', function() {
         document.getElementById('noResultsMessage').style.display = 'none';
     }
 });
+
+
+function openConfirmDeleteModal(modalId) {
+    document.getElementById(modalId).classList.remove('hidden');
+}
+
+function closeConfirmDeleteModal(modalId) {
+    document.getElementById(modalId).classList.add('hidden');
+}
+
+function submitConfirmDeleteForm(formId) {
+    document.getElementById(formId).submit();
+}
+
 </script>
 
 @endsection
