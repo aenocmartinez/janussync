@@ -6,6 +6,8 @@
     <title>@yield('title', 'Página')</title>
     @vite('resources/css/app.css')
     @vite('resources/css/main.css')
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/clockpicker/0.0.7/bootstrap-clockpicker.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js" crossorigin="anonymous"></script>
 </head>
 <body class="flex flex-col min-h-screen">
@@ -215,6 +217,8 @@
     </script>
     <script src="{{ asset('js/confirm-delete.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clockpicker/0.0.7/bootstrap-clockpicker.min.js"></script>
 
 
     <!-- Sección para incluir scripts adicionales -->

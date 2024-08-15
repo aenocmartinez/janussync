@@ -31,6 +31,15 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
+        function initializeClockPicker() {
+            $('.clockpicker:visible').clockpicker({
+                placement: 'bottom',  // Coloca el popover abajo del input
+                align: 'left',        // Alinea el reloj a la izquierda del input
+                donetext: 'Hecho',
+                autoclose: true
+            });
+        }
+
         $('#custom-fields > div').hide(); // Esconde todos los campos adicionales al inicio
 
         $('#frequency').change(function() {
@@ -46,7 +55,8 @@
             } else if (frequency == 'Personalizada') {
                 $('#custom-fields-content').show(); // Muestra solo el campo para "Personalizada"
             }
-            // Lógica para otras frecuencias...
+
+            initializeClockPicker(); // Inicializa ClockPicker solo en el campo visible
         });
 
         // Trigger the change event to populate the fields if a frequency is pre-selected
