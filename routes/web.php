@@ -21,7 +21,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/monitoring', [MonitoringController::class, 'index'])->name('monitoring.index');
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::get('/users/create', [UserController::class, 'index'])->name('users.create');
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+    Route::post('/users', [UserController::class, 'store'])->name('users.store');
     Route::delete('/users', [UserController::class, 'index'])->name('users.destroy');   
     Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
     Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
