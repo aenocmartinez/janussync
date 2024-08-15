@@ -14,23 +14,27 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     public function index(Request $request) {
-        
         $search = $request->input('search');
-
+    
         $users = User::query()
                     ->when($search, function ($query, $search) {
                         return $query->where(function($query) use ($search) {
-                            // Buscar en el nombre completo del usuario
                             $query->where('name', 'like', '%' . $search . '%')
-                                ->orWhereHas('roles', function($query) use ($search) {
-                                    $query->where('name', 'like', '%' . $search . '%');
-                                });
+                                  ->orWhere('email', 'like', '%' . $search . '%') 
+                                  ->orWhereHas('roles', function($query) use ($search) {
+                                      $query->where('name', 'like', '%' . $search . '%');
+                                  });
                         });
                     })
+                    ->with(['roles' => function($query) {
+                        $query->orderBy('name'); 
+                    }])
+                    ->orderBy('name') 
                     ->paginate(5);
-
-        return view('users.index', [ 'users' => $users]);
+    
+        return view('users.index', ['users' => $users]);
     }
+    
 
     public function create() {
 
