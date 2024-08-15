@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <div class="bg-white shadow-lg rounded-lg overflow-hidden mt-6">
+    <div class="bg-white shadow-lg rounded-lg overflow-x-auto mt-6">
         <table class="min-w-full bg-white divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
@@ -43,7 +43,7 @@
                     @foreach($users as $index => $user)
                         <tr class="hover:bg-gray-100 transition-colors duration-150">
                             <td class="py-4 px-6 text-sm text-gray-700">{{ $user['name'] }}</td>
-                            <td class="py-4 px-6 text-sm text-gray-700">{{ $user['email'] }}</td>
+                            <td class="py-4 px-6 text-sm text-gray-700 truncate" style="max-width: 300px;">{{ $user['email'] }}</td>
                             <td class="py-4 px-6 text-sm">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $user->getNameRole() == 'Administrador' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800' }}">{{ $user->getNameRole() }}</span>
                             </td>
@@ -93,7 +93,6 @@
 <script src="{{ asset('js/confirm-delete.js') }}"></script>
 
 <script>
-
 // Paginación de ejemplo
 let currentPage = 1;
 const totalPages = 10; 
