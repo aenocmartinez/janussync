@@ -3,7 +3,6 @@
 use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\ScheduledTaskController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,10 +35,6 @@ Route::middleware('auth')->group(function () {
     Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');    
     Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');  
 
-    Route::get('/scheduled-tasks', [ScheduledTaskController::class, 'index'])->name('scheduled-tasks.index'); 
-    Route::get('/scheduled-tasks/create', [ScheduledTaskController::class, 'create'])->name('scheduled-tasks.create');
-    Route::get('/scheduled-tasks/{task}/edit', [ScheduledTaskController::class, 'edit'])->name('scheduled-tasks.edit');
-    Route::delete('/scheduled-tasks/{task}', [ScheduledTaskController::class, 'destroy'])->name('scheduled-tasks.destroy'); 
     
 });
 
