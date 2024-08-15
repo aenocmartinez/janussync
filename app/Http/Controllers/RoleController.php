@@ -54,7 +54,7 @@ class RoleController extends Controller
         //     ['name' => 'Monitoreo', 'id' => '2'],
         // ];
 
-        $roles = Role::all();
+        $roles = Role::paginate(5);
         return view('roles.index', [ 'roles' => $roles]);
     }
 
@@ -70,10 +70,12 @@ class RoleController extends Controller
         $request = $requestSaveRole->validated();
 
         $role = Role::create(['name' => $request['name']]);
-        foreach($request['permissions'] as $permissionID) {
-            $permission = Permission::findById($permissionID);
-            if ($permission) {
-                $role->givePermissionTo($permission);
+        if (!empty($request['permissions'])) {
+            foreach($request['permissions'] as $permissionID) {
+                $permission = Permission::findById($permissionID);
+                if ($permission) {
+                    $role->givePermissionTo($permission);
+                }
             }
         }
 

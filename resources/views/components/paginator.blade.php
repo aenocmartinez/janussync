@@ -1,4 +1,3 @@
-<!-- resources/views/components/paginator.blade.php -->
 <div class="mt-6 flex flex-col items-center">
     <div class="text-xs text-gray-600 mb-2">
         Mostrando <span id="startRecord">{{ $startRecord }}</span> a <span id="endRecord">{{ $endRecord }}</span> de <span id="totalRecords">{{ $totalRecords }}</span> registros
@@ -37,23 +36,20 @@ function updatePagination() {
 function previousPage() {
     if (currentPage > 1) {
         currentPage--;
-        updatePagination();
-        // Añadir lógica para obtener y mostrar los datos de la nueva página
+        window.location.href = `?page=${currentPage}`;
     }
 }
 
 function nextPage() {
     if (currentPage < totalPages) {
         currentPage++;
-        updatePagination();
-        // Añadir lógica para obtener y mostrar los datos de la nueva página
+        window.location.href = `?page=${currentPage}`;
     }
 }
 
 function gotoPage(page) {
     currentPage = parseInt(page);
-    updatePagination();
-    // Añadir lógica para obtener y mostrar los datos de la nueva página
+    window.location.href = `?page=${currentPage}`;
 }
 
 document.addEventListener('DOMContentLoaded', function () {

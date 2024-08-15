@@ -31,22 +31,22 @@
                 </tr>
             </thead>
             <tbody id="userTableBody" class="bg-white divide-y divide-gray-200">
-                @if(empty($roles))
+                @if($roles->isEmpty())
                     <tr>
                         <td colspan="3" class="py-4 px-6 text-center text-sm text-gray-500">
-                            No se encontraron usuarios.
+                            No se encontraron roles.
                         </td>
                     </tr>
                 @else
-                    @foreach($roles as $index => $role)
+                    @foreach($roles as $role)
                         <tr class="hover:bg-gray-100 transition-colors duration-150">
-                            <td class="py-4 px-6 text-sm text-gray-700">{{ $role['name'] }}</td>
+                            <td class="py-4 px-6 text-sm text-gray-700">{{ $role->name }}</td>
                             <td class="py-4 px-6 text-sm text-right">
                                 <div class="inline-flex items-center space-x-3">
-                                    <a href="{{ route('roles.edit', $role['id']) }}" class="text-gray-500 hover:text-blue-600 focus:outline-none transition duration-150" aria-label="Editar">
+                                    <a href="{{ route('roles.edit', $role->id) }}" class="text-gray-500 hover:text-blue-600 focus:outline-none transition duration-150" aria-label="Editar">
                                         <i class="fas fa-pencil-alt"></i>
                                     </a>
-                                    <button class="text-gray-500 hover:text-red-600 focus:outline-none transition duration-150" aria-label="Eliminar" onclick="openConfirmDeleteModal('deleteUserModal{{ $index + 1 }}')">
+                                    <button class="text-gray-500 hover:text-red-600 focus:outline-none transition duration-150" aria-label="Eliminar" onclick="openConfirmDeleteModal('deleteUserModal{{ $loop->index + 1 }}')">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
@@ -59,112 +59,30 @@
     </div>
 
     <!-- Componente de Paginador -->
-    @if(!empty($roles))
+    @if($roles->hasPages())
         <x-paginator 
-            :currentPage="1" 
-            :totalPages="10" 
-            :recordsPerPage="10" 
-            :totalRecords="50" 
-            :startRecord="1" 
-            :endRecord="10" 
+            :currentPage="$roles->currentPage()" 
+            :totalPages="$roles->lastPage()" 
+            :recordsPerPage="$roles->perPage()" 
+            :totalRecords="$roles->total()" 
+            :startRecord="$roles->firstItem()" 
+            :endRecord="$roles->lastItem()" 
         />
     @endif
 </div>
 
 <!-- Componentes Modal para Confirmar Eliminación para cada usuario -->
-@foreach($roles as $index => $role)
-    <x-modal-delete modalId="deleteUserModal{{ $index + 1 }}" formId="deleteUserForm{{ $index + 1 }}" />
+@foreach($roles as $role)
+    <x-modal-delete modalId="deleteUserModal{{ $loop->index + 1 }}" formId="deleteUserForm{{ $loop->index + 1 }}" />
 @endforeach
 
 <!-- Formularios de eliminación para cada usuario -->
-@foreach($roles as $index => $role)
-    <form id="deleteUserForm{{ $index + 1 }}" action="{{ route('roles.destroy', ['role' => $role['id']]) }}" method="POST" class="hidden">
+@foreach($roles as $role)
+    <form id="deleteUserForm{{ $loop->index + 1 }}" action="{{ route('roles.destroy', ['role' => $role->id]) }}" method="POST" class="hidden">
         @csrf
         @method('DELETE')
     </form>
 @endforeach
 
 <script src="{{ asset('js/confirm-delete.js') }}"></script>
-
-<script>
-function editUser() {
-    // Lógica para editar un usuario
-}
-
-// Paginación de ejemplo
-let currentPage = 1;
-const totalPages = 10; 
-const recordsPerPage = 10;
-const totalRecords = 50; 
-
-function updatePagination() {
-    const startRecord = (currentPage - 1) * recordsPerPage + 1;
-    const endRecord = Math.min(currentPage * recordsPerPage, totalRecords);
-
-    document.getElementById('startRecord').textContent = startRecord;
-    document.getElementById('endRecord').textContent = endRecord;
-}
-
-function previousPage() {
-    if (currentPage > 1) {
-        currentPage--;
-        updatePagination();
-    }
-}
-
-function nextPage() {
-    if (currentPage < totalPages) {
-        currentPage++;
-        updatePagination();
-    }
-}
-
-function gotoPage(page) {
-    currentPage = parseInt(page);
-    updatePagination();
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-    updatePagination();
-});
-
-// Función para filtrar la tabla de usuarios
-document.getElementById('userSearch').addEventListener('input', function() {
-    let filter = this.value.toLowerCase();
-    let rows = document.getElementById('userTableBody').getElementsByTagName('tr');
-    let hasResults = false;
-
-    for (let i = 0; i < rows.length; i++) {
-        let name = rows[i].getElementsByTagName('td')[0].textContent.toLowerCase();
-        let role = rows[i].getElementsByTagName('td')[1].textContent.toLowerCase();
-        if (name.indexOf(filter) > -1 || role.indexOf(filter) > -1) {
-            rows[i].style.display = '';
-            hasResults = true;
-        } else {
-            rows[i].style.display = 'none';
-        }
-    }
-
-    if (!hasResults) {
-        document.getElementById('noResultsMessage').style.display = '';
-    } else {
-        document.getElementById('noResultsMessage').style.display = 'none';
-    }
-});
-
-
-function openConfirmDeleteModal(modalId) {
-    document.getElementById(modalId).classList.remove('hidden');
-}
-
-function closeConfirmDeleteModal(modalId) {
-    document.getElementById(modalId).classList.add('hidden');
-}
-
-function submitConfirmDeleteForm(formId) {
-    document.getElementById(formId).submit();
-}
-
-</script>
-
 @endsection
