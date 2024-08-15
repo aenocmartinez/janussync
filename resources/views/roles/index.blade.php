@@ -6,11 +6,11 @@
 <div class="w-full px-4 sm:px-6 lg:px-8">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
         <div class="flex items-center mb-4 sm:mb-0">
-            <i class="fas fa-users text-blue-800 text-2xl mr-2"></i>
-            <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-blue-800">Gestión de Usuarios</h1>
+            <i class="fas fa-user-tag text-blue-800 text-2xl mr-2"></i>
+            <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-blue-800">Gestión de Roles</h1>
         </div>
-        <button class="w-full sm:w-auto flex justify-center items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-sm font-medium rounded-lg shadow-md hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition ease-in-out duration-150 transform hover:-translate-y-1" onclick="window.location.href='{{ route('users.create') }}'">
-            Nuevo Usuario
+        <button class="w-full sm:w-auto flex justify-center items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-sm font-medium rounded-lg shadow-md hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition ease-in-out duration-150 transform hover:-translate-y-1" onclick="window.location.href='{{ route('roles.create') }}'">
+            Nuevo Rol
         </button>
     </div>
 
@@ -27,24 +27,20 @@
             <thead class="bg-gray-50">
                 <tr>
                     <th scope="col" class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
-                    <th scope="col" class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rol</th>
                     <th scope="col" class="py-3 px-6 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
                 </tr>
             </thead>
             <tbody id="userTableBody" class="bg-white divide-y divide-gray-200">
-                @if(empty($users))
+                @if(empty($roles))
                     <tr>
                         <td colspan="3" class="py-4 px-6 text-center text-sm text-gray-500">
                             No se encontraron usuarios.
                         </td>
                     </tr>
                 @else
-                    @foreach($users as $index => $user)
+                    @foreach($roles as $index => $role)
                         <tr class="hover:bg-gray-100 transition-colors duration-150">
-                            <td class="py-4 px-6 text-sm text-gray-700">{{ $user['name'] }}</td>
-                            <td class="py-4 px-6 text-sm">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $user->getNameRole() == 'Administrador' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800' }}">{{ $user->getNameRole() }}</span>
-                            </td>
+                            <td class="py-4 px-6 text-sm text-gray-700">{{ $role['name'] }}</td>
                             <td class="py-4 px-6 text-sm text-right">
                                 <div class="inline-flex items-center space-x-3">
                                     <button class="text-gray-500 hover:text-blue-600 focus:outline-none transition duration-150" aria-label="Editar" onclick="editUser()">
@@ -63,7 +59,7 @@
     </div>
 
     <!-- Componente de Paginador -->
-    @if(!empty($users))
+    @if(!empty($roles))
         <x-paginator 
             :currentPage="1" 
             :totalPages="10" 
@@ -76,13 +72,13 @@
 </div>
 
 <!-- Componentes Modal para Confirmar Eliminación para cada usuario -->
-@foreach($users as $index => $user)
+@foreach($roles as $index => $role)
     <x-modal-delete modalId="deleteUserModal{{ $index + 1 }}" formId="deleteUserForm{{ $index + 1 }}" />
 @endforeach
 
 <!-- Formularios de eliminación para cada usuario -->
-@foreach($users as $index => $user)
-    <form id="deleteUserForm{{ $index + 1 }}" action="{{ route('users.destroy', ['user' => $user['id']]) }}" method="POST" class="hidden">
+@foreach($roles as $index => $role)
+    <form id="deleteUserForm{{ $index + 1 }}" action="{{ route('roles.destroy', ['role' => $role['id']]) }}" method="POST" class="hidden">
         @csrf
         @method('DELETE')
     </form>

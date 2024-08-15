@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,7 +22,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/monitoring', [MonitoringController::class, 'index'])->name('monitoring.index');
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/create', [UserController::class, 'index'])->name('users.create');
-    Route::delete('/users', [UserController::class, 'index'])->name('users.destroy');        
+    Route::delete('/users', [UserController::class, 'index'])->name('users.destroy');   
+    Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+    Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
+    Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
+    Route::delete('/roles', [RoleController::class, 'index'])->name('roles.destroy');            
 });
 
 require __DIR__.'/auth.php';

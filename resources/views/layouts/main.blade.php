@@ -11,7 +11,7 @@
 <body class="flex flex-col min-h-screen">
     <header class="flex items-center justify-between p-4 bg-blue-800 text-white">
         <div class="flex items-center">
-            <a href="{{ url('/') }}">
+            <a href="{{ url('/dashboard') }}">
                 <img src="{{ asset('logo_principal.png') }}" alt="Logo Universidad" class="h-8">
             </a>
         </div>
@@ -56,7 +56,12 @@
                     <a href="{{ url('/users') }}" class="block p-2 rounded {{ request()->is('users*') ? 'bg-blue-700' : 'hover:bg-blue-700' }}">
                         Usuarios
                     </a>
-                </li>                  
+                </li>
+                <li>
+                    <a href="{{ url('/roles') }}" class="block p-2 rounded {{ request()->is('roles*') ? 'bg-blue-700' : 'hover:bg-blue-700' }}">
+                        Roles
+                    </a>
+                </li>                                  
                 <li>
                     <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form-mobile').submit();" class="block p-2 rounded hover:bg-blue-700">
                         Cerrar sesión
@@ -91,13 +96,37 @@
                     <a href="{{ url('/users') }}" class="block p-2 rounded {{ request()->is('users*') ? 'bg-gray-300 text-black' : 'text-gray-700 hover:bg-gray-300' }}">
                         Usuarios
                     </a>
-                </li>                
+                </li> 
+                <li>
+                    <a href="{{ url('/roles') }}" class="block p-2 rounded {{ request()->is('roles*') ? 'bg-gray-300 text-black' : 'text-gray-700 hover:bg-gray-300' }}">
+                        Roles
+                    </a>
+                </li>                                
                 <!-- Más enlaces de navegación aquí -->
             </ul>
         </nav>
 
         <div class="flex flex-col flex-1">
             <main class="flex-1 p-6 bg-white overflow-auto">
+
+                <!-- Mensaje de éxito -->
+                @if(session('success'))
+                    <div class="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-lg shadow-sm mb-6 relative" role="alert">
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 text-emerald-500 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M16.707 4.293a1 1 0 010 1.414L8.414 14l-4.707-4.707a1 1 0 011.414-1.414l3.293 3.293 7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <strong class="font-semibold">¡Éxito!</strong>
+                        </div>
+                        <span class="block sm:inline mt-1">{{ session('success') }}</span>
+                        <button type="button" class="absolute top-0 bottom-0 right-0 px-4 py-3 text-emerald-500 focus:outline-none" aria-label="Cerrar" onclick="this.parentElement.classList.add('hidden')">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M10 8.293l3.293-3.293a1 1 0 011.414 1.414L11.414 10l3.293 3.293a1 1 0 01-1.414 1.414L10 11.414l-3.293 3.293a1 1 0 01-1.414-1.414L8.586 10 5.293 6.707a1 1 0 011.414-1.414L10 8.293z" clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                    </div>
+                @endif
+
                 @yield('content')
             </main>
             <footer class="text-center py-4">
