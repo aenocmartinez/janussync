@@ -23,7 +23,21 @@
     </div>
 
     <div class="bg-white shadow-lg rounded-lg overflow-x-auto mt-6">
-        <table class="min-w-full bg-white divide-y divide-gray-200">
+        <div class="block sm:hidden">
+            @foreach($users as $user)
+                <div class="p-4 border-b border-gray-200">
+                    <div class="font-bold text-gray-700">{{ $user['name'] }}</div>
+                    <div class="text-gray-500">{{ $user['email'] }}</div>
+                    <div class="text-gray-500">{{ $user->getNameRole() }}</div>
+                    <div class="mt-2">
+                        <a href="{{ route('users.edit', $user['id']) }}" class="text-blue-600 hover:text-blue-800">Editar</a>
+                        <button class="text-red-600 hover:text-red-800" onclick="openConfirmDeleteModal('deleteUserModal{{ $loop->index + 1 }}')">Eliminar</button>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
+        <table class="hidden sm:table min-w-full bg-white divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
                     <th scope="col" class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
@@ -43,7 +57,7 @@
                     @foreach($users as $index => $user)
                         <tr class="hover:bg-gray-100 transition-colors duration-150">
                             <td class="py-4 px-6 text-sm text-gray-700">{{ $user['name'] }}</td>
-                            <td class="py-4 px-6 text-sm text-gray-700 truncate" style="max-width: 300px;">{{ $user['email'] }}</td>
+                            <td class="py-4 px-6 text-sm text-gray-700 truncate" style="max-width: 200px;">{{ $user['email'] }}</td>
                             <td class="py-4 px-6 text-sm">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $user->getNameRole() == 'Administrador' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800' }}">{{ $user->getNameRole() }}</span>
                             </td>
