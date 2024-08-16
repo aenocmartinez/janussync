@@ -70,7 +70,7 @@
         <h2 class="text-lg font-semibold text-gray-700 mb-2">Detalle de Tareas de Sincronización</h2>
         <p class="text-sm text-gray-500 mb-4">Información detallada sobre la ejecución de tareas programadas</p>
         <div class="overflow-x-auto box-border">
-            <table class="min-w-full text-sm box-border">
+        <table class="min-w-full text-sm box-border">
                 <thead class="bg-gray-100">
                     <tr>
                         <th class="p-2 md:p-4 text-left font-semibold text-gray-600">Tarea</th>
@@ -82,38 +82,38 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($executions as $execution)
-                    <tr class="border-b hover:bg-gray-50 transition-colors duration-300 box-border">
-                        <td class="p-2 md:p-4">{{ $execution['task_name'] }}</td>
-                        <td class="p-2 md:p-4">
-                            @if ($execution['status_boolean'])
-                                <span class="bg-green-100 text-green-800 text-xs font-semibold mr-2 px-2 py-0.5 rounded-full">
+                @forelse ($executions as $execution)
+                <tr class="border-b hover:bg-gray-50 transition-colors duration-300 box-border">
+                    <td class="p-2 md:p-4">{{ $execution['task_name'] }}</td>
+                    <td class="p-2 md:p-4">
+                        @if ($execution['status_boolean'])
+                            <span class="bg-green-100 text-green-800 text-xs font-semibold mr-2 px-2 py-0.5 rounded-full">
+                                {{ $execution['status'] }}
+                            </span>
+                        @else  
+                            @if ($execution['status'] === 'Programada')
+                                <span class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2 py-0.5 rounded-full whitespace-nowrap">
                                     {{ $execution['status'] }}
                                 </span>
-                            @else  
-                                @if ($execution['status'] === 'Programada')
-                                    <span class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2 py-0.5 rounded-full whitespace-nowrap">
-                                        {{ $execution['status'] }}
-                                    </span>
-                                @else
-                                    <span class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2 py-0.5 rounded-full whitespace-nowrap">
-                                        {{ $execution['status'] }}
-                                    </span>
-                                @endif
+                            @else
+                                <span class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2 py-0.5 rounded-full whitespace-nowrap">
+                                    {{ $execution['status'] }}
+                                </span>
                             @endif
-                        </td>
-                        <td class="p-2 md:p-4">{{ $execution['execution_time'] }}</td>
-                        <td class="p-2 md:p-4">
-                            <span class="text-gray-700">
-                            {{ $execution['frequency'] }}
-                            </span>
-                        </td>
-                        <td class="p-2 md:p-4">
-                            <span class="text-gray-500">
-                                {{ $execution['details'] }}
-                            </span>                            
-                        </td>
-                        <td class="p-2 md:p-4">
+                        @endif
+                    </td>
+                    <td class="p-2 md:p-4">{{ $execution['execution_time'] }}</td>
+                    <td class="p-2 md:p-4">
+                        <span class="text-gray-700">
+                        {{ $execution['frequency'] }}
+                        </span>
+                    </td>
+                    <td class="p-2 md:p-4">
+                        <span class="text-gray-500">
+                            {{ $execution['details'] }}
+                        </span>                            
+                    </td>
+                    <td class="p-2 md:p-4">
                         @if ($execution['status_boolean'])                            
                             <button class="bg-gray-200 text-gray-700 text-xs px-3 py-1 rounded hover:bg-gray-300 transition-colors duration-300">
                                 Ver Detalles
@@ -123,11 +123,18 @@
                                 <button class="bg-green-500 text-white text-xs px-3 py-1 rounded hover:bg-green-600 transition-colors duration-300" onclick="openModal()">Reintentar</button>
                             @endif
                         @endif
-                        </td>
-                    </tr>                        
-                    @endforeach
-                </tbody>
-            </table>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="6" class="p-4 text-center text-gray-500">
+                        No hay tareas programadas para ejecutar.
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+
         </div>
     </div>
 </div>
