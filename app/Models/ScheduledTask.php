@@ -42,7 +42,6 @@ class ScheduledTask extends Model
             'log_id' => $latestLog ? $latestLog->id : 'N/A',
         ];
     }
-    
 
     public static function getAllLastExecutions()
     {
@@ -50,4 +49,42 @@ class ScheduledTask extends Model
             return $task->getLastExecutionDetails();
         });
     }  
+    
+    public static function countLastExecutionResults()
+    {
+        $lastLogs = ScheduledTask::with(['taskLogs' => function($query) {
+            $query->orderBy('executed_at', 'desc');
+        }])
+        ->get()
+        ->map(function ($task) {
+            return $task->taskLogs->first();
+        })
+        ->filter();
+
+        $totalLogs = $lastLogs->count();
+        $successfulLogs = $lastLogs->where('was_successful', true)->count();
+        $failedLogs = $lastLogs->where('was_successful', false)->count();
+    
+        $successPercentage = $totalLogs > 0 ? round(($successfulLogs / $totalLogs) * 100) : 0;
+        $failurePercentage = $totalLogs > 0 ? round(($failedLogs / $totalLogs) * 100) : 0;
+    
+        if ($successPercentage + $failurePercentage !== 100) {
+            $difference = 100 - ($successPercentage + $failurePercentage);
+            if ($successPercentage > $failurePercentage) {
+                $successPercentage += $difference;
+            } else {
+                $failurePercentage += $difference;
+            }
+        }
+    
+        return [
+            'total_logs' => $totalLogs,          
+            'successful_logs' => $successfulLogs, 
+            'failed_logs' => $failedLogs,         
+            'success_percentage' => $successPercentage, 
+            'failure_percentage' => $failurePercentage, 
+        ];
+    }
+    
+        
 }

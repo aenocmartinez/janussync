@@ -3,6 +3,7 @@
 @section('title', 'Monitoreo | JanusSync')
 
 @section('content')
+
 <div class="w-full max-w-full p-4 md:p-6 overflow-hidden box-border">
     <!-- Header Section -->
     <div class="bg-gray-100 p-4 rounded-lg shadow-sm w-full mb-6 box-border">
@@ -46,20 +47,24 @@
         <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 box-border">
             <h2 class="text-base font-semibold text-gray-700 mb-1"><i class="fas fa-check-circle text-green-500"></i> <span class="text-gray-800">Tareas Completadas</span></h2>
             <p class="text-sm text-gray-500 mb-2">Progreso en la ejecución de tareas</p>
-            <div class="relative w-1/4 max-w-xs mx-auto box-border"> <!-- Cambiado a w-1/4 para reducir el tamaño -->
+            <div class="relative w-1/4 max-w-xs mx-auto box-border">
                 <canvas id="completedTasksCanvas" class="w-full h-auto box-border"></canvas>
                 <div class="absolute inset-0 flex items-center justify-center">
-                    <span class="text-xl md:text-2xl font-bold text-green-500">3/5</span>
+                    <span class="text-xl md:text-2xl font-bold text-green-500">
+                        {{ $executionStats['successful_logs'] }}/{{ $executionStats['total_logs'] }}
+                    </span>
                 </div>
             </div>
         </div>
         <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 box-border">
             <h2 class="text-base font-semibold text-gray-700 mb-1"><i class="fas fa-times-circle text-red-500"></i> <span class="text-gray-800">Tareas Fallidas</span></h2>
             <p class="text-sm text-gray-500 mb-2">Errores en la ejecución de tareas</p>
-            <div class="relative w-1/4 max-w-xs mx-auto box-border"> <!-- Cambiado a w-1/4 para reducir el tamaño -->
+            <div class="relative w-1/4 max-w-xs mx-auto box-border">
                 <canvas id="failedTasksCanvas" class="w-full h-auto box-border"></canvas>
                 <div class="absolute inset-0 flex items-center justify-center">
-                    <span class="text-xl md:text-2xl font-bold text-red-500">2/5</span>
+                    <span class="text-xl md:text-2xl font-bold text-red-500">
+                    {{ $executionStats['failed_logs'] }}/{{ $executionStats['total_logs'] }}
+                    </span>
                 </div>
             </div>
         </div>
@@ -188,8 +193,8 @@
     };
 
     // Datos de ejemplo para gráficos
-    renderProgressChart('completedTasksCanvas', 60, '#38a169'); // 3/5 completado
-    renderProgressChart('failedTasksCanvas', 40, '#e53e3e'); // 2/5 fallido
+    renderProgressChart('completedTasksCanvas', "{{ $executionStats['success_percentage'] }}", '#38a169');
+    renderProgressChart('failedTasksCanvas', "{{ $executionStats['failure_percentage'] }}", '#e53e3e');
 
     // Script para el modal
     function openModal() {
