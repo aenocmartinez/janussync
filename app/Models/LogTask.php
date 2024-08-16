@@ -5,22 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TaskLog extends Model
+class LogTask extends Model
 {
     use HasFactory;
 
-    protected $table = 'log_tasks';
-
     protected $fillable = [
         'scheduled_task_id',
-        'status',
-        'completed_at',
+        'executed_at',
+        'was_successful',
         'details',
     ];
 
-    /**
-     * Relación con la tarea programada.
-     */
     public function scheduledTask()
     {
         return $this->belongsTo(ScheduledTask::class);
