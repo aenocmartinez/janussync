@@ -23,14 +23,21 @@ class ScheduledTaskSeeder extends Seeder
             ],
         ];
 
-        foreach ($tasks as $taskData) {
+        foreach ($tasks as $index => $taskData) {
             $scheduledTask = ScheduledTask::create($taskData);
+
+            $comments = "Se presenta un error al intentar crear cursos.";
+            $success = false;
+            if ($index == 1) {
+                $comments = "Fueron creados 15 nuevos usuarios";
+                $success = true;
+            }
 
             TaskLog::create([
                 'scheduled_task_id' => $scheduledTask->id,
                 'executed_at' => now(), 
-                'was_successful' => false, 
-                'details' => 'Initial task log entry.',
+                'was_successful' => $success, 
+                'details' => $comments,
             ]);
         }
     }

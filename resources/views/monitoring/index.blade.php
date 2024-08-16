@@ -82,46 +82,50 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($executions as $execution)
                     <tr class="border-b hover:bg-gray-50 transition-colors duration-300 box-border">
-                        <td class="p-2 md:p-4">Creación de usuarios</td>
-                        <td class="p-2 md:p-4"><span class="bg-green-100 text-green-800 text-xs font-semibold mr-2 px-2 py-0.5 rounded-full">Completado</span></td>
-                        <td class="p-2 md:p-4">2024-07-02 14:30:00</td>
-                        <td class="p-2 md:p-4"><span class="text-gray-700">Diaria</span></td>
-                        <td class="p-2 md:p-4"><span class="text-lg font-bold text-gray-700">50</span> <span class="text-gray-500">usuarios creados</span></td>
+                        <td class="p-2 md:p-4">{{ $execution['task_name'] }}</td>
                         <td class="p-2 md:p-4">
-                            <button class="bg-gray-200 text-gray-700 text-xs px-3 py-1 rounded hover:bg-gray-300 transition-colors duration-300">Ver Detalles</button>
+                            @if ($execution['status_boolean'])
+                                <span class="bg-green-100 text-green-800 text-xs font-semibold mr-2 px-2 py-0.5 rounded-full">
+                                    {{ $execution['status'] }}
+                                </span>
+                            @else  
+                                @if ($execution['status'] === 'Programada')
+                                    <span class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2 py-0.5 rounded-full whitespace-nowrap">
+                                        {{ $execution['status'] }}
+                                    </span>
+                                @else
+                                    <span class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2 py-0.5 rounded-full whitespace-nowrap">
+                                        {{ $execution['status'] }}
+                                    </span>
+                                @endif
+                            @endif
                         </td>
-                    </tr>
-                    <tr class="border-b hover:bg-gray-50 transition-colors duration-300 box-border">
-                        <td class="p-2 md:p-4">Creación de cursos</td>
-                        <td class="p-2 md:p-4"><span class="bg-green-100 text-green-800 text-xs font-semibold mr-2 px-2 py-0.5 rounded-full">Completado</span></td>
-                        <td class="p-2 md:p-4">2024-07-03 10:15:00</td>
-                        <td class="p-2 md:p-4"><span class="text-gray-700">Semanal</span></td>
-                        <td class="p-2 md:p-4"><span class="text-lg font-bold text-gray-700">10</span> <span class="text-gray-500">cursos creados</span></td>
+                        <td class="p-2 md:p-4">{{ $execution['execution_time'] }}</td>
                         <td class="p-2 md:p-4">
-                            <button class="bg-gray-200 text-gray-700 text-xs px-3 py-1 rounded hover:bg-gray-300 transition-colors duration-300">Ver Detalles</button>
+                            <span class="text-gray-700">
+                            {{ $execution['frequency'] }}
+                            </span>
                         </td>
-                    </tr>
-                    <tr class="border-b hover:bg-gray-50 transition-colors duration-300 box-border">
-                        <td class="p-2 md:p-4">Calificación de un estudiante por cursos</td>
-                        <td class="p-2 md:p-4"><span class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2 py-0.5 rounded-full whitespace-nowrap">Tarea Fallida</span></td>
-                        <td class="p-2 md:p-4">2024-07-04 13:20:00</td>
-                        <td class="p-2 md:p-4"><span class="text-gray-700">Por corte (3 cortes por semestre)</span></td>
-                        <td class="p-2 md:p-4"><span class="text-lg font-bold text-gray-700">N/A</span> <span class="text-gray-500">Error en la calificación</span></td>
                         <td class="p-2 md:p-4">
-                            <button class="bg-green-500 text-white text-xs px-3 py-1 rounded hover:bg-green-600 transition-colors duration-300" onclick="openModal()">Reintentar</button>
+                            <span class="text-gray-500">
+                                {{ $execution['details'] }}
+                            </span>                            
                         </td>
-                    </tr>
-                    <tr class="border-b hover:bg-gray-50 transition-colors duration-300 box-border">
-                        <td class="p-2 md:p-4">Cierre de periodo</td>
-                        <td class="p-2 md:p-4"><span class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2 py-0.5 rounded-full whitespace-nowrap">Tarea Fallida</span></td>
-                        <td class="p-2 md:p-4">2024-07-05 16:00:00</td>
-                        <td class="p-2 md:p-4"><span class="text-gray-700">Semestral</span></td>
-                        <td class="p-2 md:p-4"><span class="text-lg font-bold text-gray-700">N/A</span> <span class="text-gray-500">N/A</span></td>
                         <td class="p-2 md:p-4">
-                            <button class="bg-green-500 text-white text-xs px-3 py-1 rounded hover:bg-green-600 transition-colors duration-300" onclick="openModal()">Reintentar</button>
+                        @if ($execution['status_boolean'])                            
+                            <button class="bg-gray-200 text-gray-700 text-xs px-3 py-1 rounded hover:bg-gray-300 transition-colors duration-300">
+                                Ver Detalles
+                            </button>
+                        @else
+                            @if ($execution['status'] !== 'Programada')
+                                <button class="bg-green-500 text-white text-xs px-3 py-1 rounded hover:bg-green-600 transition-colors duration-300" onclick="openModal()">Reintentar</button>
+                            @endif
+                        @endif
                         </td>
-                    </tr>
+                    </tr>                        
+                    @endforeach
                 </tbody>
             </table>
         </div>
