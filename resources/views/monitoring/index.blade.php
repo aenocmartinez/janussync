@@ -16,30 +16,8 @@
 
     <!-- Indicador de Conexión -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6 box-border">
-        <div class="bg-white p-4 rounded-lg shadow-md flex flex-col justify-between box-border">
-            <div class="flex items-center box-border">
-                <i class="fas fa-server text-gray-600 text-2xl md:text-4xl mr-3"></i>
-                <div>
-                    <h2 class="text-md md:text-lg font-semibold text-gray-700">Conexión con Academusoft</h2>
-                    <p class="text-xs md:text-sm text-gray-500">Estado actual del servicio</p>
-                </div>
-            </div>
-            <div class="flex items-center mt-2">
-                <span class="bg-green-100 text-green-800 text-xs font-semibold px-2 py-0.5 rounded-full">Conectado</span>
-            </div>
-        </div>
-        <div class="bg-white p-4 rounded-lg shadow-md flex flex-col justify-between box-border">
-            <div class="flex items-center box-border">
-                <i class="fas fa-server text-gray-600 text-2xl md:text-4xl mr-3"></i>
-                <div>
-                    <h2 class="text-md md:text-lg font-semibold text-gray-700">Conexión con BrightSpace</h2>
-                    <p class="text-xs md:text-sm text-gray-500">Estado actual del servicio</p>
-                </div>
-            </div>
-            <div class="flex items-center mt-2">
-                <span class="bg-green-100 text-green-800 text-xs font-semibold px-2 py-0.5 rounded-full">Conectado</span>
-            </div>
-        </div>
+        <x-connection-status title="Conexión con Academusoft" :connectionStatus="$academusoftConnectionStatus" id="academusoftStatus" />
+        <x-connection-status title="Conexión con BrightSpace" :connectionStatus="$brightspaceConnectionStatus" id="brightspaceStatus" />
     </div>
 
     <!-- Resumen General y Tabla -->
@@ -224,5 +202,33 @@
             }
         }, 500);
     }
+
+    function updateConnectionStatus() {
+        $.getJSON("{{ route('check.connection.status') }}")
+            .done(function(data) {
+                updateElementStatus('#academusoftStatus', data.academusoft);
+                updateElementStatus('#brightspaceStatus', data.brightspace);
+            })
+            .fail(function(error) {
+                console.error('Error:', error);
+            });
+    }
+
+    function updateElementStatus(elementSelector, isConnected) {
+        const $element = $(elementSelector);
+        if ($element.length) {
+            $element.text(isConnected ? 'Conectado' : 'Sin conexión');
+            
+            const addClasses = isConnected ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
+            const removeClasses = isConnected ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800';
+            
+            $element.addClass(addClasses).removeClass(removeClasses);
+        }
+    }
+
+    setInterval(updateConnectionStatus, 60000); //900000  15 minutos
+    document.addEventListener('DOMContentLoaded', updateConnectionStatus); // Ejecuta al cargar la página
+
 </script>
+
 @endsection

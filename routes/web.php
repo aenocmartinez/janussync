@@ -37,7 +37,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');  
 
     Route::resource('scheduled-tasks', ScheduledTaskController::class);
-    
+
 });
+
+Route::get('/check-connection-status', [MonitoringController::class, 'checkConnectionStatus'])->name('check.connection.status');
 
 require __DIR__.'/auth.php';
