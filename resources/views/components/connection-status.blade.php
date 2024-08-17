@@ -7,12 +7,54 @@
         </div>
     </div>
     <div class="flex items-center mt-2">
-        @isset($connectionStatus)
-            <span id="{{ $id }}" class="{{ $connectionStatus ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }} text-xs font-semibold px-2 py-0.5 rounded-full">
-                {{ $connectionStatus ? 'Conectado' : 'Sin conexión' }}
-            </span>
-        @else
-            <span class="text-gray-500 text-xs font-semibold px-2 py-0.5 rounded-full">Estado desconocido</span>
-        @endisset
+        <span id="{{ $id }}" class="text-xs font-semibold px-2 py-0.5 rounded-full">
+            Estado desconocido
+        </span>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        updateConnectionStatus("{{ $id }}");
+
+        setInterval(function() {
+            updateConnectionStatus("{{ $id }}");
+        }, 60000); // 1 min
+    });
+
+    function updateConnectionStatus(elementId) {
+        const checkUrl = "{{ route('check.connection.status') }}";
+
+        $.getJSON(checkUrl)
+            .done(function(data) {
+                const $element = $("#" + elementId);
+                let isConnected;
+
+                if (elementId === 'academusoftStatus') {
+                    isConnected = data.academusoft;
+                } else if (elementId === 'brightspaceStatus') {
+                    isConnected = data.brightspace;
+                } else {
+                    isConnected = false; 
+                }
+
+                $element.text(isConnected ? 'Conectado' : 'Sin conexión');
+
+                if (isConnected) {
+                    $element.removeClass('bg-red-100 text-red-800')
+                            .addClass('bg-green-100 text-green-800');
+                } else {
+                    $element.removeClass('bg-green-100 text-green-800')
+                            .addClass('bg-red-100 text-red-800');
+                }
+            })
+            .fail(function() {
+                const $element = $("#" + elementId);
+                $element.text('Error en la conexión')
+                        .removeClass('bg-green-100 text-green-800')
+                        .addClass('bg-red-100 text-red-800');
+            });
+    }
+</script>

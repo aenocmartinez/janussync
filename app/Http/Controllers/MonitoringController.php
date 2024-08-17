@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Academusoft;
+use App\Models\BrightSpace;
 use App\Models\ScheduledTask;
 use Exception;
 use Illuminate\Http\Request;
@@ -18,15 +19,9 @@ class MonitoringController extends Controller
         // Estadísticas (Gráficos)
         $executionStats = ScheduledTask::countLastExecutionResults();
 
-        // Validación conexion Academusoft
-        $academusoftConnectionStatus = Academusoft::validatedConnection();
-        $brightspaceConnectionStatus = true;
-
         return view('monitoring.index', [
             'executions' => $executions,
             'executionStats' => $executionStats,
-            'academusoftConnectionStatus' => $academusoftConnectionStatus,
-            'brightspaceConnectionStatus' => $brightspaceConnectionStatus,
         ]);
     }
 
@@ -34,7 +29,7 @@ class MonitoringController extends Controller
     {
         try {
             $academusoftConnectionStatus = Academusoft::validatedConnection();
-            $brightspaceConnectionStatus = true; 
+            $brightspaceConnectionStatus = BrightSpace::validatedConnection(); 
             
             return response()->json([
                 'academusoft' => $academusoftConnectionStatus,

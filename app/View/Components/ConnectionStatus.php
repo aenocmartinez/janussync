@@ -6,15 +6,13 @@ use Illuminate\View\Component;
 
 class ConnectionStatus extends Component
 {
-    public $title;
-    public $connectionStatus;
     public $id;
+    public $title;
 
-    public function __construct($title, $connectionStatus, $id)
+    public function __construct($id, $title)
     {
-        $this->title = $title;
-        $this->connectionStatus = $connectionStatus;
         $this->id = $id;
+        $this->title = $title;
     }
 
     public function render()

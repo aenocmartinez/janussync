@@ -16,8 +16,8 @@
 
     <!-- Indicador de Conexión -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6 box-border">
-        <x-connection-status title="Conexión con Academusoft" :connectionStatus="$academusoftConnectionStatus" id="academusoftStatus" />
-        <x-connection-status title="Conexión con BrightSpace" :connectionStatus="$brightspaceConnectionStatus" id="brightspaceStatus" />
+        <x-connection-status title="Conexión con Academusoft" id="academusoftStatus" />
+        <x-connection-status title="Conexión con BrightSpace" id="brightspaceStatus" />
     </div>
 
     <!-- Resumen General y Tabla -->
@@ -202,32 +202,6 @@
             }
         }, 500);
     }
-
-    function updateConnectionStatus() {
-        $.getJSON("{{ route('check.connection.status') }}")
-            .done(function(data) {
-                updateElementStatus('#academusoftStatus', data.academusoft);
-                updateElementStatus('#brightspaceStatus', data.brightspace);
-            })
-            .fail(function(error) {
-                console.error('Error:', error);
-            });
-    }
-
-    function updateElementStatus(elementSelector, isConnected) {
-        const $element = $(elementSelector);
-        if ($element.length) {
-            $element.text(isConnected ? 'Conectado' : 'Sin conexión');
-            
-            const addClasses = isConnected ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
-            const removeClasses = isConnected ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800';
-            
-            $element.addClass(addClasses).removeClass(removeClasses);
-        }
-    }
-
-    setInterval(updateConnectionStatus, 60000); //900000  15 minutos
-    document.addEventListener('DOMContentLoaded', updateConnectionStatus); // Ejecuta al cargar la página
 
 </script>
 
