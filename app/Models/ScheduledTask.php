@@ -37,6 +37,7 @@ class ScheduledTask extends Model
         $date_execution = Carbon::parse($this->custom_date)->translatedFormat('d \d\e F \d\e Y \a \l\a\s H:i \h\o\r\a\s');
     
         return [
+            'task_id' => $this->id,
             'task_name' => $this->task_name,
             'status' => $latestLog ? ($latestLog->was_successful ? 'Completado' : 'Tarea Fallida') : 'Programada',
             'status_boolean' => $latestLog ? $latestLog->was_successful : false,
@@ -130,8 +131,8 @@ class ScheduledTask extends Model
     public static function checkAndRunScheduledTasks()
     {
         $tasks = self::all();
-        // $now = Carbon::now();
-        $now = Carbon::createFromTime(9, 45);
+        $now = Carbon::now();
+        // $now = Carbon::createFromTime(9, 45);
     
         $frequencyChecks = [
             'Diaria' => function($task) use ($now) {
@@ -155,5 +156,11 @@ class ScheduledTask extends Model
             }
         }
     }
+
+    public function executeImmediately()
+    {
+        $actionInstance = app($this->action, ['scheduledTask' => $this]);
+        $actionInstance->handle();
+    }    
     
 }

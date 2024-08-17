@@ -103,7 +103,9 @@
                             </button>
                         @else
                             @if ($execution['status'] !== 'Programada')
-                                <button class="bg-green-500 text-white text-xs px-3 py-1 rounded hover:bg-green-600 transition-colors duration-300" onclick="openModal()">Reintentar</button>
+                                <button class="bg-green-500 text-white text-xs px-3 py-1 rounded hover:bg-green-600 transition-colors duration-300" onclick="openModal({{ $execution['task_id'] }})">
+                                    Reintentar
+                                </button>                                                            
                             @endif
                         @endif
                     </td>
@@ -175,9 +177,9 @@
     renderProgressChart('failedTasksCanvas', "{{ $executionStats['failure_percentage'] }}", '#e53e3e');
 
     // Script para el modal
-    function openModal() {
+    function openModal(taskId) {
         document.getElementById('syncModal').classList.remove('hidden');
-        simulateSyncProgress();
+        simulateSyncProgress(taskId);
     }
 
     function closeModal() {
@@ -186,21 +188,37 @@
         document.getElementById('progressPercent').innerText = '0%';
     }
 
-    function simulateSyncProgress() {
+    function simulateSyncProgress(taskId) {
+        const totalDuration = 5000;
+        const intervalDuration = 100; 
         let progress = 0;
-        const interval = setInterval(() => {
-            progress += 10;
-            document.getElementById('syncProgress').style.width = `${progress}%`;
-            document.getElementById('progressPercent').innerText = `${progress}%`;
+        const totalSteps = totalDuration / intervalDuration; 
 
-            if (progress >= 100) {
-                clearInterval(interval);
-                setTimeout(() => {
-                    alert('Sincronización completada.');
-                    closeModal();
-                }, 500);
+        const interval = setInterval(() => {
+            if (progress < 95) { 
+                progress += 95 / totalSteps; 
+                $('#syncProgress').css('width', `${progress}%`);
+                $('#progressPercent').text(`${Math.round(progress)}%`);
             }
-        }, 500);
+        }, intervalDuration);
+
+        $.ajax({
+            url: `/monitoring/run-task/${taskId}`,
+            method: 'GET',
+            success: function(data) {
+                clearInterval(interval);
+                $('#syncProgress').css('width', '100%');
+                $('#progressPercent').text('100%');
+                alert(data.message || 'Sincronización completada.');
+                closeModal();
+                window.location.href = "{{ route('monitoring.index') }}";
+            },
+            error: function() {
+                clearInterval(interval);
+                alert('Ocurrió un error al intentar sincronizar.');
+                closeModal();
+            }
+        });
     }
 
 </script>

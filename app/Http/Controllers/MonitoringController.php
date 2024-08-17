@@ -47,4 +47,11 @@ class MonitoringController extends Controller
         return response()->json(['message' => 'Tareas programadas ejecutadas.']);
     }    
 
+    public function runTaskById($id)
+    {
+        $task = ScheduledTask::findOrFail($id);
+        $task->executeImmediately();
+
+        return response()->json(['message' => 'Tarea programada ejecutada con éxito.', 'task_id' => $task->id]);
+    }    
 }

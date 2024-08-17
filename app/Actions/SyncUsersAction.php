@@ -22,8 +22,10 @@ class SyncUsersAction
         $details = '';
 
         try {
+            
+            sleep(30);
 
-            $wasSuccessful = false;
+            $wasSuccessful = true;
             $details = 'Sincronización de usuarios completada con éxito.';
         } catch (Exception $e) {
             $wasSuccessful = false;
