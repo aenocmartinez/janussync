@@ -2,40 +2,33 @@
 
 namespace App\Actions;
 
-namespace App\Actions;
-
-use App\Models\LogTask;
-use App\Models\ScheduledTask;
-use Carbon\Carbon;
+use App\Models\Academusoft;
+use App\Models\BrightSpace;
 use Exception;
 
-class SyncGradesAction
+class SyncGradesAction extends SyncActionBase
 {
-    protected $scheduledTask;
-
-    public function __construct(ScheduledTask $scheduledTask)
-    {
-        $this->scheduledTask = $scheduledTask;
-    }
-
     public function handle()
     {
-        $wasSuccessful = false;
         $details = '';
 
         try {
-            $wasSuccessful = true;
-            $details = 'Sincronización de calificaciones completada con éxito.';
-        } catch (Exception $e) {
-            $wasSuccessful = false;
-            $details = 'Error al sincronizar calificaciones: ' . $e->getMessage();
-        }
+            // Verificar conexión con Academusoft
+            if (!$this->isConnected(Academusoft::class, 'Academusoft')) {
+                return;
+            }
 
-        LogTask::create([
-            'scheduled_task_id' => $this->scheduledTask->id,
-            'executed_at' => Carbon::now(),
-            'was_successful' => $wasSuccessful,
-            'details' => $details,
-        ]);
+            // Verificar conexión con BrightSpace
+            if (!$this->isConnected(BrightSpace::class, 'BrightSpace')) {
+                return;
+            }
+
+            $details = 'Sincronización de calificaciones completada con éxito.';
+            $this->logTask(true, $details);
+
+        } catch (Exception $e) {
+            $details = 'Error al sincronizar calificaciones: ' . $e->getMessage();
+            $this->logTask(false, $details);
+        }
     }
 }

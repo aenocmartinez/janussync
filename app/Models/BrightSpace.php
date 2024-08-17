@@ -10,6 +10,6 @@ class BrightSpace extends Model
     use HasFactory;
 
     public static function validatedConnection() {
-        return true;
+        return false;
     }
 }
