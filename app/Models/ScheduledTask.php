@@ -5,6 +5,9 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
+use ReflectionClass;
 
 class ScheduledTask extends Model
 {
@@ -18,6 +21,7 @@ class ScheduledTask extends Model
         'day_of_month', 
         'month',
         'custom_date',
+        'action', 
     ];
 
     public function taskLogs()
@@ -41,6 +45,24 @@ class ScheduledTask extends Model
             'details' => $latestLog ? $latestLog->details : 'Esta tarea se ejecutará el ' . $date_execution,
             'log_id' => $latestLog ? $latestLog->id : 'N/A',
         ];
+    }
+
+    public function execute()
+    {
+        if ($this->action) {
+            $action = app($this->action); // Instancia la acción
+            $result = $action->handle();  // Ejecuta la acción
+
+            $this->taskLogs()->create([
+                'was_successful' => $result['success'],
+                'details' => $result['details'],
+                'executed_at' => now(),
+            ]);
+
+            return $result;
+        }
+
+        return ['success' => false, 'details' => 'No se encontró acción asociada.'];
     }
 
     public static function getAllLastExecutions()
@@ -85,6 +107,23 @@ class ScheduledTask extends Model
             'failure_percentage' => $failurePercentage, 
         ];
     }
-    
-        
+
+    public static function getAvailableActions()
+    {
+        $actionsPath = app_path('Actions');
+        $actionFiles = File::allFiles($actionsPath);
+
+        $actions = [];
+        foreach ($actionFiles as $file) {
+            $namespace = 'App\\Actions\\';
+            $className = $namespace . Str::replace('.php', '', $file->getFilename());
+
+            $reflection = new ReflectionClass($className);
+            if ($reflection->isInstantiable() && $reflection->hasMethod('handle')) {
+                $actions[$className] = Str::headline(Str::replace('Action', '', $file->getFilename()));
+            }
+        }
+
+        return $actions;
+    }
 }

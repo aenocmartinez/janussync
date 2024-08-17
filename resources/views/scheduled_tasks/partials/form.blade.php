@@ -20,7 +20,22 @@
     @enderror
 </div>
 
-<!-- Campos adicionales dependiendo de la frecuencia seleccionada -->
+<div class="mb-4">
+    <label for="action" class="block text-gray-700 font-bold mb-2">Acción a Ejecutar:</label>
+    <select name="action" id="action" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('action') border-red-500 @enderror">
+        <option value="">Selecciona una acción</option>
+        @foreach(config('scheduled_task_actions.actions') as $class => $label)
+            <option value="{{ $class }}" {{ old('action', $scheduledTask->action ?? '') == $class ? 'selected' : '' }}>
+                {{ $label }}
+            </option>
+        @endforeach
+    </select>
+    @error('action')
+        <span class="text-red-500 text-sm">{{ $message }}</span>
+    @enderror
+</div>
+
+
 <div id="custom-fields">
     @include('scheduled_tasks.partials.daily')
     @include('scheduled_tasks.partials.weekly')
@@ -41,7 +56,7 @@
         }
 
         function showFieldsForFrequency(frequency) {
-            $('#custom-fields > div').hide(); // Esconde todos los campos adicionales
+            $('#custom-fields > div').hide(); 
 
             if (frequency == 'Diaria') {
                 $('#daily-fields').show();
@@ -53,17 +68,14 @@
                 $('#custom-fields-content').show();
             }
 
-            initializeFlatpickr(); // Inicializa Flatpickr solo en el campo visible
+            initializeFlatpickr();
         }
-
-        // Mostrar los campos correspondientes al cargar la página
+        
         showFieldsForFrequency($('#frequency').val());
 
-        // Cambiar los campos visibles cuando se cambia la frecuencia
         $('#frequency').change(function() {
             showFieldsForFrequency($(this).val());
         });
     });
 </script>
 @endpush
-

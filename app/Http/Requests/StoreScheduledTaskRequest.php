@@ -16,9 +16,9 @@ class StoreScheduledTaskRequest extends FormRequest
         $rules = [
             'task_name' => 'required|string|max:255',
             'frequency' => 'required|string|in:Diaria,Semanal,Mensual,Personalizada',
+            'action' => 'required|string|in:' . implode(',', array_keys(config('scheduled_task_actions.actions'))), // Validar que la acción esté en la lista de acciones configuradas
         ];
 
-        // Agregar reglas específicas según la frecuencia
         $rules = array_merge($rules, $this->getFrequencySpecificRules());
 
         return $rules;
@@ -69,5 +69,4 @@ class StoreScheduledTaskRequest extends FormRequest
             'custom_date' => 'required|date_format:Y-m-d',
         ];
     }
-
 }

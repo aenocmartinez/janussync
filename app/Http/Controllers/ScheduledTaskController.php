@@ -46,7 +46,7 @@ class ScheduledTaskController extends Controller
     
 
     public function create()
-    {        
+    {    
         return view('scheduled_tasks.create', [
             'scheduledTask' => new ScheduledTask()
         ]);
@@ -79,8 +79,6 @@ class ScheduledTaskController extends Controller
             return redirect()->back()->with('error', 'Hubo un problema al crear la tarea programada. Por favor, inténtalo de nuevo.');
         }
     }
-    
-    
     
     protected function combineDateAndTime($date, $time)
     {
