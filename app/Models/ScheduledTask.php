@@ -126,4 +126,34 @@ class ScheduledTask extends Model
 
         return $actions;
     }
+
+    public static function checkAndRunScheduledTasks()
+    {
+        $tasks = self::all();
+        // $now = Carbon::now();
+        $now = Carbon::createFromTime(9, 45);
+    
+        $frequencyChecks = [
+            'Diaria' => function($task) use ($now) {
+                return $now->format('H:i') === Carbon::parse($task->execution_time)->format('H:i');
+            },
+            'Semanal' => function($task) use ($now) {
+                return $now->format('l') === $task->day_of_week && $now->format('H:i') === Carbon::parse($task->execution_time)->format('H:i');
+            },
+            'Mensual' => function($task) use ($now) {
+                return $now->day == $task->day_of_month && $now->format('H:i') === Carbon::parse($task->execution_time)->format('H:i');
+            },
+            'Personalizada' => function($task) use ($now) {
+                return $now->toDateString() === $task->custom_date && $now->format('H:i') === Carbon::parse($task->execution_time)->format('H:i');
+            },
+        ];
+    
+        foreach ($tasks as $task) {
+            if (isset($frequencyChecks[$task->frequency]) && $frequencyChecks[$task->frequency]($task)) {
+                $actionInstance = app($task->action, ['scheduledTask' => $task]);
+                $actionInstance->handle();
+            }
+        }
+    }
+    
 }

@@ -41,4 +41,10 @@ class MonitoringController extends Controller
         }
     }
 
+    public function executeScheduledTasks()
+    {
+        ScheduledTask::checkAndRunScheduledTasks();
+        return response()->json(['message' => 'Tareas programadas ejecutadas.']);
+    }    
+
 }

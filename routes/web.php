@@ -41,5 +41,6 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/check-connection-status', [MonitoringController::class, 'checkConnectionStatus'])->name('check.connection.status');
+Route::get('/monitoring/run-tasks', [MonitoringController::class, 'executeScheduledTasks'])->name('monitoring.run-tasks');
 
 require __DIR__.'/auth.php';
