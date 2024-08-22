@@ -51,7 +51,7 @@
                 </li>
                 <li>
                     <a href="{{ url('/monitoring') }}" class="block p-2 rounded {{ request()->is('monitoring*') ? 'bg-blue-700' : 'hover:bg-blue-700' }}">
-                        Monitoreo de Tareas
+                        Monitoreo
                     </a>
                 </li>
                 <li>
@@ -96,7 +96,7 @@
                 </li>
                 <li>
                     <a href="{{ url('/monitoring') }}" class="block p-2 rounded {{ request()->is('monitoring*') ? 'bg-gray-300 text-black' : 'text-gray-700 hover:bg-gray-300' }}">
-                        Monitoreo de Tareas
+                        Monitoreo
                     </a>
                 </li>
                 <li>

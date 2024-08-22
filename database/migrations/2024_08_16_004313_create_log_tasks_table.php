@@ -10,7 +10,7 @@ class CreateLogTasksTable extends Migration
     {
         Schema::create('log_tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('scheduled_task_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('scheduled_task_id');
             $table->timestamp('executed_at');
             $table->boolean('was_successful');
             $table->text('details')->nullable();
