@@ -98,9 +98,10 @@
                     </td>
                     <td class="p-2 md:p-4">
                         @if ($execution['status_boolean'])                            
-                            <button class="bg-gray-200 text-gray-700 text-xs px-3 py-1 rounded hover:bg-gray-300 transition-colors duration-300">
+                        <a href="{{ route('monitoring.detail', ['task_id' => $execution['task_id'], 'action' => $execution['action']]) }}" 
+                            class="bg-gray-200 text-gray-700 text-xs px-3 py-1 rounded hover:bg-gray-300 transition-colors duration-300 inline-block text-center">
                                 Ver Detalles
-                            </button>
+                            </a>
                         @else
                             @if ($execution['status'] !== 'Programada')
                                 <button class="bg-green-500 text-white text-xs px-3 py-1 rounded hover:bg-green-600 transition-colors duration-300" onclick="openModal({{ $execution['task_id'] }})">

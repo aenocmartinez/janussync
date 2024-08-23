@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');  
 
     Route::resource('scheduled-tasks', ScheduledTaskController::class);
+    Route::get('/monitoring/detail/{task_id}/{action}', [MonitoringController::class, 'showDetail'])->name('monitoring.detail');
 
 });
 

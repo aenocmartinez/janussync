@@ -2,14 +2,20 @@
 
 namespace App\Actions;
 
+use App\Contracts\HasModel;
 use App\DataTransferObjects\UserDTO;
 use App\Models\Academusoft;
 use App\Models\BrightSpace;
 use App\Models\UserCreationDetail;
 use Exception;
 
-class SyncUsersAction extends SyncActionBase
+class SyncUsersAction extends SyncActionBase implements HasModel
 {
+    public static function getModelClass(): string
+    {
+        return UserCreationDetail::class;
+    }
+
     public function handle()
     {
         $details = '';

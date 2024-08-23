@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Contracts\HasModel;
 use App\Models\Academusoft;
 use App\Models\BrightSpace;
 use App\Models\GradeCreateDetail;
@@ -9,8 +10,13 @@ use App\Models\UserCreationDetail;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
-class SyncGradesAction extends SyncActionBase
+class SyncGradesAction extends SyncActionBase implements HasModel
 {
+    public static function getModelClass(): string
+    {
+        return GradeCreateDetail::class;
+    }
+    
     public function handle()
     {
         $details = '';
@@ -51,7 +57,7 @@ class SyncGradesAction extends SyncActionBase
                     $details = "No se pudo crear el registro para user_id {$grade->user_id}, 
                                 course_id {$grade->course_id}, 
                                 term_number {$grade->term_number}: Usuario no encontrado.";
-                    $this->logTask(false, $details);
+                    $this->logTask(true, $details);
                     $failedCount++;
                     continue;
                 }

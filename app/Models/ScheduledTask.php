@@ -47,7 +47,8 @@ class ScheduledTask extends Model
             'frequency' => $this->frequency,
             'details' => $latestLog ? $latestLog->details : 'Esta tarea se ejecutará el ' . $date_execution,
             'log_id' => $latestLog ? $latestLog->id : 'N/A',
-            'term_number' => $this->term_number, // Agregar term_number al retorno
+            'term_number' => $this->term_number,
+            'action' => $this->action,
         ];
     }    
 

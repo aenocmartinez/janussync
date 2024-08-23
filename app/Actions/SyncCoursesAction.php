@@ -2,14 +2,20 @@
 
 namespace App\Actions;
 
+use App\Contracts\HasModel;
 use App\DataTransferObjects\CourseDTO;
 use App\Models\Academusoft;
 use App\Models\BrightSpace;
 use App\Models\CourseCreationDetail;
 use Exception;
 
-class SyncCoursesAction extends SyncActionBase
+class SyncCoursesAction extends SyncActionBase implements HasModel
 {
+    public static function getModelClass(): string
+    {
+        return CourseCreationDetail::class;
+    }
+    
     public function handle()
     {
         $details = '';

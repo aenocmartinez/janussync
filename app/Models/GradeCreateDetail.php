@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use App\Contracts\HasPartialView;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class GradeCreateDetail extends Model
+class GradeCreateDetail extends Model implements HasPartialView
 {
     use HasFactory;
 
@@ -29,4 +30,8 @@ class GradeCreateDetail extends Model
         'term_number',
     ];    
 
+    public static function getPartialViewName(): string
+    {
+        return 'monitoring.partials.grade_details';
+    }
 }

@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use App\Contracts\HasPartialView;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserCreationDetail extends Model
+class UserCreationDetail extends Model implements HasPartialView
 {
     use HasFactory;
 
@@ -27,4 +28,9 @@ class UserCreationDetail extends Model
         'email',
         'scheduled_task_id',
     ];
+
+    public static function getPartialViewName(): string
+    {
+        return 'monitoring.partials.user_details';
+    }
 }

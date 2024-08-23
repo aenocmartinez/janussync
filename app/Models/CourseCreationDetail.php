@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use App\Contracts\HasPartialView;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CourseCreationDetail extends Model
+class CourseCreationDetail extends Model implements HasPartialView
 {
     use HasFactory;
     /**
@@ -26,4 +27,9 @@ class CourseCreationDetail extends Model
         'TemplateId',        
         'scheduled_task_id',
     ];    
+
+    public static function getPartialViewName(): string
+    {
+        return 'monitoring.partials.course_details';
+    }
 }
