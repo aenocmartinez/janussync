@@ -32,6 +32,22 @@ abstract class SyncActionBase
     }
 
     /**
+     * Verifica las conexiones con múltiples servicios y registra log en caso de falla.
+     *
+     * @param array $services Array de servicios en formato ['ServiceClass' => 'ServiceName']
+     * @return bool
+     */
+    protected function verifyConnections(array $services): bool
+    {
+        foreach ($services as $serviceClass => $serviceName) {
+            if (!$this->isConnected($serviceClass, $serviceName)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Registra el log de la tarea.
      *
      * @param bool $wasSuccessful

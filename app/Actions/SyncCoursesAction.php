@@ -14,17 +14,14 @@ class SyncCoursesAction extends SyncActionBase
     {
         $details = '';
         $createdCoursesCount = 0;
+        $existingCoursesCount = 0;
 
         try {
-            // Verificar conexión con Academusoft
-            if (!$this->isConnected(Academusoft::class, 'Academusoft')) {  
-                $this->logTask(false, "Error de conexión con Academusoft.");
-                return;
-            }
-
-            // Verificar conexión con BrightSpace
-            if (!$this->isConnected(BrightSpace::class, 'BrightSpace')) {
-                $this->logTask(false, "Error de conexión con BrightSpace.");
+            // Verificar conexión con Academusoft y BrightSpace
+            if (!$this->verifyConnections([
+                Academusoft::class => 'Academusoft',
+                BrightSpace::class => 'BrightSpace'
+            ])) {
                 return;
             }
 
@@ -32,23 +29,38 @@ class SyncCoursesAction extends SyncActionBase
     
             $existingCodes = CourseCreationDetail::whereIn('code', $courses->pluck('code'))->pluck('code')->toArray();
     
-            $newCourseDetails = $courses->filter(function (CourseDTO $course) use ($existingCodes) {
-                return !in_array($course->templateId, $existingCodes);
-            })->map(function (CourseDTO $course) {
+            $newCourseDetails = $courses->map(function (CourseDTO $course) use ($existingCodes, &$existingCoursesCount) {
+                $isExisting = in_array($course->code, $existingCodes);
+                
+                if ($isExisting) {
+                    $existingCoursesCount++;
+                    $this->logTask(false, "El curso con código {$course->code} ya existe y no fue creado nuevamente.");
+                }
+                
                 return [
                     'course' => $course->name,
                     'code' => $course->code,
                     'TemplateId' => $course->templateId,
                     'scheduled_task_id' => $this->scheduledTask->id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
                 ];
+                
             })->toArray();
     
             if (!empty($newCourseDetails)) {
-                CourseCreationDetail::insert($newCourseDetails);
-                $createdCoursesCount = count($newCourseDetails);
+
+                foreach ($newCourseDetails as $courseDetail) {
+                    CourseCreationDetail::updateOrCreate(
+                        ['code' => $courseDetail['code']], 
+                        $courseDetail
+                    );
+                }
+                $createdCoursesCount = count($newCourseDetails) - $existingCoursesCount;
             }
-    
-            $details = "Sincronización de cursos completada con éxito. Se crearon {$createdCoursesCount} cursos.";
+                
+            $details = "Sincronización de cursos completada con éxito. Se crearon {$createdCoursesCount} cursos. 
+            Cursos ya existentes (fallos): {$existingCoursesCount}.";
             $this->logTask(true, $details);
 
         } catch (Exception $e) {

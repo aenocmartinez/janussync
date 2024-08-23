@@ -17,15 +17,11 @@ class SyncUsersAction extends SyncActionBase
     
         try {
 
-            // Verificar conexión con Academusoft
-            if (!$this->isConnected(Academusoft::class, 'Academusoft')) {  
-                $this->logTask(false, "Error de conexión con Academusoft.");
-                return;
-            }
-
-            // Verificar conexión con BrightSpace
-            if (!$this->isConnected(BrightSpace::class, 'BrightSpace')) {
-                $this->logTask(false, "Error de conexión con BrightSpace.");
+            // Verificar conexión con Academusoft y BrightSpace
+            if (!$this->verifyConnections([
+                Academusoft::class => 'Academusoft',
+                BrightSpace::class => 'BrightSpace'
+            ])) {
                 return;
             }
     
