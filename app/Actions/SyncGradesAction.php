@@ -5,7 +5,7 @@ namespace App\Actions;
 use App\Models\Academusoft;
 use App\Models\BrightSpace;
 use App\Models\GradeCreateDetail;
-use App\Models\User;
+use App\Models\UserCreationDetail;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
@@ -18,7 +18,6 @@ class SyncGradesAction extends SyncActionBase
         $createdCount = 0;
 
         try {
-            
             // Verificar conexión con Academusoft y BrightSpace
             if (!$this->verifyConnections([
                 Academusoft::class => 'Academusoft',
@@ -29,7 +28,12 @@ class SyncGradesAction extends SyncActionBase
 
             $grades = BrightSpace::getGrades($this->scheduledTask->term_number);
 
-            $userIds = User::whereIn('id', $grades->pluck('user_id'))->pluck('id')->toArray();
+            // Obtener el mapeo de user_id a email desde UserCreationDetail
+            $userEmailMap = UserCreationDetail::whereIn('email', function($query) use ($grades) {
+                $query->select('email')
+                      ->from('user_creation_details')
+                      ->whereIn('id', $grades->pluck('user_id')->toArray());
+            })->pluck('email', 'id')->toArray();
 
             $existingRecords = GradeCreateDetail::whereIn('user_id', $grades->pluck('user_id'))
                 ->whereIn('course_id', $grades->pluck('course_id'))
@@ -42,7 +46,8 @@ class SyncGradesAction extends SyncActionBase
             $newRecords = [];
 
             foreach ($grades as $grade) {
-                if (!in_array($grade->user_id, $userIds)) {
+                // Verificar si el user_id existe en el mapeo de email
+                if (!isset($userEmailMap[$grade->user_id])) {
                     $details = "No se pudo crear el registro para user_id {$grade->user_id}, 
                                 course_id {$grade->course_id}, 
                                 term_number {$grade->term_number}: Usuario no encontrado.";
@@ -57,7 +62,7 @@ class SyncGradesAction extends SyncActionBase
                     $details = "No se pudo crear el registro para user_id {$grade->user_id},
                                  course_id {$grade->course_id}, 
                                  term_number {$grade->term_number}: El registro ya existe.";
-                    $this->logTask(false, $details);
+                    $this->logTask(true, $details);
                     $failedCount++;
                     continue;
                 }

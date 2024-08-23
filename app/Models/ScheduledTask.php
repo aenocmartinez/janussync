@@ -78,12 +78,14 @@ class ScheduledTask extends Model
             if ($details['execution_time'] !== 'N/A') {
                 $details['execution_time'] = Carbon::parse($details['execution_time'])
                     ->setTimezone('America/Bogota')
-                    ->format('d \d\e F \d\e Y \a \l\a\s H:i \h\o\r\a\s');
+                    ->locale('es') 
+                    ->translatedFormat('d \d\e F \d\e Y \a \l\a\s H:i \h\o\r\a\s');
             }
     
             return $details;
         });
-    }    
+    }
+    
     
     public static function countLastExecutionResults()
     {
