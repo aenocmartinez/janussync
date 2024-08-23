@@ -55,7 +55,7 @@ class ScheduledTaskController extends Controller
     public function store(StoreScheduledTaskRequest $request)
     {
         $validated = $request->validated();
-    
+        
         try {
             if ($request->frequency == 'Diaria') {
                 $validated['execution_time'] = $this->combineDateAndTime(now()->toDateString(), $validated['execution_time_daily']);
@@ -69,16 +69,16 @@ class ScheduledTaskController extends Controller
             }
     
             ScheduledTask::create($validated);
-    
+        
             return redirect()->route('scheduled-tasks.index')->with('success', 'Tarea programada creada con éxito');
-    
+        
         } catch (QueryException $e) {
             if ($e->getCode() == 23000) { 
                 return redirect()->back()->withErrors(['task_name' => 'El nombre de la tarea ya está en uso.'])->withInput();
             }
             return redirect()->back()->with('error', 'Hubo un problema al crear la tarea programada. Por favor, inténtalo de nuevo.');
         }
-    }
+    }    
     
     protected function combineDateAndTime($date, $time)
     {

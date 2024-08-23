@@ -13,7 +13,6 @@ class SyncGradesAction extends SyncActionBase
     public function handle()
     {
         $details = '';
-        $termNumber = 1;
     
         try {
 
@@ -21,7 +20,7 @@ class SyncGradesAction extends SyncActionBase
                 return;
             }
     
-            $grades = BrightSpace::getGrades($termNumber);
+            $grades = BrightSpace::getGrades($this->scheduledTask->term_number);
     
             $createdCount = $grades->count();
     
@@ -31,11 +30,10 @@ class SyncGradesAction extends SyncActionBase
                     'user_id' => $grade->user_id,
                     'grade' => $grade->grade,
                     'scheduled_task_id' => $this->scheduledTask->id,
-                    'term_number' => $termNumber,
+                    'term_number' => $this->scheduledTask->term_number,
                 ]);
             }
     
-            // Incluir el conteo en el mensaje de log
             $details = "Sincronización de calificaciones completada con éxito. Registros creados: {$createdCount}.";
             $this->logTask(true, $details);
     

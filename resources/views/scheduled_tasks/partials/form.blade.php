@@ -35,6 +35,13 @@
     @enderror
 </div>
 
+<div class="mb-4" id="term-number-field" style="display: none;">
+    <label for="term_number" class="block text-gray-700 font-bold mb-2">Número de corte:</label>
+    <input type="number" name="term_number" id="term_number" value="{{ old('term_number', $scheduledTask->term_number ?? 1) }}" min="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('term_number') border-red-500 @enderror">
+    @error('term_number')
+        <span class="text-red-500 text-sm">{{ $message }}</span>
+    @enderror
+</div>
 
 <div id="custom-fields">
     @include('scheduled_tasks.partials.daily')
@@ -70,11 +77,24 @@
 
             initializeFlatpickr();
         }
-        
+
+        function toggleTermNumberField(action) {
+            if (action === 'App\\Actions\\SyncGradesAction') {
+                $('#term-number-field').show();
+            } else {
+                $('#term-number-field').hide();
+            }
+        }
+
         showFieldsForFrequency($('#frequency').val());
+        toggleTermNumberField($('#action').val());
 
         $('#frequency').change(function() {
             showFieldsForFrequency($(this).val());
+        });
+
+        $('#action').change(function() {
+            toggleTermNumberField($(this).val());
         });
     });
 </script>

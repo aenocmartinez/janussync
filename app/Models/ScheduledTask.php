@@ -21,6 +21,7 @@ class ScheduledTask extends Model
         'day_of_week', 
         'day_of_month', 
         'month',
+        'term_number',
         'custom_date',
         'action', 
     ];
@@ -33,7 +34,7 @@ class ScheduledTask extends Model
     public function getLastExecutionDetails()
     {
         $latestLog = $this->taskLogs()->orderBy('executed_at', 'desc')->first();
-
+    
         Carbon::setLocale('es');
         $date_execution = Carbon::parse($this->custom_date)->translatedFormat('d \d\e F \d\e Y \a \l\a\s H:i \h\o\r\a\s');
     
@@ -42,30 +43,32 @@ class ScheduledTask extends Model
             'task_name' => $this->task_name,
             'status' => $latestLog ? ($latestLog->was_successful ? 'Completado' : 'Tarea Fallida') : 'Programada',
             'status_boolean' => $latestLog ? $latestLog->was_successful : false,
-            'execution_time' => $latestLog ? $latestLog->executed_at : 'N/A', 
+            'execution_time' => $latestLog ? $latestLog->executed_at : 'N/A',
             'frequency' => $this->frequency,
             'details' => $latestLog ? $latestLog->details : 'Esta tarea se ejecutará el ' . $date_execution,
             'log_id' => $latestLog ? $latestLog->id : 'N/A',
+            'term_number' => $this->term_number, // Agregar term_number al retorno
         ];
-    }
+    }    
 
     public function execute()
     {
         if ($this->action) {
-            $action = app($this->action); // Instancia la acción
-            $result = $action->handle();  // Ejecuta la acción
-
+            $action = app($this->action); 
+            $result = $action->handle();  
+    
             $this->taskLogs()->create([
                 'was_successful' => $result['success'],
                 'details' => $result['details'],
                 'executed_at' => now(),
             ]);
-
+    
             return $result;
         }
-
+    
         return ['success' => false, 'details' => 'No se encontró acción asociada.'];
     }
+    
 
     public static function getAllLastExecutions()
     {

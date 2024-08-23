@@ -21,6 +21,10 @@ class StoreScheduledTaskRequest extends FormRequest
 
         $rules = array_merge($rules, $this->getFrequencySpecificRules());
 
+        if ($this->isTermNumberRequired()) {
+            $rules['term_number'] = 'required|integer|min:1';
+        }
+
         return $rules;
     }
 
@@ -68,5 +72,15 @@ class StoreScheduledTaskRequest extends FormRequest
             'execution_time_custom' => 'required|date_format:H:i',
             'custom_date' => 'required|date_format:Y-m-d',
         ];
+    }
+
+    /**
+     * Determina si se requiere la validación de term_number.
+     *
+     * @return bool
+     */
+    protected function isTermNumberRequired()
+    {
+        return $this->input('frequency') == 'Personalizada' && $this->input('action') == 'App\Actions\SyncGradesAction';
     }
 }
