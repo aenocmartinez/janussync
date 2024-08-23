@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_creation_details', function (Blueprint $table) {
+        Schema::create('course_creation_details', function (Blueprint $table) {
             $table->id();
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('email')->unique();
+            $table->string('course');
+            $table->string('code');
+            $table->string('TemplateId');
             $table->unsignedBigInteger('scheduled_task_id');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_creation_details');
+        Schema::dropIfExists('course_creation_details');
     }
 };

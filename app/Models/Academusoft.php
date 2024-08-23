@@ -4,7 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\DataTransferObjects\CourseDTO;
 use App\DataTransferObjects\UserDTO;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -30,26 +32,43 @@ class Academusoft extends Model
         }
     }
 
-    public static function getUsers()
+    public static function getUsers(): Collection
     {
         try {
-            $results = DB::connection(self::$connectionName)->table('users as u')
-                ->join('partners as p', function ($join) {
-                    $join->on('u.email', '=', 'p.email')
-                         ->where('p.type_partner', '=', 'PN')
-                         ->where('u.status', '=', 'active');
-                })
-                ->select('u.name', 'u.email')
+
+            $results = DB::connection(self::$connectionName)->table('users')
+                ->select('first_name', 'last_name', 'email')
                 ->get();
-                
+        
             return $results->map(function ($user) {
-                return new UserDTO($user->name, $user->email);
+                $fullName = $user->first_name . ' ' . $user->last_name;
+                return new UserDTO($fullName, $user->email);
             });
+        
     
         } catch (Exception $e) {
             Log::info($e->getMessage());            
             return collect();
         }
     }
+
+    public static function getCourses(): Collection
+    {
+        try {            
+            $results = DB::connection(self::$connectionName)->table('courses')
+                ->select('id', 'name', 'code')
+                ->get();
+            
+            return $results->map(function ($course) {
+                $templateId = "66" . $course->id;
+                return new CourseDTO($templateId, $course->name, $course->code);
+            });        
+    
+        } catch (Exception $e) {
+            Log::info($e->getMessage());
+            return collect();
+        }
+    }
+       
     
 }

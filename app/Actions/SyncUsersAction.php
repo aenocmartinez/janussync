@@ -7,7 +7,6 @@ use App\Models\Academusoft;
 use App\Models\BrightSpace;
 use App\Models\UserCreationDetail;
 use Exception;
-use Illuminate\Support\Facades\Log;
 
 class SyncUsersAction extends SyncActionBase
 {
@@ -18,8 +17,15 @@ class SyncUsersAction extends SyncActionBase
     
         try {
 
-            if (!$this->isConnected(Academusoft::class, 'Academusoft') || 
-                !$this->isConnected(BrightSpace::class, 'BrightSpace')) {
+            // Verificar conexión con Academusoft
+            if (!$this->isConnected(Academusoft::class, 'Academusoft')) {  
+                $this->logTask(false, "Error de conexión con Academusoft.");
+                return;
+            }
+
+            // Verificar conexión con BrightSpace
+            if (!$this->isConnected(BrightSpace::class, 'BrightSpace')) {
+                $this->logTask(false, "Error de conexión con BrightSpace.");
                 return;
             }
     
