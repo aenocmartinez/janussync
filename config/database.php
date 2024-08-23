@@ -116,7 +116,7 @@ return [
             'driver' => 'mysql',
             'host' => env('MYSQL_ACADEMUSOFT_HOST', '127.0.0.1'),
             'port' => env('MYSQL_ACADEMUSOFT_PORT', '3306'),
-            'database' => env('MYSQL_ACADEMUSOFT_DATABASE', 'hermes'),
+            'database' => env('MYSQL_ACADEMUSOFT_DATABASE', 'academusoft'),
             'username' => env('MYSQL_ACADEMUSOFT_USERNAME', 'root'),
             'password' => env('MYSQL_ACADEMUSOFT_PASSWORD', ''),
             'unix_socket' => env('MYSQL_ACADEMUSOFT_SOCKET', ''),
@@ -125,7 +125,22 @@ return [
             'prefix' => '',
             'strict' => true,
             'engine' => null,
-        ],        
+        ], 
+        
+        'mysql_brightspace' => [
+            'driver' => 'mysql',
+            'host' => env('MYSQL_BRIGHTSPACE_HOST', '127.0.0.1'),
+            'port' => env('MYSQL_BRIGHTSPACE_PORT', '3306'),
+            'database' => env('MYSQL_BRIGHTSPACE_DATABASE', 'brightspace'),
+            'username' => env('MYSQL_BRIGHTSPACE_USERNAME', 'root'),
+            'password' => env('MYSQL_BRIGHTSPACE_PASSWORD', ''),
+            'unix_socket' => env('MYSQL_BRIGHTSPACE_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],         
 
     ],
 
