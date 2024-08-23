@@ -50,12 +50,17 @@ class MonitoringController extends Controller
             abort(404, 'Modelo no encontrado para la acción: ' . $action);
         }
     
+        // Obtener los detalles paginados y ordenados
+        $details = $modelClass::where('scheduled_task_id', $task_id)
+                    ->with('logTasks') // Cargar los logs asociados
+                    ->orderBy('created_at', 'desc')  
+                    ->paginate(10);
+    
         // Obtener el nombre de la vista partial desde el modelo
         $view = $modelClass::getPartialViewName();
-        $details = $modelClass::where('scheduled_task_id', $task_id)->get();
     
         return view('monitoring.detail', compact('details', 'view', 'scheduledTask'));
-    }
+    }    
 
     public function checkConnectionStatus(Request $request)
     {

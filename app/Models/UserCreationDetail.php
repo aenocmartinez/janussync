@@ -29,6 +29,12 @@ class UserCreationDetail extends Model implements HasPartialView
         'scheduled_task_id',
     ];
 
+    public function logTasks()
+    {
+        return $this->hasMany(LogTask::class, 'scheduled_task_id', 'scheduled_task_id')
+                    ->where('scheduled_task_id', $this->scheduled_task_id);
+    }    
+
     public static function getPartialViewName(): string
     {
         return 'monitoring.partials.user_details';

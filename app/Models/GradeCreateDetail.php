@@ -30,6 +30,12 @@ class GradeCreateDetail extends Model implements HasPartialView
         'term_number',
     ];    
 
+    public function logTasks()
+    {
+        return $this->hasMany(LogTask::class, 'scheduled_task_id', 'scheduled_task_id')
+                    ->where('scheduled_task_id', $this->scheduled_task_id);
+    }
+        
     public static function getPartialViewName(): string
     {
         return 'monitoring.partials.grade_details';

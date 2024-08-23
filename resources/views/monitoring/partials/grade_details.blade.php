@@ -1,22 +1,34 @@
-<h2 class="text-lg font-semibold text-gray-700 mb-2">Detalle de Calificaciones</h2>
-<table class="min-w-full text-sm box-border">
-    <thead class="bg-gray-100">
+<table class="min-w-full text-sm">
+    <thead>
         <tr>
-            <th class="p-2 md:p-4 text-left font-semibold text-gray-600">ID</th>
-            <th class="p-2 md:p-4 text-left font-semibold text-gray-600">ID del Usuario</th>
-            <th class="p-2 md:p-4 text-left font-semibold text-gray-600">ID del Curso</th>
-            <th class="p-2 md:p-4 text-left font-semibold text-gray-600">Calificación</th>
-            <th class="p-2 md:p-4 text-left font-semibold text-gray-600">Número de Término</th>
+            <th class="p-2 text-left">Course ID</th>
+            <th class="p-2 text-left">User ID</th>
+            <th class="p-2 text-left">Grade</th>
+            <th class="p-2 text-left">Term Number</th>
+            <th class="p-2 text-left">Details</th>
         </tr>
     </thead>
     <tbody>
-        @foreach($details as $detail)
-            <tr class="border-b hover:bg-gray-50 transition-colors duration-300 box-border">
-                <td class="p-2 md:p-4">{{ $detail->id }}</td>
-                <td class="p-2 md:p-4">{{ $detail->user_id }}</td>
-                <td class="p-2 md:p-4">{{ $detail->course_id }}</td>
-                <td class="p-2 md:p-4">{{ $detail->grade }}</td>
-                <td class="p-2 md:p-4">{{ $detail->term_number }}</td>
+        @foreach ($details as $detail)
+            <tr>
+                <td class="p-2">{{ $detail->course_id }}</td>
+                <td class="p-2">{{ $detail->user_id }}</td>
+                <td class="p-2">{{ $detail->grade }}</td>
+                <td class="p-2">{{ $detail->term_number }}</td>
+                <td class="p-2">
+                    @php
+                        $log = $detail->logTasks->first();
+                    @endphp
+                    @if($log)
+                        @if(empty($log->details))
+                            <span class="text-green-500">Registro exitoso</span>
+                        @else
+                            <span class="text-red-500">{{ $log->details }}</span>
+                        @endif
+                    @else
+                        <span class="text-gray-500">No hay detalles disponibles</span>
+                    @endif
+                </td>
             </tr>
         @endforeach
     </tbody>
