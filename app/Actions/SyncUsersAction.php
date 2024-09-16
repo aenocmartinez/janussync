@@ -8,6 +8,7 @@ use App\Models\Academusoft;
 use App\Models\BrightSpace;
 use App\Models\UserCreationDetail;
 use Exception;
+use Illuminate\Support\Facades\Log;
 
 class SyncUsersAction extends SyncActionBase implements HasModel
 {
@@ -39,8 +40,8 @@ class SyncUsersAction extends SyncActionBase implements HasModel
                 return !in_array($user->email, $existingEmails);
             })->map(function (UserDTO $user) {
                 return [
-                    'first_name' => $user->name,
-                    'last_name' => $user->name,
+                    'first_name' => $user->first_name,
+                    'last_name' => $user->last_name,
                     'email' => $user->email,
                     'scheduled_task_id' => $this->scheduledTask->id,
                 ];

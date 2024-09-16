@@ -110,22 +110,19 @@ return [
             'prefix_indexes' => true,
             // 'encrypt' => env('DB_ENCRYPT', 'yes'),
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
-        ],
-        
-        'mysql_academusoft' => [
-            'driver' => 'mysql',
-            'host' => env('MYSQL_ACADEMUSOFT_HOST', '127.0.0.1'),
-            'port' => env('MYSQL_ACADEMUSOFT_PORT', '3306'),
-            'database' => env('MYSQL_ACADEMUSOFT_DATABASE', 'academusoft'),
-            'username' => env('MYSQL_ACADEMUSOFT_USERNAME', 'root'),
-            'password' => env('MYSQL_ACADEMUSOFT_PASSWORD', ''),
-            'unix_socket' => env('MYSQL_ACADEMUSOFT_SOCKET', ''),
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
+        ],        
+
+        'oracle_academusoft' => [
+            'driver' => 'oracle',
+            'tns' => env('DB_TNS_ORACLE_ACADEMUSOFT', ''),
+            'host' => env('DB_HOST_ORACLE_ACADEMUSOFT', '127.0.0.1'),
+            'port' => env('DB_PORT_ORACLE_ACADEMUSOFT', '1521'),
+            'database' => env('DB_DATABASE_ORACLE_ACADEMUSOFT', ''),
+            'username' => env('DB_USERNAME_ORACLE_ACADEMUSOFT', 'your_username'),
+            'password' => env('DB_PASSWORD_ORACLE_ACADEMUSOFT', 'your_password'),
+            'charset' => 'AL32UTF8',
             'prefix' => '',
-            'strict' => true,
-            'engine' => null,
-        ], 
+        ],
         
         'mysql_brightspace' => [
             'driver' => 'mysql',

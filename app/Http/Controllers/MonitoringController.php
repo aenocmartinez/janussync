@@ -4,10 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Academusoft;
 use App\Models\BrightSpace;
-use App\Models\CourseCreationDetail;
-use App\Models\GradeCreateDetail;
 use App\Models\ScheduledTask;
-use App\Models\UserCreationDetail;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
