@@ -97,16 +97,20 @@
                         </span>                            
                     </td>
                     <td class="p-2 md:p-4">
-                        @if ($execution['status_boolean'])                            
-                        <a href="{{ route('monitoring.detail', ['task_id' => $execution['task_id'], 'action' => $execution['action']]) }}" 
-                            class="bg-gray-200 text-gray-700 text-xs px-3 py-1 rounded hover:bg-gray-300 transition-colors duration-300 inline-block text-center">
-                                Ver Detalles
+                        @if ($execution['status_boolean'])   
+                            @can('Ver detalle de una ejecución exitosa')
+                            <a href="{{ route('monitoring.detail', ['task_id' => $execution['task_id'], 'action' => $execution['action']]) }}" 
+                                class="bg-gray-200 text-gray-700 text-xs px-3 py-1 rounded hover:bg-gray-300 transition-colors duration-300 inline-block text-center">
+                                    Ver Detalles
                             </a>
+                            @endcan
                         @else
                             @if ($execution['status'] !== 'Programada')
+                                @can('Hacer reintentos a ejecuciones fallidas')
                                 <button class="bg-green-500 text-white text-xs px-3 py-1 rounded hover:bg-green-600 transition-colors duration-300" onclick="openModal({{ $execution['task_id'] }})">
                                     Reintentar
-                                </button>                                                            
+                                </button>
+                                @endcan                                                            
                             @endif
                         @endif
                     </td>

@@ -44,26 +44,39 @@
                         Perfil
                     </a>
                 </li>
+
+                @can('Hacer Monitoreo')
                 <li>
                     <a href="{{ url('/monitoring') }}" class="block p-2 rounded {{ request()->is('monitoring*') ? 'bg-blue-700' : 'hover:bg-blue-700' }}">
                         Monitoreo
                     </a>
                 </li>
+                @endcan
+
+                @can('Programar ejecución de tareas')
                 <li>
                     <a href="{{ url('/scheduled-tasks') }}" class="block p-2 rounded {{ request()->is('scheduled-tasks*') ? 'bg-blue-700' : 'hover:bg-blue-700' }}">
                         Programador
                     </a>
-                </li>                
+                </li>  
+                @endcan  
+                
+                @can('Ver usuario')
                 <li>
                     <a href="{{ url('/users') }}" class="block p-2 rounded {{ request()->is('users*') ? 'bg-blue-700' : 'hover:bg-blue-700' }}">
                         Usuarios
                     </a>
                 </li>
+                @endcan
+
+                @can('Ver rol')
                 <li>
                     <a href="{{ url('/roles') }}" class="block p-2 rounded {{ request()->is('roles*') ? 'bg-blue-700' : 'hover:bg-blue-700' }}">
                         Roles
                     </a>
-                </li>                                  
+                </li>  
+                @endcan
+
                 <li>
                     <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form-mobile').submit();" class="block p-2 rounded hover:bg-blue-700">
                         Cerrar sesión
@@ -84,26 +97,37 @@
                         Perfil
                     </a>
                 </li>
+                @can('Hacer Monitoreo')
                 <li>
                     <a href="{{ url('/monitoring') }}" class="block p-2 rounded {{ request()->is('monitoring*') ? 'bg-gray-300 text-black' : 'text-gray-700 hover:bg-gray-300' }}">
                         Monitoreo
                     </a>
                 </li>
+                @endcan
+
+                @can('Programar ejecución de tareas')
                 <li>
                     <a href="{{ url('/scheduled-tasks') }}" class="block p-2 rounded {{ request()->is('scheduled-tasks*') ? 'bg-gray-300 text-black' : 'text-gray-700 hover:bg-gray-300' }}">
                         Programador
                     </a>
-                </li>                
+                </li>    
+                @endcan 
+
+                @can('Ver usuario')          
                 <li>
                     <a href="{{ url('/users') }}" class="block p-2 rounded {{ request()->is('users*') ? 'bg-gray-300 text-black' : 'text-gray-700 hover:bg-gray-300' }}">
                         Usuarios
                     </a>
                 </li> 
+                @endcan 
+
+                @can('Ver usuario')   
                 <li>
                     <a href="{{ url('/roles') }}" class="block p-2 rounded {{ request()->is('roles*') ? 'bg-gray-300 text-black' : 'text-gray-700 hover:bg-gray-300' }}">
                         Roles
                     </a>
-                </li>                                
+                </li>  
+                @endcan                              
                 <!-- Más enlaces de navegación aquí -->
             </ul>
         </nav>

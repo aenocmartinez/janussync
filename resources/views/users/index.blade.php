@@ -3,15 +3,18 @@
 @section('title', 'Gestión de Usuarios | JanusSync')
 
 @section('content')
+
 <div class="w-full px-4 sm:px-6 lg:px-8">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
         <div class="flex items-center mb-4 sm:mb-0">
             <i class="fas fa-users text-blue-800 text-2xl mr-2"></i>
             <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-blue-800">Gestión de Usuarios</h1>
         </div>
-        <a href="{{ route('users.create') }}" class="w-full sm:w-auto flex justify-center items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-sm font-medium rounded-lg shadow-md hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition ease-in-out duration-150 transform hover:-translate-y-1">
-            Nuevo Usuario
-        </a>
+        @can('Crear usuario')            
+            <a href="{{ route('users.create') }}" class="w-full sm:w-auto flex justify-center items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-sm font-medium rounded-lg shadow-md hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition ease-in-out duration-150 transform hover:-translate-y-1">
+                Nuevo Usuario
+            </a>
+        @endcan
     </div>
 
     <!-- Buscador de Usuarios -->
@@ -32,10 +35,15 @@
                     <div class="text-gray-500">{{ $user['email'] }}</div>
                     <div class="text-gray-500">{{ $user->getNameRole() }}</div>
                     <div class="mt-2">
-                        <a href="{{ route('users.edit', $user['id']) }}" class="text-blue-600 hover:text-blue-800">Editar</a>
+                        @if (auth()->user()->can('Actualizar usuario'))
+                            <a href="{{ route('users.edit', $user['id']) }}" class="text-blue-600 hover:text-blue-800">Editar</a>
+                        @endif
+
+                        @if (auth()->user()->can('Eliminar usuario'))
                         <button class="text-red-600 hover:text-red-800" onclick="openConfirmDeleteModal('deleteUserModal{{ $loop->index + 1 }}')">
                             Eliminar
                         </button>
+                        @endif
                     </div>
                 </div>
             @empty

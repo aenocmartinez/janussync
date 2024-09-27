@@ -9,9 +9,11 @@
             <i class="fas fa-user-tag text-blue-800 text-2xl mr-2"></i>
             <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-blue-800">Gestión de Roles</h1>
         </div>
-        <a href="{{ route('roles.create') }}" class="w-full sm:w-auto flex justify-center items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-sm font-medium rounded-lg shadow-md hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition ease-in-out duration-150 transform hover:-translate-y-1">
-            Nuevo Rol
-        </a>
+        @can('Crear rol')            
+            <a href="{{ route('roles.create') }}" class="w-full sm:w-auto flex justify-center items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-sm font-medium rounded-lg shadow-md hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition ease-in-out duration-150 transform hover:-translate-y-1">
+                Nuevo Rol
+            </a>
+        @endcan
     </div>
 
     <!-- Buscador de Roles -->
@@ -45,12 +47,17 @@
                             <td class="py-4 px-6 text-sm text-gray-700">{{ $role->name }}</td>
                             <td class="py-4 px-6 text-sm text-right">
                                 <div class="inline-flex items-center space-x-3">
+                                    @can('Actualizar rol')
                                     <a href="{{ route('roles.edit', $role->id) }}" class="text-gray-500 hover:text-blue-600 focus:outline-none transition duration-150" aria-label="Editar">
                                         <i class="fas fa-pencil-alt"></i>
                                     </a>
+                                    @endcan
+
+                                    @can('Eliminar rol')
                                     <button class="text-gray-500 hover:text-red-600 focus:outline-none transition duration-150" aria-label="Eliminar" onclick="openConfirmDeleteModal('deleteUserModal{{ $loop->index + 1 }}')">
                                         <i class="fas fa-trash"></i>
                                     </button>
+                                    @endcan
                                 </div>
                             </td>
                         </tr>

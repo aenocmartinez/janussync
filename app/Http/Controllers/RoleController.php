@@ -53,7 +53,6 @@ class RoleController extends Controller
         $role = Role::find($id);
 
         if (!$role) {
-            dd("Entra aqui");
             return redirect()->route('roles.index')->with('error', 'El rol no existe.');
         }
 
