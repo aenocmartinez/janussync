@@ -13,7 +13,7 @@
 <body class="flex flex-col min-h-screen">
     <header class="flex items-center justify-between p-4 bg-blue-800 text-white">
         <div class="flex items-center">
-            <a href="{{ url('/dashboard') }}">
+            <a href="{{ url('monitoring') }}">
                 <img src="{{ asset('logo_principal.png') }}" alt="Logo Universidad" class="h-8">
             </a>
         </div>
@@ -39,11 +39,6 @@
     <nav id="mobile-menu" class="lg:hidden fixed inset-0 bg-blue-800 bg-opacity-75 z-50 hidden">
         <div class="flex flex-col items-center justify-center h-full">
             <ul class="text-white text-lg space-y-6">
-                <li>
-                    <a href="{{ url('/dashboard') }}" class="block p-2 rounded {{ request()->is('dashboard*') ? 'bg-blue-700' : 'hover:bg-blue-700' }}">
-                        Dashboard
-                    </a>
-                </li>
                 <li>
                     <a href="{{ url('/profile') }}" class="block p-2 rounded {{ request()->is('profile*') ? 'bg-blue-700' : 'hover:bg-blue-700' }}">
                         Perfil
@@ -84,11 +79,6 @@
     <div class="flex flex-1">
         <nav id="side-nav" class="w-64 bg-gray-100 p-4 flex-shrink-0 hidden lg:block">
             <ul class="space-y-2">
-                <li>
-                    <a href="{{ url('/dashboard') }}" class="block p-2 rounded {{ request()->is('dashboard*') ? 'bg-gray-300 text-black' : 'text-gray-700 hover:bg-gray-300' }}">
-                        Dashboard
-                    </a>
-                </li>
                 <li>
                     <a href="{{ url('/profile') }}" class="block p-2 rounded {{ request()->is('profile*') ? 'bg-gray-300 text-black' : 'text-gray-700 hover:bg-gray-300' }}">
                         Perfil
