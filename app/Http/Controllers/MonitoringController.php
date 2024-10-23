@@ -35,25 +35,21 @@ class MonitoringController extends Controller
             abort(404, 'Acción no reconocida');
         }
     
-        // Verificar que la acción implementa la interfaz HasModel
         if (!in_array('App\Contracts\HasModel', class_implements($action))) {
             abort(500, 'La acción no implementa la interfaz HasModel');
         }
-    
-        // Obtener el modelo desde la clase Action
+
         $modelClass = $action::getModelClass();
     
         if (!class_exists($modelClass)) {
             abort(404, 'Modelo no encontrado para la acción: ' . $action);
         }
     
-        // Obtener los detalles paginados y ordenados
         $details = $modelClass::where('scheduled_task_id', $task_id)
-                    ->with('logTasks') // Cargar los logs asociados
+                    ->with('logTasks') 
                     ->orderBy('created_at', 'desc')  
                     ->paginate(10);
     
-        // Obtener el nombre de la vista partial desde el modelo
         $view = $modelClass::getPartialViewName();
     
         return view('monitoring.detail', compact('details', 'view', 'scheduledTask'));
