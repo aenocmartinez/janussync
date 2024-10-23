@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cb32f0dc561a939091de3b4b67fb421b",
+    "content-hash": "0c202d1c2a1f19a692ae20ffb47befb0",
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
@@ -129,6 +129,48 @@
                 }
             ],
             "time": "2023-11-29T23:19:16+00:00"
+        },
+        {
+            "name": "brightspace/valence-sdk-php",
+            "version": "1.6.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Brightspace/valence-sdk-php.git",
+                "reference": "8898a557496af0c3be7a8237a69afd949de42747"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Brightspace/valence-sdk-php/zipball/8898a557496af0c3be7a8237a69afd949de42747",
+                "reference": "8898a557496af0c3be7a8237a69afd949de42747",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "lib"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Desire2Learn Valence SDK for PHP",
+            "keywords": [
+                "2",
+                "api",
+                "d2l",
+                "desire",
+                "learn",
+                "valence"
+            ],
+            "support": {
+                "issues": "https://github.com/Brightspace/valence-sdk-php/issues",
+                "source": "https://github.com/Brightspace/valence-sdk-php/tree/1.6.1"
+            },
+            "time": "2017-05-24T19:05:36+00:00"
         },
         {
             "name": "carbonphp/carbon-doctrine-types",
