@@ -40,10 +40,11 @@ class SyncUsersAction extends SyncActionBase implements HasModel
                 return !in_array($user->email, $existingEmails);
             })->map(function (UserDTO $user) {
                 return [
-                    'first_name' => $user->first_name,
-                    'last_name' => $user->last_name,
+                    'first_name' => $user->nombres,
+                    'last_name' => $user->apellidos,
                     'email' => $user->email,
                     'scheduled_task_id' => $this->scheduledTask->id,
+                    'role' => $user->rol_usuario,
                 ];
             })->toArray();
     

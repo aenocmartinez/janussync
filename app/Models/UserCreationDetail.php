@@ -27,6 +27,7 @@ class UserCreationDetail extends Model implements HasPartialView
         'last_name',
         'email',
         'scheduled_task_id',
+        'role',
     ];
 
     public function logTasks()

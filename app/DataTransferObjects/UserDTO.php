@@ -4,45 +4,48 @@ namespace App\DataTransferObjects;
 
 class UserDTO
 {
-    public $first_name;
-    public $last_name;
+    public $nombres;
+    public $apellidos;
     public $email;
-    public $estudiante_id;
-    public $estudiante_codigo;
-    public $estudiante_tipo_documento;
-    public $estudiante_numero_documento;
-    public $estudiante_direccion;
-    public $estudiante_telefono;
-    public $estudiante_sexo;
+    public $usuario_id;
+    public $usuario_codigo;
+    public $usuario_tipo_documento;
+    public $usuario_numero_documento;
+    public $usuario_direccion;
+    public $usuario_telefono;
+    public $usuario_sexo;
     public $programa_nombre;
     public $programa_id;
     public $programa_modalidad;
+    public $rol_usuario;
 
-    public function __construct($first_name, 
-                                $last_name,
+    public function __construct($nombres, 
+                                $apellidos,
+                                $usuario_tipo_documento,
+                                $usuario_numero_documento,                                
                                 $email,
-                                $estudiante_id,
-                                $estudiante_codigo,
-                                $estudiante_tipo_documento,
-                                $estudiante_numero_documento,
-                                $estudiante_direccion,
-                                $estudiante_telefono,
-                                $estudiante_sexo,
-                                $programa_nombre,
-                                $programa_id,
-                                $programa_modalidad
+                                $rol_usuario,
+                                $usuario_id = "N/A",
+                                $usuario_codigo = "N/A",
+                                $usuario_direccion = "N/A",
+                                $usuario_telefono = "N/A",
+                                $usuario_sexo = "N/A",
+                                $programa_nombre = "N/A",
+                                $programa_id = "N/A",
+                                $programa_modalidad = "N/A",                               
                                 )
                                 {
-                                    $this->first_name = $first_name;
-                                    $this->last_name = $last_name;
+                                    $this->nombres = $nombres;
+                                    $this->apellidos = $apellidos;
+                                    $this->usuario_tipo_documento = $usuario_tipo_documento;
+                                    $this->usuario_numero_documento = $usuario_numero_documento;
                                     $this->email = $email;
-                                    $this->estudiante_id = $estudiante_id;
-                                    $this->estudiante_codigo = $estudiante_codigo;
-                                    $this->estudiante_tipo_documento = $estudiante_tipo_documento;
-                                    $this->estudiante_numero_documento = $estudiante_numero_documento;
-                                    $this->estudiante_direccion = $estudiante_direccion;
-                                    $this->estudiante_telefono = $estudiante_telefono;
-                                    $this->estudiante_sexo = $estudiante_sexo;
+                                    $this->rol_usuario = $rol_usuario;
+                                    $this->usuario_id = $usuario_id;
+                                    $this->usuario_codigo = $usuario_codigo;
+                                    $this->usuario_direccion = $usuario_direccion;
+                                    $this->usuario_telefono = $usuario_telefono;
+                                    $this->usuario_sexo = $usuario_sexo;
                                     $this->programa_nombre = $programa_nombre;
                                     $this->programa_id = $programa_id;
                                     $this->programa_modalidad = $programa_modalidad;

@@ -25,7 +25,7 @@ class BrightSpace extends Model
     //     }
     // }
 
-    public static function validatedConnection()
+    public static function validatedConnection(): bool
     {
         $config = config('brightspace');
 
@@ -80,7 +80,7 @@ class BrightSpace extends Model
         $userKey = $config['user_key'];
         $userId = $config['user_id'];
         $libPath = $config['libpath'];
-        $roleId = $config['default_role_id'];
+        
     
         require_once $libPath . '/D2LAppContextFactory.php';
         require_once $libPath . '/D2LHostSpec.php';
@@ -94,20 +94,30 @@ class BrightSpace extends Model
             $urlBase = $userContext->createAuthenticatedUri("/d2l/api/lp/1.0/users/", "POST");
     
             foreach ($users as $user) {
+                
                 $externalEmail = !empty($user['email']) ? $user['email'] : null;
+
+                $roleId = $config['default_role_id']; //estudiante
+                if ($user['role'] == "DOCENTE") 
+                {
+                    $roleId = '109';
+                }
+                
     
                 $postData = [
-                    "OrgDefinedId" => $user['email'], // Utilizar el correo como ID definido por la organización
-                    "FirstName" => trim($user['first_name']), // Asegurarse de que no tenga solo espacios
+                    "OrgDefinedId" => $user['email'], 
+                    "FirstName" => trim($user['first_name']), 
                     "MiddleName" => "",
-                    "LastName" => trim($user['last_name']), // Asegurarse de que no tenga solo espacios
-                    "ExternalEmail" => $externalEmail, // Puede ser null o una dirección válida
+                    "LastName" => trim($user['last_name']), 
+                    "ExternalEmail" => $externalEmail, 
                     "UserName" => strtolower($user['first_name'] . '.' . $user['last_name']),
                     "RoleId" => $roleId,
                     "IsActive" => 1,
                     // "SendCreationEmail" => !is_null($externalEmail) // Enviar correo de creación si hay un email válido
                     "SendCreationEmail" => false
                 ];
+
+                Log::info(json_encode($postData));
     
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $urlBase);
@@ -122,7 +132,6 @@ class BrightSpace extends Model
                 if ($httpCode != 201) {
                     Log::error("Error al crear el usuario " . $user['email'] . ": HTTP Code " . $httpCode . " - " . $response);
                     continue;
-                    // return false;
                 }
             }
     

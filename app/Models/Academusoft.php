@@ -35,31 +35,22 @@ class Academusoft extends Model
         }
     }
 
-    // public static function getUsers(): Collection
-    // {
-    //     try {
-
-    //         $results = DB::connection(self::$connectionName)->table('users')
-    //             ->select('first_name', 'last_name', 'email')
-    //             ->get();
-        
-    //         return $results->map(function ($user) {
-    //             $fullName = $user->first_name . ' ' . $user->last_name;
-    //             return new UserDTO($fullName, $user->email);
-    //         });
-        
-    
-    //     } catch (Exception $e) {
-    //         Log::info($e->getMessage());            
-    //         return collect();
-    //     }
-    // }
-
     public static function getUsers(): Collection
     {
-        try {
-            // Ejecutar el query
-            $results = DB::connection(self::$connectionName)
+        $teachers = self::getTeachers();
+        
+        $students = self::getStudents();
+
+        $users = $teachers->merge($students);
+
+        return $users;
+    }
+    
+    private static function getStudents(): Collection
+    {
+        try 
+        {
+            $registros = DB::connection(self::$connectionName)
                 ->table('ACADEMICO.V_BRIGHTSPACE_ESTUDIANTES')
                 ->select(
                     'identificador_estudiante',
@@ -79,35 +70,62 @@ class Academusoft extends Model
                     'modalidad'
                 )
                 ->get();
-
-            // Log::info($results);
     
-            return $results->map(function ($user) {
-                
-                // $fullName = trim($user->PRIMER_NOMBRE . ' ' . $user->SEGUNDO_NOMBRE . ' ' . $user->PRIMER_APELLIDO . ' ' . $user->SEGUNDO_APELLIDO);
+            return $registros->map(function ($estudiante) {          
                 
                 return new UserDTO(
-                    $user->primer_nombre,
-                    $user->primer_apellido,
-                    $user->correo_electronico_institucion,
-                    $user->identificador_estudiante,
-                    $user->codigo_estudiante,
-                    $user->tipo_documento,
-                    $user->numero_documento,
-                    $user->direccion,
-                    $user->telefono,
-                    $user->sexo,
-                    $user->nombre_programa,
-                    $user->id_programa,
-                    $user->modalidad
+                    $estudiante->primer_nombre,
+                    $estudiante->primer_apellido,
+                    $estudiante->tipo_documento,
+                    $estudiante->numero_documento,
+                    $estudiante->correo_electronico_institucion,
+                    "ESTUDIANTE",
+                    $estudiante->identificador_estudiante,
+                    $estudiante->codigo_estudiante,
+                    $estudiante->direccion,
+                    $estudiante->telefono,
+                    $estudiante->sexo,
+                    $estudiante->nombre_programa,
+                    $estudiante->id_programa,
+                    $estudiante->modalidad
                 );
             });
         } catch (Exception $e) {
-            Log::info("AQUI: " . $e->getMessage());
             return collect();
         }
     }
+
+    private static function getTeachers(): Collection
+    {
+        try 
+        {
+            $registros = DB::connection(self::$connectionName)
+                ->table('ACADEMICO.V_BRIGHTSPACE_DOCENTES')
+                ->select(
+                    'tipo_doc',
+                    'documento',
+                    'nombres',
+                    'apellidos',
+                    'mail_institucional'
+                )
+                ->get();
     
+            return $registros->map(function ($docente) {
+
+                return new UserDTO(
+                    $docente->nombres,
+                    $docente->apellidos,
+                    $docente->tipo_doc,
+                    $docente->documento,
+                    $docente->mail_institucional,
+                    "DOCENTE"
+                );
+            });
+        } catch (Exception $e) {
+            Log::info($e->getMessage());
+            return collect();
+        }
+    }
 
     public static function getCourses(): Collection
     {
