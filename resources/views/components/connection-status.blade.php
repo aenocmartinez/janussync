@@ -20,8 +20,9 @@
         updateConnectionStatus("{{ $id }}");
 
         setInterval(function() {
+            console.log("Intento de conexion...");
             updateConnectionStatus("{{ $id }}");
-        }, 60000); // 1 min
+        }, 60000); // 1 minuto
     });
 
     function updateConnectionStatus(elementId) {

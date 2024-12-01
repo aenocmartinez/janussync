@@ -147,40 +147,28 @@ class ScheduledTask extends Model
     {
         $tasks = self::all();
         $now = Carbon::now()->setTimezone('America/Bogota');
-        
-        // Log::info("Running check at: " . $now->toDateTimeString());
     
         $frequencyChecks = [
             'Diaria' => function($task) use ($now) {
-                // Log::info("Checking daily task: {$task->task_name} at {$task->execution_time}. Current time: " . $now->format('H:i:s'));
                 $shouldRun = $now->format('H:i') === Carbon::parse($task->execution_time)->format('H:i');
-                // Log::info("Should run: " . ($shouldRun ? "Yes" : "No"));
                 return $shouldRun;
             },
             'Semanal' => function($task) use ($now) {
-                // Log::info("Checking weekly task: {$task->task_name} on {$task->day_of_week} at {$task->execution_time}. Current time: " . $now->format('H:i:s'));
                 $shouldRun = $now->format('l') === $task->day_of_week && $now->format('H:i') === Carbon::parse($task->execution_time)->format('H:i');
-                // Log::info("Should run: " . ($shouldRun ? "Yes" : "No"));
                 return $shouldRun;
             },
             'Mensual' => function($task) use ($now) {
-                // Log::info("Checking monthly task: {$task->task_name} on day {$task->day_of_month} at {$task->execution_time}. Current time: " . $now->format('H:i:s'));
                 $shouldRun = $now->day == $task->day_of_month && $now->format('H:i') === Carbon::parse($task->execution_time)->format('H:i');
-                // Log::info("Should run: " . ($shouldRun ? "Yes" : "No"));
                 return $shouldRun;
             },
             'Personalizada' => function($task) use ($now) {
-                // Log::info("Checking custom task: {$task->task_name} on {$task->custom_date} at {$task->execution_time}. Current time: " . $now->format('H:i:s'));
                 $shouldRun = $now->toDateString() === $task->custom_date && $now->format('H:i') === Carbon::parse($task->execution_time)->format('H:i');
-                // Log::info("Should run: " . ($shouldRun ? "Yes" : "No"));
                 return $shouldRun;
             },
         ];
     
         foreach ($tasks as $task) {
-            // Log::info("Evaluating task: {$task->task_name}, Frequency: {$task->frequency}");
             if (isset($frequencyChecks[$task->frequency]) && $frequencyChecks[$task->frequency]($task)) {
-                // Log::info("Executing task: {$task->task_name}");
                 $actionInstance = app($task->action, ['scheduledTask' => $task]);
                 $actionInstance->handle();
             } else {
