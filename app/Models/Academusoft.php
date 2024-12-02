@@ -129,20 +129,21 @@ class Academusoft extends Model
 
     public static function getCourses(): Collection
     {
-        try {            
-            $results = DB::connection(self::$connectionName)->table('courses')
-                ->select('id', 'name', 'code')
-                ->get();
-            
-            return $results->map(function ($course) {
-                $templateId = "66" . $course->id;
-                return new CourseDTO($templateId, $course->name, $course->code);
-            });        
-    
-        } catch (Exception $e) {
-            Log::info($e->getMessage());
-            return collect();
+        $courses = [];
+        
+        //Corresponde a la plantilla "Brightspace Implementación"
+        $templateId = 6628;
+
+        try 
+        {
+            $courses[] = new CourseDTO($templateId, "Curso Prueba 4B1", "Curso4B1-01");
         }
+        catch(Exception $e)
+        {
+            // Log::info($e->getMessage());
+        }
+
+        return collect($courses);
     }
        
     

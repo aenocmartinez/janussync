@@ -2,11 +2,11 @@
 
 namespace App\Actions;
 
-use App\Contracts\HasModel;
 use App\DataTransferObjects\CourseDTO;
-use App\Models\Academusoft;
-use App\Models\BrightSpace;
 use App\Models\CourseCreationDetail;
+use App\Contracts\HasModel;
+use App\Models\BrightSpace;
+use App\Models\Academusoft;
 use Exception;
 
 class SyncCoursesAction extends SyncActionBase implements HasModel
@@ -31,30 +31,59 @@ class SyncCoursesAction extends SyncActionBase implements HasModel
                 return;
             }
 
+            // $courses = Academusoft::getCourses();
+    
+            // $existingCodes = CourseCreationDetail::whereIn('code', $courses->pluck('code'))->pluck('code')->toArray();
+    
+            // $newCourseDetails = $courses->map(function (CourseDTO $course) use ($existingCodes, &$existingCoursesCount) {
+            //     $isExisting = in_array($course->code, $existingCodes);
+                
+            //     if ($isExisting) {
+            //         $existingCoursesCount++;
+            //         $this->logTask(false, "El curso con código {$course->code} ya existe y no fue creado nuevamente.");
+            //     }
+                
+            //     return [
+            //         'course' => $course->name,
+            //         'code' => $course->name,
+            //         'TemplateId' => $course->templateId,
+            //         'scheduled_task_id' => $this->scheduledTask->id,
+            //         'created_at' => now(),
+            //         'updated_at' => now(),
+            //     ];
+                
+            // })->toArray();
+
             $courses = Academusoft::getCourses();
-    
+
             $existingCodes = CourseCreationDetail::whereIn('code', $courses->pluck('code'))->pluck('code')->toArray();
-    
-            $newCourseDetails = $courses->map(function (CourseDTO $course) use ($existingCodes, &$existingCoursesCount) {
-                $isExisting = in_array($course->code, $existingCodes);
-                
-                if ($isExisting) {
-                    $existingCoursesCount++;
-                    $this->logTask(false, "El curso con código {$course->code} ya existe y no fue creado nuevamente.");
-                }
-                
-                return [
-                    'course' => $course->name,
-                    'code' => $course->code,
-                    'TemplateId' => $course->templateId,
-                    'scheduled_task_id' => $this->scheduledTask->id,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ];
-                
-            })->toArray();
+            
+            $newCourseDetails = $courses
+                ->map(function (CourseDTO $course) use ($existingCodes, &$existingCoursesCount) {
+                    $isExisting = in_array($course->code, $existingCodes);
+                    
+                    if ($isExisting) {
+                        $existingCoursesCount++;
+                        $this->logTask(false, "El curso con código {$course->code} ya existe y no fue creado nuevamente.");
+                        return null; 
+                    }
+
+                    return [
+                        'course' => $course->name,
+                        'code' => $course->code, 
+                        'TemplateId' => $course->templateId,
+                        'scheduled_task_id' => $this->scheduledTask->id,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                })
+                ->filter()
+                ->toArray();            
     
             if (!empty($newCourseDetails)) {
+
+                // Llama a la conexión con Brightspace
+                BrightSpace::createCourses($newCourseDetails);
 
                 foreach ($newCourseDetails as $courseDetail) {
                     CourseCreationDetail::updateOrCreate(
@@ -66,7 +95,7 @@ class SyncCoursesAction extends SyncActionBase implements HasModel
             }
                 
             $details = "Sincronización de cursos completada con éxito. Se crearon {$createdCoursesCount} cursos. 
-            Cursos ya existentes (fallos): {$existingCoursesCount}.";
+            Cursos ya existentes : {$existingCoursesCount}.";
             $this->logTask(true, $details);
 
         } catch (Exception $e) {
