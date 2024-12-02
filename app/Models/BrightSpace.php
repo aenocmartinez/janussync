@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Contracts\LMS;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,20 +11,11 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 
-class BrightSpace extends Model
+class BrightSpace extends Model implements LMS
 {
     use HasFactory;
 
     protected static $connectionName = 'mysql_brightspace';
-
-    // public static function validatedConnection() {
-    //     try {
-    //         DB::connection(self::$connectionName)->getPdo();
-    //         return true;
-    //     } catch (Exception $e) {
-    //         return false;
-    //     }
-    // }
 
     public static function validatedConnection(): bool
     {
@@ -117,7 +109,7 @@ class BrightSpace extends Model
                     "SendCreationEmail" => false
                 ];
 
-                Log::info(json_encode($postData));
+                // Log::info(json_encode($postData));
     
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $urlBase);
