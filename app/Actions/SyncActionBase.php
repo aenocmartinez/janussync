@@ -5,6 +5,7 @@ namespace App\Actions;
 use App\Models\LogTask;
 use App\Models\ScheduledTask;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 abstract class SyncActionBase
 {
@@ -56,6 +57,8 @@ abstract class SyncActionBase
      */
     protected function logTask(bool $wasSuccessful, string $details): void
     {
+        $details = Str::limit($details, 2000, '... (mensaje truncado)');
+    
         LogTask::create([
             'scheduled_task_id' => $this->scheduledTask->id,
             'executed_at' => Carbon::now(),
