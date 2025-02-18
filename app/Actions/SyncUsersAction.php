@@ -43,6 +43,7 @@ class SyncUsersAction extends SyncActionBase implements HasModel
                     'first_name' => $user->nombres,
                     'last_name' => $user->apellidos,
                     'email' => $user->email,
+                    'role' => 'ESTUDIANTE',
                     'scheduled_task_id' => $this->scheduledTask->id,
                     'role' => $user->rol_usuario,
                 ];
@@ -51,7 +52,7 @@ class SyncUsersAction extends SyncActionBase implements HasModel
             if (!empty($newUserDetails)) {
                 
                 // Llama a la conexión con Brightspace
-                BrightSpace::createUsers($newUserDetails);
+                // BrightSpace::createUsers($newUserDetails);
 
                 UserCreationDetail::insert($newUserDetails);
                 $createdUsersCount = count($newUserDetails);
