@@ -77,12 +77,13 @@ class SyncCoursesAction extends SyncActionBase implements HasModel
                 ->toArray();            
     
             if (!empty($newCourseDetails)) {
-                // Llama a la conexión con BrightSpace para crear cursos
-                // BrightSpace::createCourses($newCourseDetails);
-    
                 // Insertar registros en batch para mejorar rendimiento
                 CourseCreationDetail::insert($newCourseDetails);
                 $createdCoursesCount = count($newCourseDetails);
+
+                // Llama a la conexión con BrightSpace para crear cursos
+                BrightSpace::createCourses($newCourseDetails, 'markmap');
+
             }
     
             // Construcción del mensaje de ejecución
@@ -98,6 +99,8 @@ class SyncCoursesAction extends SyncActionBase implements HasModel
             }
     
             $this->logTask(true, $details);
+
+            // BrightSpace::createJsonFile();
     
         } catch (Exception $e) {
             $details = 'Error al sincronizar cursos: ' . $e->getMessage();
