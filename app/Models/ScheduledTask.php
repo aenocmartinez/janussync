@@ -36,14 +36,13 @@ class ScheduledTask extends Model
         $latestLog = $this->taskLogs()->latest('executed_at')->first();
         Carbon::setLocale('es');
 
-        // Determinar la ejecución programada o la última ejecución real
-        if ($latestLog) {
+        // Validación para evitar errores al acceder a un null
+        if ($latestLog && $latestLog->executed_at) {
             $execution_time = Carbon::parse($latestLog->executed_at)
-                ->setTimezone('America/Bogota') // Solo para fechas de ejecución real
+                ->setTimezone('America/Bogota')
                 ->translatedFormat('d \d\e F \d\e Y \a \l\a\s H:i \h\o\r\a\s');
         } elseif ($this->execution_time) {
-            $execution_time = Carbon::parse($this->execution_time)
-                ->translatedFormat('H:i \h\o\r\a\s'); // No cambiar zona horaria
+            $execution_time = Carbon::parse($this->execution_time)->translatedFormat('H:i \h\o\r\a\s');
         } else {
             $execution_time = 'N/A';
         }
@@ -55,7 +54,7 @@ class ScheduledTask extends Model
             'status_boolean' => $latestLog ? $latestLog->was_successful : false,
             'execution_time' => $execution_time,
             'frequency' => $this->frequency,
-            'details' => $latestLog ? $latestLog->details : "Esta tarea está programada para ejecutarse a las $execution_time",
+            'details' => $latestLog && $latestLog->details ? $latestLog->details : "Esta tarea está programada para ejecutarse a las $execution_time",
             'log_id' => $latestLog ? $latestLog->id : 'N/A',
             'term_number' => $this->term_number,
             'action' => $this->action,
@@ -70,12 +69,6 @@ class ScheduledTask extends Model
 
         $action = app($this->action, ['scheduledTask' => $this]); 
         $result = $action->handle();  
-
-        $this->taskLogs()->create([
-            'was_successful' => $result['success'],
-            'details' => $result['details'],
-            'executed_at' => now(),
-        ]);
 
         return $result;
     }
@@ -98,7 +91,6 @@ class ScheduledTask extends Model
         $successPercentage = $totalLogs > 0 ? round(($successfulLogs / $totalLogs) * 100) : 0;
         $failurePercentage = $totalLogs > 0 ? round(($failedLogs / $totalLogs) * 100) : 0;
 
-        // Ajustar si la suma no es 100%
         $difference = 100 - ($successPercentage + $failurePercentage);
         if ($difference) {
             $successPercentage > $failurePercentage ? $successPercentage += $difference : $failurePercentage += $difference;
@@ -143,16 +135,18 @@ class ScheduledTask extends Model
             if ($task->shouldRunNow($now)) {
                 Log::info("Ejecutando tarea: {$task->task_name}");
                 $task->execute();
-            } else {
-                // Log::info("No se ejecutó tarea: {$task->task_name}");
             }
         }
     }
 
     private function shouldRunNow(Carbon $now)
     {
-        $executionTime = Carbon::parse($this->execution_time, 'America/Bogota')->format('H:i');
-    
+        $executionTime = $this->execution_time ? Carbon::parse($this->execution_time, 'America/Bogota')->format('H:i') : null;
+
+        if (!$executionTime) {
+            return false;
+        }
+
         return match ($this->frequency) {
             'Diaria' => $now->format('H:i') === $executionTime,
             'Semanal' => $now->format('l') === $this->day_of_week && $now->format('H:i') === $executionTime,

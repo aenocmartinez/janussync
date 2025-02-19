@@ -35,7 +35,7 @@ class SyncCoursesAction extends SyncActionBase implements HasModel
             }
     
             // Obtener los cursos desde Academusoft
-            $courses = Academusoft::getCourses()->unique('materia'); // Evitar duplicados
+            $courses = Academusoft::getCourses()->unique('materia'); 
     
             // Filtrar cursos con materia vacía
             $filteredCourses = $courses->filter(fn(CourseDTO $course) => !empty($course->materia));
@@ -55,9 +55,8 @@ class SyncCoursesAction extends SyncActionBase implements HasModel
                 ->pluck('programa')
                 ->toArray();
     
-            // Transformar cursos a formato de inserción
-            $newCourseDetails = $filteredCourses
-                ->reject(fn(CourseDTO $course) => in_array($course->materia, $existingPrograms)) // Evitar insertar duplicados
+                $newCourseDetails = $filteredCourses
+                ->reject(fn(CourseDTO $course) => in_array($course->materia, $existingPrograms))
                 ->map(function (CourseDTO $course) {
                     return [
                         'programa' => $course->materia,
@@ -68,13 +67,14 @@ class SyncCoursesAction extends SyncActionBase implements HasModel
                         'modalidad' => $course->modalidad,
                         'tipo_periodo_id' => $course->tipoPeriodoID,
                         'ubicacion_semestral' => $course->ubicacionSemestralMateria,
+                        'periodo_academico' => $course->periodoAcademico ?? 'SIN PERIODO', // ✅ Agregar el campo con un valor por defecto
                         'scheduled_task_id' => $this->scheduledTask->id,
                         'created_at' => now(),
                         'updated_at' => now(),
                     ];
                 })
-                ->values() // Reindexar para evitar problemas
-                ->toArray();
+                ->values()
+                ->toArray();            
     
             if (!empty($newCourseDetails)) {
                 // Llama a la conexión con BrightSpace para crear cursos

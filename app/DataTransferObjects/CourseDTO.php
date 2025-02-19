@@ -13,6 +13,7 @@ class CourseDTO
     public $tipoPeriodoID;
     public $ubicacionSemestralMateria;
     public $materia;
+    public $periodoAcademico;
 
     public function __construct(
         $templateId,
@@ -23,7 +24,8 @@ class CourseDTO
         $modalidad,
         $tipoPeriodoID,
         $ubicacionSemestralMateria,
-        $materia
+        $materia,
+        $periodoAcademico
     ) {
         $this->templateId = $templateId;
         $this->sede = $sede;
@@ -34,5 +36,6 @@ class CourseDTO
         $this->tipoPeriodoID = $tipoPeriodoID;
         $this->ubicacionSemestralMateria = $ubicacionSemestralMateria;
         $this->materia = $materia;
+        $this->periodoAcademico = $periodoAcademico;
     }
 }
