@@ -5,14 +5,34 @@ namespace App\DataTransferObjects;
 class CourseDTO
 {
     public $templateId;
-    public $name;
-    public $code;
+    public $sede;
+    public $facultad;
+    public $metodologia;
+    public $nivelEducativo;
+    public $modalidad;
+    public $tipoPeriodoID;
+    public $ubicacionSemestralMateria;
+    public $materia;
 
-    public function __construct($templateId = 0, string $name = "", string $code = "")
-    {
+    public function __construct(
+        $templateId,
+        $sede,
+        $facultad,
+        $metodologia,
+        $nivelEducativo,
+        $modalidad,
+        $tipoPeriodoID,
+        $ubicacionSemestralMateria,
+        $materia
+    ) {
         $this->templateId = $templateId;
-        $this->name = $name;
-        $this->code = $code;
+        $this->sede = $sede;
+        $this->facultad = $facultad;
+        $this->metodologia = $metodologia;
+        $this->nivelEducativo = $nivelEducativo;
+        $this->modalidad = $modalidad;
+        $this->tipoPeriodoID = $tipoPeriodoID;
+        $this->ubicacionSemestralMateria = $ubicacionSemestralMateria;
+        $this->materia = $materia;
     }
-
 }

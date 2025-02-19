@@ -144,7 +144,7 @@ class ScheduledTask extends Model
                 Log::info("Ejecutando tarea: {$task->task_name}");
                 $task->execute();
             } else {
-                Log::info("No se ejecutó tarea: {$task->task_name}");
+                // Log::info("No se ejecutó tarea: {$task->task_name}");
             }
         }
     }

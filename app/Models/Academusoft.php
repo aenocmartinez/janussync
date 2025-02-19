@@ -129,22 +129,56 @@ class Academusoft extends Model
 
     public static function getCourses(): Collection
     {
-        $courses = [];
-        
-        //Corresponde a la plantilla "Brightspace Implementación"
-        $templateId = 6628;
-
         try 
         {
-            $courses[] = new CourseDTO($templateId, "Curso Prueba 4B1", "Curso4B1-01");
-        }
-        catch(Exception $e)
-        {
-            // Log::info($e->getMessage());
-        }
+            $registros = DB::connection(self::$connectionName)
+                ->table('ACADEMICO.V_BRIGHTSPACE_ESTRUCTURA')
+                ->select(
+                    'SEDE as sede',
+                    'FACULTAD as facultad',
+                    'METODOLOGIA as metodologia',
+                    'NIVEL_EDUCATIVO as nivel_educativo',
+                    'MODALIDAD as modalidad',
+                    'TIPO_PERIODO_ID as tipo_periodo_id',
+                    'UBICACION_SEMESTRAL_MATERIA as ubicacion_semestral',
+                    'MATERIA as materia'
+                )
+                ->get();
+    
+            $cursos = collect();
+            $cursosExcluidos = collect();
+    
+            foreach ($registros as $curso) {
+                if (!isset($curso->materia) || trim($curso->materia) === '') {
+                    $cursosExcluidos->push((array) $curso);
+                    continue;
+                }
+    
+                $cursos->push(new CourseDTO(
+                    6628, 
+                    trim($curso->sede ?? 'SIN SEDE'),
+                    trim($curso->facultad ?? 'SIN FACULTAD'),
+                    trim($curso->metodologia ?? 'SIN METODOLOGIA'),
+                    trim($curso->nivel_educativo ?? 'SIN NIVEL EDUCATIVO'),
+                    trim($curso->modalidad ?? 'SIN MODALIDAD'),
+                    isset($curso->tipo_periodo_id) ? (int) trim($curso->tipo_periodo_id) : 0,
+                    trim($curso->ubicacion_semestral ?? 'SIN UBICACIÓN SEMESTRAL'),
+                    trim($curso->materia ?? 'SIN MATERIA')
+                ));
+            }
 
-        return collect($courses);
+            if ($cursosExcluidos->isNotEmpty()) {
+                Log::warning("Cursos excluidos por no tener código de materia:", $cursosExcluidos->toArray());
+            }
+    
+            return $cursos;
+    
+        } catch (Exception $e) {
+            Log::error("Error al obtener cursos: " . $e->getMessage());
+            return collect();
+        }
     }
-       
+    
+    
     
 }
