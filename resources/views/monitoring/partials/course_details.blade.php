@@ -14,7 +14,13 @@
                 <td class="p-2">
                     @foreach ($detail->logTasks as $log)
                         <div>
-                            <strong>{{ $log->executed_at->format('d/m/Y H:i:s') }}:</strong> 
+                            <strong>
+                                @if (!empty($log->executed_at))
+                                    {{ \Carbon\Carbon::parse($log->executed_at)->format('d/m/Y H:i:s') }}
+                                @else
+                                    Sin fecha
+                                @endif
+                            </strong> 
                             {{ $log->details }}
                         </div>
                     @endforeach
