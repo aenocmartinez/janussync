@@ -10,6 +10,7 @@
         "brightspace/valence-sdk-php": "^1.6",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
+        "phpoffice/phpspreadsheet": "^1.29",
         "spatie/laravel-permission": "^6.9",
         "yajra/laravel-oci8": "^11.6"
     },

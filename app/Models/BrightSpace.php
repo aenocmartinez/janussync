@@ -23,27 +23,27 @@ class BrightSpace extends Model implements LMS
     {
         $config = config('brightspace');
 
-        $host = $config['host'];
-        $port = $config['port'];
-        $scheme = $config['scheme'];
-        $appKey = $config['app_key'];
-        $appId = $config['app_id'];
+        $host    = $config['host'];
+        $port    = $config['port'];
+        $scheme  = $config['scheme'];
+        $appKey  = $config['app_key'];
+        $appId   = $config['app_id'];
         $userKey = $config['user_key'];
-        $userId = $config['user_id'];
+        $userId  = $config['user_id'];
         $libPath = $config['libpath'];
 
+        // Asegura la librería Valence
         require_once $libPath . '/D2LAppContextFactory.php';
         require_once $libPath . '/D2LHostSpec.php';
 
-        $authContextFactory = new \D2LAppContextFactory();
-        $authContext = $authContextFactory->createSecurityContext($appId, $appKey);
-        $hostSpec = new \D2LHostSpec($host, $port, $scheme);
+        try {
+            // 👉 Usa el helper robusto que añadimos
+            $userContext = self::makeUserContext($config);
 
-        try 
-        {
-            $userContext = $authContext->createUserContextFromHostSpec($hostSpec, $userId, $userKey);
+            // Firma whoami
             $uri = $userContext->createAuthenticatedUri("/d2l/api/lp/1.0/users/whoami", "GET");
 
+            // Llama con cURL (tal como lo tenías)
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $uri);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -51,72 +51,58 @@ class BrightSpace extends Model implements LMS
             $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             curl_close($ch);
 
-            if ($httpCode == 200) 
-            {
-                return true; 
-            } 
-            else 
-            {
-                Log::error("Error al conectar con BrightSpace: HTTP Code " . $httpCode);
+            if ($httpCode == 200) {
+                return true;
+            } else {
+                Log::error("Error al conectar con BrightSpace: HTTP Code " . $httpCode . " - " . $response);
                 return false;
             }
         } catch (Exception $e) {
             Log::error("Excepción al conectar con BrightSpace: " . $e->getMessage());
             return false;
         }
-    }  
-    
+    }
+
     public static function createUsers($users = []) : bool
     {
         $config = config('brightspace');
-    
-        $host = $config['host'];
-        $port = $config['port'];
-        $scheme = $config['scheme'];
-        $appKey = $config['app_key'];
-        $appId = $config['app_id'];
-        $userKey = $config['user_key'];
-        $userId = $config['user_id'];
+
         $libPath = $config['libpath'];
-        
-    
         require_once $libPath . '/D2LAppContextFactory.php';
         require_once $libPath . '/D2LHostSpec.php';
-    
-        $authContextFactory = new \D2LAppContextFactory();
-        $authContext = $authContextFactory->createSecurityContext($appId, $appKey);
-        $hostSpec = new \D2LHostSpec($host, $port, $scheme);
-    
+
         try {
-            $userContext = $authContext->createUserContextFromHostSpec($hostSpec, $userId, $userKey);
-            $urlBase = $userContext->createAuthenticatedUri("/d2l/api/lp/1.0/users/", "POST");
-    
+            // 👉 usa el helper robusto que añadimos
+            $userContext = self::makeUserContext($config);
+
+            // Sugerido: usar versión LP 1.50 para crear usuarios
+            $urlBase = $userContext->createAuthenticatedUri("/d2l/api/lp/1.50/users/", "POST");
+
             foreach ($users as $user) {
-                
+
                 $externalEmail = !empty($user['email']) ? $user['email'] : null;
 
-                $roleId = $config['default_role_id']; //estudiante
-                if ($user['role'] == "DOCENTE") 
-                {
+                // Rol por defecto desde config; si es DOCENTE, usa 109 (como tenías)
+                $roleId = $config['default_role_id']; // p.ej. 110 = estudiante
+                if (!empty($user['role']) && strtoupper($user['role']) === "DOCENTE") {
                     $roleId = '109';
                 }
-                
-    
+
+                // UserName sencillo: nombre.apellido en minúsculas (igual que tu lógica)
+                $username = strtolower(trim(($user['first_name'] ?? '') . '.' . ($user['last_name'] ?? '')));
+
                 $postData = [
-                    "OrgDefinedId" => $user['email'], 
-                    "FirstName" => trim($user['first_name']), 
-                    "MiddleName" => "",
-                    "LastName" => trim($user['last_name']), 
-                    "ExternalEmail" => $externalEmail, 
-                    "UserName" => strtolower($user['first_name'] . '.' . $user['last_name']),
-                    "RoleId" => $roleId,
-                    "IsActive" => 1,
-                    // "SendCreationEmail" => !is_null($externalEmail) // Enviar correo de creación si hay un email válido
-                    "SendCreationEmail" => false
+                    "OrgDefinedId"      => $user['email'] ?? null,
+                    "FirstName"         => trim($user['first_name'] ?? ''),
+                    "MiddleName"        => "",
+                    "LastName"          => trim($user['last_name'] ?? ''),
+                    "ExternalEmail"     => $externalEmail ?: null,    // null si no hay email válido
+                    "UserName"          => $username,
+                    "RoleId"            => $roleId,
+                    "IsActive"          => 1,
+                    "SendCreationEmail" => false,                     // como lo tenías
                 ];
 
-                // Log::info(json_encode($postData));
-    
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $urlBase);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -126,88 +112,21 @@ class BrightSpace extends Model implements LMS
                 $response = curl_exec($ch);
                 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
                 curl_close($ch);
-    
+
                 if ($httpCode != 201) {
-                    Log::error("Error al crear el usuario " . $user['email'] . ": HTTP Code " . $httpCode . " - " . $response);
+                    Log::error("Error al crear el usuario {$postData['UserName']}: HTTP {$httpCode} - {$response}");
+                    // seguimos con los demás usuarios
                     continue;
                 }
             }
-    
+
             return true;
-            
+
         } catch (Exception $e) {
             Log::error("Excepción al crear usuarios en BrightSpace: " . $e->getMessage());
             return false;
         }
-    }    
-
-    // public static function createCourses($courses = []): bool 
-    // {
-    //     $config = config('brightspace');
-    
-    //     $host = $config['host'];
-    //     $port = $config['port'];
-    //     $scheme = $config['scheme'];
-    //     $appKey = $config['app_key'];
-    //     $appId = $config['app_id'];
-    //     $userKey = $config['user_key'];
-    //     $userId = $config['user_id'];
-    //     $libPath = $config['libpath'];
-        
-    
-    //     require_once $libPath . '/D2LAppContextFactory.php';
-    //     require_once $libPath . '/D2LHostSpec.php';
-    
-    //     $authContextFactory = new \D2LAppContextFactory();
-    //     $authContext = $authContextFactory->createSecurityContext($appId, $appKey);
-    //     $hostSpec = new \D2LHostSpec($host, $port, $scheme);
-    
-    //     try {
-    //         $userContext = $authContext->createUserContextFromHostSpec($hostSpec, $userId, $userKey);
-    //         $urlBase = $userContext->createAuthenticatedUri("/d2l/api/lp/1.43/courses/", "POST");
-    
-    //         foreach ($courses as $item) {
-                
-    //             $postData = [
-    //                 "Name" => $item['course'], 
-    //                 "Code" => $item['code'],
-    //                 "Path" => "", 
-    //                 "CourseTemplateId" => $item['TemplateId'], 
-    //                 "SemesterId" => null, 
-    //                 "StartDate" => null, 
-    //                 "EndDate" => null,
-    //                 "LocaleId" => null, 
-    //                 "ForceLocale" => true, 
-    //                 "ShowAddressBook" => true, 
-    //                 "Description" => null, 
-    //                 "CanSelfRegister" => null,
-    //             ];
-
-    //             // Log::info(json_encode($postData));
-    
-    //             $ch = curl_init();
-    //             curl_setopt($ch, CURLOPT_URL, $urlBase);
-    //             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    //             curl_setopt($ch, CURLOPT_POST, true);
-    //             curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-    //             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postData));
-    //             $response = curl_exec($ch);
-    //             $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    //             curl_close($ch);
-    
-    //             if ($httpCode != 200) {
-    //                 Log::error("Error el curso " . $item['course'] . ": HTTP Code " . $httpCode . " - " . $response);
-    //                 continue;
-    //             }
-    //         }
-    
-    //         return true;
-            
-    //     } catch (Exception $e) {
-    //         Log::error("Excepción al crear cursos en BrightSpace: " . $e->getMessage());
-    //         return false;
-    //     }
-    // }   
+    }
 
     public static function createCourses($courses = [], $outputFormat = 'json'): bool
     {
@@ -375,4 +294,55 @@ class BrightSpace extends Model implements LMS
             return collect();
         }
     }
+
+    /**
+     * Crea el UserContext probando las variantes comunes de la librería Valence.
+     * Requiere que ya hayas hecho los require_once de D2LAppContextFactory y D2LHostSpec.
+     */
+    private static function makeUserContext(array $config) {
+        $host   = $config['host'];
+        $port   = (int) $config['port'];
+        $scheme = $config['scheme'];
+        $appId  = $config['app_id'];
+        $appKey = $config['app_key'];
+        $userId = $config['user_id'];
+        $userKey= $config['user_key'];
+
+        $authContextFactory = new \D2LAppContextFactory();
+        $authContext = $authContextFactory->createSecurityContext($appId, $appKey);
+
+        // 1) Si tu build trae HostSpec, úsalo primero (suele ser el más estable)
+        if (class_exists('\\D2LHostSpec') && method_exists($authContext, 'createUserContextFromHostSpec')) {
+            $hostSpec = new \D2LHostSpec($host, $port, $scheme);
+            return $authContext->createUserContextFromHostSpec($hostSpec, $userId, $userKey);
+        }
+
+        // 2) Variante que ya comprobamos que funciona en tu entorno:
+        // createUserContext(host, port, scheme, uid, key)
+        if (method_exists($authContext, 'createUserContext')) {
+            try {
+                return $authContext->createUserContext($host, $port, $scheme, $userId, $userKey);
+            } catch (\Throwable $e) { /* probamos otras firmas abajo */ }
+            try {
+                // Alterna (por si tu lib cambia en el futuro)
+                return $authContext->createUserContext($userId, $userKey, $scheme, $host, $port);
+            } catch (\Throwable $e) { /* seguimos */ }
+            try {
+                return $authContext->createUserContext($userId, $userKey, $host, $port, $scheme);
+            } catch (\Throwable $e) { /* seguimos */ }
+        }
+
+        // 3) Otra firma común
+        if (method_exists($authContext, 'createUserContextFromHost')) {
+            return $authContext->createUserContextFromHost($host, $port, $scheme, $userId, $userKey);
+        }
+
+        // 4) Firmas "WithValues"
+        if (method_exists($authContext, 'createUserContextWithValues')) {
+            return $authContext->createUserContextWithValues($userId, $userKey, $scheme, $host, $port);
+        }
+
+        throw new \RuntimeException('No se pudo crear UserContext con la librería Valence actual.');
+    }
+
 }

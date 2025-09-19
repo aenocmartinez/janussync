@@ -25,6 +25,7 @@ class InitialSetupSeeder extends Seeder
             'Hacer reintentos a ejecuciones fallidas',
             'Ver detalle de una ejecución exitosa',
             'Programar ejecución de tareas',
+            'Sincronizar por Excel', // <-- nuevo
         ];
 
         foreach ($permissions as $permission) {
@@ -32,7 +33,11 @@ class InitialSetupSeeder extends Seeder
         }
 
         $adminRole = Role::firstOrCreate(['name' => 'Administrador']);
-        $adminRole->syncPermissions($permissions);
+
+        // Agrega (no elimina) permisos al rol
+        foreach ($permissions as $permission) {
+            $adminRole->givePermissionTo($permission);
+        }
 
         $adminUser = User::firstOrCreate(
             ['email' => 'admin@unicolmayor.edu.co'],

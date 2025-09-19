@@ -10,4 +10,9 @@ return [
     'user_id'           => env('BRIGHTSPACE_USER_ID', 'rA_qgqf3z1ZUKSxsvEprbt'),
     'user_key'          => env('BRIGHTSPACE_USER_KEY', 'gRULlzUicA5kNpCfEpMEQ0'),
     'default_role_id'   => env('BRIGHTSPACE_DEFAULT_ROLE_ID', '110'),
+
+    'semester_type_id' => env('BRIGHTSPACE_SEMESTER_TYPE_ID', null),
+    'department_type_id'       => env('BRIGHTSPACE_DEPARTMENT_TYPE_ID', null),
+    'course_template_type_id'  => env('BRIGHTSPACE_TEMPLATE_TYPE_ID', null),
+    'course_offering_type_id'  => env('BRIGHTSPACE_OFFERING_TYPE_ID', null),    
 ];

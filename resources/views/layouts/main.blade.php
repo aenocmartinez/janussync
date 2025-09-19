@@ -77,6 +77,16 @@
                 </li>  
                 @endcan
 
+                @can('Sincronizar por Excel')
+                <li>
+                    <a href="{{ url('/sync/excel') }}"
+                        class="block p-2 rounded {{ request()->is('sync/excel*') ? 'bg-blue-700' : 'hover:bg-blue-700' }}">
+                        Importar a Brightspace (Excel)
+                    </a>
+                </li>
+                @endcan
+
+
                 <li>
                     <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form-mobile').submit();" class="block p-2 rounded hover:bg-blue-700">
                         Cerrar sesión
@@ -127,8 +137,17 @@
                         Roles
                     </a>
                 </li>  
-                @endcan                              
+                @endcan
                 <!-- Más enlaces de navegación aquí -->
+                @can('Sincronizar por Excel')
+                <li>
+                    <a href="{{ url('/sync/excel') }}"
+                        class="block p-2 rounded {{ request()->is('sync/excel*') ? 'bg-gray-300 text-black' : 'text-gray-700 hover:bg-gray-300' }}">
+                        Importar a Brightspace (Excel)
+                    </a>
+                </li>
+                @endcan
+
             </ul>
         </nav>
 
@@ -195,6 +214,22 @@
         </div>
     </div>
 
+
+    {{-- Modal de Cargando (global) --}}
+    <div id="loading-modal"
+        class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-40">
+    <div class="bg-white rounded-lg p-6 shadow-lg flex flex-col items-center">
+        <svg class="animate-spin h-8 w-8 text-blue-600 mb-3" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10"
+                stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor"
+                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+        </svg>
+        <p class="text-gray-700">Procesando… esto puede tardar algunos segundos.</p>
+    </div>
+    </div>
+
+
     <script>
         document.getElementById('user-menu-button').addEventListener('click', function() {
             var dropdown = document.getElementById('dropdown-menu');
@@ -234,7 +269,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/clockpicker/0.0.7/bootstrap-clockpicker.min.js"></script> -->
 
-
+    
     <!-- Sección para incluir scripts adicionales -->
     @stack('scripts')
 </body>
